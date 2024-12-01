@@ -9,12 +9,17 @@ import SwiftUI
 
 
 struct FilledRedButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
+    
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
+        
+        return configuration.label
             .foregroundStyle(.white)
             .padding(.horizontal, 26)
             .padding(.vertical, 8)
-            .background(configuration.isPressed ? .ruby : .accent, in: Rectangle())
+            .background(
+                !isEnabled ? .smog : (configuration.isPressed ? .ruby : .accent),
+                in: Rectangle())
             .font(.main26)
     }
 }

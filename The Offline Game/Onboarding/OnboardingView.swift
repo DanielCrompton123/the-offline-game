@@ -6,72 +6,66 @@
 //
 
 import SwiftUI
-import AVFoundation
+import UserNotifications
+
+
+fileprivate enum OnboardingStep {
+    case stageA, stageB
+}
 
 
 struct OnboardingView: View {
-    @State private var tab = 0
-    
+    @State private var step = OnboardingStep.stageA
+        
     var body: some View {
         VStack(spacing: 20) {
-                        
+            
             // HEADER
             OfflineHeader()
             
             Spacer()
             
-            Group {
-                // ONBOARDING CONTENT
-                switch tab {
-                case 0:
-                    onboardingContent1
-                case 1:
-                    onboardingContent2
-                default:
-                    Text("tab \(tab) should be handled")
+            // ONBOARDING CONTENT
+            
+            VStack {
+                if step == .stageA {
+                    onboardingA
+                    
+                } else if step == .stageB {
+                    onboardingB
+                    
                 }
             }
-            .padding(.horizontal, 26)
+            
+        }
+        .buttonStyle(FilledRedButtonStyle())
+        .padding()
+    }
+    
+    
+    @ViewBuilder private var onboardingA: some View {
+        VStack(spacing: 10) {
+            onboardingItem(label: "Addicted to your phone?", systemImage: "brain.head.profile")
+            onboardingItem(label: "See how long you can go offline", systemImage: "stopwatch")
+            onboardingItem(label: "Challenge friends to do the same!", systemImage: "trophy")
             
             Spacer()
             
-            if tab == 0 {
-                Button("CONTINUE") {
-                    withAnimation {
-                        tab += 1
-                    }
+            Button("CONTINUE") {
+                if step == .stageA {
+                    step = .stageB
                 }
             }
-            
-            else if tab == 1 {
-                Button("ASK PERMISSION",
-                       action: getNotificationPermission)
-            }
-        }
-        .buttonStyle(FilledRedButtonStyle())
-        .padding(.bottom)
-    }
-
-    
-    @ViewBuilder
-    private var onboardingContent1: some View {
-        VStack(spacing: 10) {
-            onboardingItem(label: "Addicted to your phone?", systemImage: "brain.head.profile")
-            onboardingItem(label: "See how long you can go offline...", systemImage: "stopwatch")
-            onboardingItem(label: "Challenge friends to do the same!", systemImage: "trophy")
         }
         .minimumScaleFactor(0.6)
+
     }
     
     
-    @ViewBuilder
-    private var onboardingContent2: some View {
-        Text("We need to send you notifications to help you track your offline time.\nPLEASE PRESS “ACCEPT” TO THE MESSAGE")
-            .font(.main20)
-            .foregroundStyle(.accent)
-            .multilineTextAlignment(.center)
+    @ViewBuilder private var onboardingB: some View {
+        NotificationPermissionView()
     }
-    
+   
     
     @ViewBuilder func onboardingItem(label: String, systemImage: String) -> some View {
         let iconFont = Font.system(size: 48)
@@ -90,11 +84,6 @@ struct OnboardingView: View {
         }
     }
     
-    
-    
-    private func getNotificationPermission() {
-        
-    }
 }
 
 #Preview {

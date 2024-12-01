@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct The_Offline_GameApp: App {
+    @AppStorage("needsOnboarding") private var needsOnboarding = true
+        
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
+                .fullScreenCover(isPresented: $needsOnboarding) {
+                    OnboardingView()
+                }
         }
     }
 }
