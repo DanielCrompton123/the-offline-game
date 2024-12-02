@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CameraView: UIViewControllerRepresentable {
-    @Binding var image: Image?
+    @Binding var uiImage: UIImage?
     @Environment(\.dismiss) private var dismiss
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
@@ -35,7 +35,7 @@ struct CameraView: UIViewControllerRepresentable {
             _ picker: UIImagePickerController,
             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[.originalImage] as? UIImage {
-                parent.image = Image(uiImage: image)
+                parent.uiImage = image
             }
             parent.dismiss()
         }

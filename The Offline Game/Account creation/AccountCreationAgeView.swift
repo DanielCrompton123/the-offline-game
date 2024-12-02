@@ -7,15 +7,9 @@
 
 import SwiftUI
 
-
-enum Age {
-    case adult, teen, child
-}
-
-
 struct AccountCreationAgeView: View {
     
-    @State private var age: Age?
+    @Environment(UserAccountViewModel.self) private var accountViewModel
     @State private var showsNextStage = false
     
     var body: some View {
@@ -50,7 +44,7 @@ struct AccountCreationAgeView: View {
                 // AGE BUTTONS
                 
                 Button {
-                    age = .adult
+                    accountViewModel.age = .adult
                     showsNextStage = true
                 } label: {
                     HStack {
@@ -61,7 +55,7 @@ struct AccountCreationAgeView: View {
                 }
                 
                 Button {
-                    age = .teen
+                    accountViewModel.age = .teen
                     showsNextStage = true
                 } label: {
                     HStack {
@@ -72,7 +66,7 @@ struct AccountCreationAgeView: View {
                 }
                 
                 Button {
-                    age = .child
+                    accountViewModel.age = .child
                     showsNextStage = true
                 } label: {
                     HStack {

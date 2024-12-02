@@ -11,7 +11,7 @@ import PhotosUI
 
 struct AccountCreationImageView: View {
     
-    @State private var image: Image?
+    @Environment(UserAccountViewModel.self) private var accountViewModel
     @State private var chosenImage: PhotosPickerItem?
     @State private var choosingImage = false
     @State private var takingImage = false
@@ -19,6 +19,9 @@ struct AccountCreationImageView: View {
     private let imageSize: CGFloat = 162
     
     var body: some View {
+        
+        @Bindable var accountViewModel = accountViewModel
+        
         VStack(spacing: 30) {
             
             // PROFILE IMAGE IS THE THIRD OF 3 ACCOUNT-CREATION STEPS
@@ -38,7 +41,7 @@ struct AccountCreationImageView: View {
             
             Group {
                 // IMAGE
-                if let image {
+                if let image = accountViewModel.image {
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -78,14 +81,14 @@ struct AccountCreationImageView: View {
                 
             }
             .buttonStyle(FilledRedButtonStyle())
-            .disabled(image == nil)
+            .disabled(accountViewModel.image == nil)
             
         }
         .navigationTitle("STEP 3/3")
         .navigationBarTitleDisplayMode(.inline)
         .padding(.horizontal)
         .fullScreenCover(isPresented: $takingImage) {
-            CameraView(image: $image)
+            CameraView(uiImage: $accountViewModel.uiImage)
                 .ignoresSafeArea()
         }
         .photosPicker(isPresented: $choosingImage,
@@ -94,14 +97,15 @@ struct AccountCreationImageView: View {
         .onChange(of: chosenImage) { oldValue, newValue in
             Task {
                 // Convert the photos picker item to a UIImage
-                if let chosenImage {
-                    image = try? await chosenImage.loadTransferable(type: Image.self)
+                if let chosenImage,
+                   let data = try? await chosenImage.loadTransferable(type: Data.self) {
+                    accountViewModel.uiImage = UIImage(data: data)
                 }
             }
         }
         .onDisappear {
-            // reset them.
-            image = nil
+            // reset them. THIS MAKES NAVIGATING BACK FROM THI SCREEN THEN TO IT AGAIN CLEAR THE IMAGE
+            accountViewModel.uiImage = nil
             chosenImage = nil
         }
         

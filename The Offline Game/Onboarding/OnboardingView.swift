@@ -18,25 +18,27 @@ struct OnboardingView: View {
     @State private var step = OnboardingStep.stageA
         
     var body: some View {
-        VStack(spacing: 20) {
-            
-            // HEADER
-            OfflineHeader()
-            
-            Spacer()
-            
-            // ONBOARDING CONTENT
-            
-            VStack {
-                if step == .stageA {
-                    onboardingA
-                    
-                } else if step == .stageB {
-                    onboardingB
-                    
+        NavigationStack {
+            VStack(spacing: 20) {
+                
+                // HEADER
+                OfflineHeader()
+                
+                Spacer()
+                
+                // ONBOARDING CONTENT
+                
+                VStack {
+                    if step == .stageA {
+                        onboardingA
+                        
+                    } else if step == .stageB {
+                        onboardingB
+                        
+                    }
                 }
+                
             }
-            
         }
         .buttonStyle(FilledRedButtonStyle())
         .padding()
@@ -88,4 +90,5 @@ struct OnboardingView: View {
 
 #Preview {
     OnboardingView()
+        .environment(UserAccountViewModel())
 }

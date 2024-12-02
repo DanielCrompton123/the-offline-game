@@ -13,10 +13,13 @@ struct The_Offline_GameApp: App {
         
     var body: some Scene {
         WindowGroup {
-            HomeView()
-                .fullScreenCover(isPresented: $needsOnboarding) {
-                    OnboardingView()
-                }
+            VStack {
+                HomeView()
+                    .fullScreenCover(isPresented: $needsOnboarding) {
+                        OnboardingView()
+                    }
+            }
+            .environment(UserAccountViewModel())
         }
     }
 }

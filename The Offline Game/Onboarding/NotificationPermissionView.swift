@@ -11,7 +11,8 @@ import UserNotifications
 
 struct NotificationPermissionView: View {
     private let center = UNUserNotificationCenter.current()
-    private let settingsURL = URL(string: UIApplication.openSettingsURLString)!
+    private let settingsURL = URL(string: UIApplication.openNotificationSettingsURLString)!
+//    private let settingsURL = URL(string: UIApplication.openSettingsURLString)!
     
     @State private var notificationStatus: UNAuthorizationStatus? = nil
     @Environment(\.dismiss) private var dismiss

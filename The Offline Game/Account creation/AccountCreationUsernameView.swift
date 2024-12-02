@@ -26,13 +26,17 @@ struct Line: Shape {
 
 struct AccountCreationUsernameView: View {
     
-    @State private var username = ""
+    @Environment(UserAccountViewModel.self) private var accountViewModel
     @FocusState private var usernameFieldFocused: Bool
     @State private var usernameIsValid = false
     
     @State private var nextStageShows = false
     
     var body: some View {
+        
+        @Bindable var accountViewModel = accountViewModel
+        
+        
         VStack(spacing: 30) {
             
             // USERNAME IS THE SECOND OF 3 ACCOUNT-CREATION STEPS
@@ -57,7 +61,7 @@ struct AccountCreationUsernameView: View {
             // TEXT FIELD
             
             VStack(spacing: 4) {
-                TextField("USERNAME", text: $username)
+                TextField("USERNAME", text: $accountViewModel.username)
                     .font(.main30)
                     .multilineTextAlignment(.center)
                     .focused($usernameFieldFocused)
