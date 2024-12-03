@@ -9,8 +9,9 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
+    
     @Environment(OfflineViewModel.self) private var offlineViewModel
-    @Environment(OnboardingViewModel.self) private var onboardingViewModel
+    @Environment(PermissionsViewModel.self) private var permissionsViewModel
     
     @State private var offlineSliderViewPresented = false
     
@@ -62,8 +63,8 @@ struct HomeView: View {
             .padding(.horizontal)
         }
         .task(priority: .high) {
-            await onboardingViewModel.loadNotificationStatus()
-            shouldShowNotificationWarning = onboardingViewModel.notificationStatus == .denied
+            await permissionsViewModel.loadNotificationStatus()
+            shouldShowNotificationWarning = permissionsViewModel.notificationStatus == .denied
         }
         
     }

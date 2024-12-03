@@ -11,6 +11,9 @@ import UserNotifications
 
 struct NotificationPermissionView: View {
     @Environment(OnboardingViewModel.self) private var onboardingViewModel
+    @Environment(PermissionsViewModel.self) private var permissionsViewModel
+    
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
 
@@ -21,7 +24,7 @@ struct NotificationPermissionView: View {
             
             Spacer()
                         
-            if let notificationStatus = onboardingViewModel.notificationStatus {
+            if let notificationStatus = permissionsViewModel.notificationStatus {
                 description(for: notificationStatus)
                 
                 Spacer()
@@ -30,13 +33,13 @@ struct NotificationPermissionView: View {
             }
             
             else {
-                ProgressView("Loading notification status")
+                ProgressView("Loading focus status")
             }
         }
         
         // Load the notification status when the UI appears with high priority
         .task(priority: .high) {
-            await onboardingViewModel.loadNotificationStatus()
+            await permissionsViewModel.loadNotificationStatus()
         }
         .font(.main20)
         .multilineTextAlignment(.center)
@@ -73,7 +76,7 @@ struct NotificationPermissionView: View {
         
         // NOTID NOT ASKED FOR: ASK PERMISSION
         if status == .notDetermined {
-            Button("GET PERMISSION", action: onboardingViewModel.requestNotificationPermission)
+            Button("GET PERMISSION", action: permissionsViewModel.requestNotificationPermission)
         }
         
         // NOTIS ALLOWED: JUST CLOSE
@@ -81,7 +84,7 @@ struct NotificationPermissionView: View {
             Button("CONTINUE WITHOUT", action: endOnboarding)
             
             Button("OPEN IN SETTINGS",
-                   action: onboardingViewModel.openNotificationSettings)
+                   action: permissionsViewModel.openNotificationSettings)
         }
         
         // NOTIS DENIES: TELL THEM TO OPEN SETTINGS OR CONTINUE WITHOUT
@@ -93,6 +96,12 @@ struct NotificationPermissionView: View {
 
     private func endOnboarding() {
         onboardingViewModel.hasSeenOnboarding = true
+        
+        // If the user turns off notifications when the app is closed, it opens by presenting the notification permission view as a warning.
+        // Therefore in this case it is not in a navigation stack during onboarding, so this will not dismiss it.
+        
+        // Ensure it can still be dismissed
+        dismiss()
     }
 }
 

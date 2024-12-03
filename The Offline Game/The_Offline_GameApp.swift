@@ -11,7 +11,7 @@ import SwiftUI
 struct The_Offline_GameApp: App {
     var body: some Scene {
         WindowGroup {
-            Debug()
+            AppEntry()
         }
     }
 }
@@ -19,23 +19,13 @@ struct The_Offline_GameApp: App {
 
 
 fileprivate struct AppEntry: View {
-    @AppStorage("needsOnboarding") private var needsOnboarding = true
-    
-    var body: some View {
-        VStack {
-            HomeView()
-                .fullScreenCover(isPresented: $needsOnboarding) {
-                    OnboardingView()
-                }
-        }
-    }
-}
-
-
-fileprivate struct Debug: View {
-    
     @State private var onboardingViewModel = OnboardingViewModel()
+    @State private var offlineViewModel = OfflineViewModel()
+    @State private var tipViewModel = TipViewModel()
+    @State private var permissionsViewModel = PermissionsViewModel()
     
+    // Store a unique user ID
+    @AppStorage("userID") private var userID = UUID().uuidString
     
     var body: some View {
         VStack {
@@ -47,6 +37,19 @@ fileprivate struct Debug: View {
                 }
         }
         .environment(onboardingViewModel)
-        .environment(OfflineViewModel())
+        .environment(offlineViewModel)
+        .environment(tipViewModel)
+        .environment(permissionsViewModel)
+    }
+}
+
+
+fileprivate struct Debug: View {
+    
+    @State private var onboardingViewModel = OnboardingViewModel()
+    
+    
+    var body: some View {
+        TipView()
     }
 }

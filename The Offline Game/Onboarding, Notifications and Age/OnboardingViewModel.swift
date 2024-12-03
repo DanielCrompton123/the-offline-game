@@ -36,37 +36,5 @@ class OnboardingViewModel {
             forKey: hasSeenOnboardingUserDefaultsKey
         ) // Defaults to false
     }
-    
-    
-    //MARK: - Notifications
-    
-    let center = UNUserNotificationCenter.current()
-    let settingsURL = URL(string: UIApplication.openNotificationSettingsURLString)!
-    
-    var notificationStatus: UNAuthorizationStatus? = nil
-    
-    func loadNotificationStatus() async {
-        notificationStatus = await center.notificationSettings().authorizationStatus
-    }
-    
-    func openNotificationSettings() {
-        guard UIApplication.shared.canOpenURL(settingsURL) else { return }
-        UIApplication.shared.open(settingsURL)
-    }
-    
-    func requestNotificationPermission() {
-        Task {
-            do {
-                let acceptedAlerts = try await center.requestAuthorization(
-                    options: [.alert, .badge, .sound]
-                )
-                
-                notificationStatus = acceptedAlerts ? .authorized : .denied
-                
-            } catch {
-                print("Error requesting notifications \(error)")
-            }
-        }
-    }
 
 }
