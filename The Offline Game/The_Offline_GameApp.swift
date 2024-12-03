@@ -9,17 +9,44 @@ import SwiftUI
 
 @main
 struct The_Offline_GameApp: App {
-    @AppStorage("needsOnboarding") private var needsOnboarding = true
-        
     var body: some Scene {
         WindowGroup {
-            VStack {
-                HomeView()
-                    .fullScreenCover(isPresented: $needsOnboarding) {
-                        OnboardingView()
-                    }
-            }
-            .environment(UserAccountViewModel())
+            Debug()
         }
+    }
+}
+
+
+
+fileprivate struct AppEntry: View {
+    @AppStorage("needsOnboarding") private var needsOnboarding = true
+    
+    var body: some View {
+        VStack {
+            HomeView()
+                .fullScreenCover(isPresented: $needsOnboarding) {
+                    OnboardingView()
+                }
+        }
+    }
+}
+
+
+fileprivate struct Debug: View {
+    
+    @State private var onboardingViewModel = OnboardingViewModel()
+    
+    
+    var body: some View {
+        VStack {
+            HomeView()
+                .fullScreenCover(
+                    isPresented: $onboardingViewModel.hasNotSeenOnboarding
+                ) {
+                    OnboardingView()
+                }
+        }
+        .environment(onboardingViewModel)
+        .environment(OfflineViewModel())
     }
 }

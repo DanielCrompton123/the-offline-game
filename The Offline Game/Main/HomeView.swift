@@ -10,8 +10,12 @@ import SwiftUI
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(OfflineViewModel.self) private var offlineViewModel
+    @Environment(OnboardingViewModel.self) private var onboardingViewModel
     
     @State private var offlineSliderViewPresented = false
+    
+    // If the user has disabled notifications in settings behind out backs (while the app was closed), check if they are now denied and warn them if so.
+    @State private var shouldShowNotificationWarning = false
     
     var body: some View {
         
@@ -44,6 +48,9 @@ struct HomeView: View {
             .sheet(isPresented: $offlineSliderViewPresented) {
                 OfflineTimeView()
             }
+            .fullScreenCover(isPresented: $shouldShowNotificationWarning) {
+                NotificationPermissionView()
+            }
             .navigationDestination(for: NavigationStep.self, destination: { step in
                 switch step {
                 case .home:
@@ -53,6 +60,10 @@ struct HomeView: View {
                 }
             })
             .padding(.horizontal)
+        }
+        .task(priority: .high) {
+            await onboardingViewModel.loadNotificationStatus()
+            shouldShowNotificationWarning = onboardingViewModel.notificationStatus == .denied
         }
         
     }

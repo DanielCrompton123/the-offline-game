@@ -4,7 +4,7 @@
 //
 //  Created by Daniel Crompton on 12/1/24.
 //
-
+/*
 import SwiftUI
 import PhotosUI
 
@@ -125,3 +125,4 @@ struct AccountCreationImageView: View {
     AccountCreationImageView()
         .environment(UserAccountViewModel())
 }
+*/

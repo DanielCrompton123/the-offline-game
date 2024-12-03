@@ -4,7 +4,7 @@
 //
 //  Created by Daniel Crompton on 12/1/24.
 //
-
+/*
 import SwiftUI
 
 struct CameraView: UIViewControllerRepresentable {
@@ -45,3 +45,4 @@ struct CameraView: UIViewControllerRepresentable {
         }
     }
 }
+*/

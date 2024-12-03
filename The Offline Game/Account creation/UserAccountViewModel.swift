@@ -4,7 +4,7 @@
 //
 //  Created by Daniel Crompton on 12/2/24.
 //
-
+/*
 import SwiftUI
 
 
@@ -49,3 +49,4 @@ class UserAccountViewModel {
         UserDefaults.standard.set(uiImage?.pngData(), forKey: "profileImagePNGData")
     }
 }
+*/

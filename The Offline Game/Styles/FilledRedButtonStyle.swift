@@ -26,5 +26,6 @@ struct FilledRedButtonStyle: ButtonStyle {
                 !isEnabled ? .smog : (configuration.isPressed ? .ruby : .accent),
                 in: Rectangle())
             .font(.main26)
+            .textCase(.uppercase)
     }
 }
