@@ -80,12 +80,10 @@ struct AccountCreationImageView: View {
             Button("CONTINUE") {
                 
             }
-            .buttonStyle(FilledRedButtonStyle())
+            .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
             .disabled(accountViewModel.image == nil)
             
         }
-        .navigationTitle("STEP 3/3")
-        .navigationBarTitleDisplayMode(.inline)
         .padding(.horizontal)
         .fullScreenCover(isPresented: $takingImage) {
             CameraView(uiImage: $accountViewModel.uiImage)
@@ -125,4 +123,5 @@ struct AccountCreationImageView: View {
 
 #Preview {
     AccountCreationImageView()
+        .environment(UserAccountViewModel())
 }

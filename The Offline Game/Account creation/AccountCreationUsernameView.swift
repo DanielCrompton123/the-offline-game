@@ -88,13 +88,10 @@ struct AccountCreationUsernameView: View {
             Button("CONTINUE") {
                 
             }
-            .buttonStyle(FilledRedButtonStyle())
             .disabled(usernameIsValid)
-
+            .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
+            
         }
-        .buttonStyle(FilledRedButtonStyle())
-        .navigationTitle("STEP 2/3")
-        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             usernameFieldFocused = true
         }

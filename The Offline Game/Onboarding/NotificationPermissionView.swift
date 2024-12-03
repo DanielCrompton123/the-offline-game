@@ -74,7 +74,7 @@ struct NotificationPermissionView: View {
         .font(.main20)
         .multilineTextAlignment(.center)
         .textCase(.uppercase)
-        .buttonStyle(FilledRedButtonStyle())
+        .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
     }
     
     

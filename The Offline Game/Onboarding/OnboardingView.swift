@@ -11,6 +11,15 @@ import UserNotifications
 
 fileprivate enum OnboardingStep {
     case stageA, stageB
+    
+    func next() -> OnboardingStep {
+        switch self {
+        case .stageA:
+                .stageB
+        case .stageB:
+                .stageA
+        }
+    }
 }
 
 
@@ -21,6 +30,8 @@ struct OnboardingView: View {
         NavigationStack {
             VStack(spacing: 20) {
                 
+                Spacer()
+                
                 // HEADER
                 OfflineHeader()
                 
@@ -28,19 +39,17 @@ struct OnboardingView: View {
                 
                 // ONBOARDING CONTENT
                 
-                VStack {
-                    if step == .stageA {
-                        onboardingA
-                        
-                    } else if step == .stageB {
-                        onboardingB
-                        
-                    }
+                if step == .stageA {
+                    onboardingA
+                    
+                } else if step == .stageB {
+                    onboardingB
+                    
                 }
                 
             }
         }
-        .buttonStyle(FilledRedButtonStyle())
+        .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
         .padding()
     }
     

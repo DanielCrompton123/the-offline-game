@@ -43,43 +43,23 @@ struct AccountCreationAgeView: View {
                 
                 // AGE BUTTONS
                 
-                Button {
+                Button("I'M AN ADULT, DAMNIT!") {
                     accountViewModel.age = .adult
                     showsNextStage = true
-                } label: {
-                    HStack {
-                        Spacer()
-                        Text("I'M AN ADULT, DAMNIT!")
-                        Spacer()
-                    }
                 }
                 
-                Button {
+                Button("I'M OVER 13 YEARS OLD") {
                     accountViewModel.age = .teen
                     showsNextStage = true
-                } label: {
-                    HStack {
-                        Spacer()
-                        Text("I'M OVER 13 YEARS OLD")
-                        Spacer()
-                    }
                 }
                 
-                Button {
+                Button("I'M A KID, UNDER 13") {
                     accountViewModel.age = .child
                     showsNextStage = true
-                } label: {
-                    HStack {
-                        Spacer()
-                        Text("I'M A KID, UNDER 13")
-                        Spacer()
-                    }
                 }
                 
             }
             .buttonStyle(FilledRedButtonStyle())
-            .navigationTitle("STEP 1/3")
-            .navigationBarTitleDisplayMode(.inline)
             
             .padding(.horizontal)
             .navigationDestination(isPresented: $showsNextStage) {
@@ -91,4 +71,5 @@ struct AccountCreationAgeView: View {
 
 #Preview {
     AccountCreationAgeView()
+        .environment(UserAccountViewModel())
 }
