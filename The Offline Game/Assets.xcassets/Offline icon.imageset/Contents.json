@@ -1,17 +1,50 @@
 {
   "images" : [
     {
-      "filename" : "Offline icon.png",
+      "filename" : "Wifi slash.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Offline icon@2x.png",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Wifi slash-1.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Wifi slash@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Offline icon@3x.png",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Wifi slash@2x-1.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "Wifi slash@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Wifi slash@3x-1.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

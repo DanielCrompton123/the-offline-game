@@ -15,14 +15,14 @@ struct HomeView: View {
     
     @State private var offlineSliderViewPresented = false
     
-    // If the user has disabled notifications in settings behind out backs (while the app was closed), check if they are now denied and warn them if so.
+    // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
     
     var body: some View {
         
         @Bindable var offlineViewModel = offlineViewModel
         
-        NavigationStack(path: $offlineViewModel.navigation) {
+        NavigationStack {
             VStack {
                 
                 Spacer()
@@ -49,28 +49,28 @@ struct HomeView: View {
             .sheet(isPresented: $offlineSliderViewPresented) {
                 OfflineTimeView()
             }
+            .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated) {
+                CongratulatoryView()
+            }
             .fullScreenCover(isPresented: $shouldShowNotificationWarning) {
                 NotificationPermissionView()
             }
-            .navigationDestination(for: NavigationStep.self, destination: { step in
-                switch step {
-                case .home:
-                    EmptyView()
-                case .offline:
-                    OfflineView()
-                }
-            })
-            .padding(.horizontal)
+            .fullScreenCover(isPresented: $offlineViewModel.isOffline) {
+                OfflineView()
+            }
+            .task(priority: .high) {
+                await permissionsViewModel.loadNotificationStatus()
+                shouldShowNotificationWarning = permissionsViewModel.notificationStatus == .denied
+            }
+            
         }
-        .task(priority: .high) {
-            await permissionsViewModel.loadNotificationStatus()
-            shouldShowNotificationWarning = permissionsViewModel.notificationStatus == .denied
-        }
-        
     }
 }
 
 #Preview {
     HomeView()
+        .environment(OnboardingViewModel())
         .environment(OfflineViewModel())
+        .environment(TipViewModel())
+        .environment(PermissionsViewModel())
 }

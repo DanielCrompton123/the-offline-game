@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct OfflineTimeView: View {
-        
-    private let minuteRange: ClosedRange<TimeInterval> = 5...(24 * 60) // maximum offline duration is a day; minimum is 5 minutes
-    
-    private let minuteStep: TimeInterval = 1 // Slider increments in minutes
     
     @Environment(\.dismiss) private var dismiss
     @Environment(OfflineViewModel.self) private var offlineViewModel
@@ -28,17 +24,17 @@ struct OfflineTimeView: View {
         
             durationDisplay()
             
-            Slider(value: $offlineViewModel.offlineMinutes, in: minuteRange, step: minuteStep) {
-                Text("\(offlineViewModel.offlineMinutes) minutes")
+            Slider(value: $offlineViewModel.durationMinutes,
+                   in: OfflineViewModel.offlineDurationRange,
+                   step: OfflineViewModel.minuteStep) {
+                Text(String(format: "%.0f minutes", offlineViewModel.durationMinutes))
                 // for screen readers
             }
             .labelsHidden()
             
             Spacer()
             
-            Button("CONTINUE") {
-                startOffline()
-            }
+            Button("CONTINUE", action: startOffline)
             .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
         }
         .font(.main30)
@@ -49,27 +45,19 @@ struct OfflineTimeView: View {
     
     
     @ViewBuilder private func durationDisplay() -> some View {
-        // If the time is a number of minutes (e.g. 0 to 59 minutes) -- use the minuteRange for this -- then display "XX MINUTES",
-        // If it's a number of hours, display "XX.X hours"
+        let time = offlineViewModel.formatTimeRemaining()
         
-        let isMinutes = minuteRange.contains(offlineViewModel.offlineMinutes)
-        let string = isMinutes ?
-        String(format: "%.0f", offlineViewModel.offlineMinutes) : // Mins
-        String(format: "%.1f", offlineViewModel.offlineMinutes / 60) // Mins -> Hrs
-        
-        Text(string)
+        Text(time.timeString)
             .font(.display256)
             .foregroundStyle(.accent)
-            .contentTransition(.numericText())
+            .contentTransition(.numericText()) // NOT WORKING
         
-        Text(isMinutes ? "Minutes" : "Hours")
+        Text(time.unitString)
     }
     
     
     private func startOffline() {
         dismiss()
-        // Now navigate to the offline time view
-        
         offlineViewModel.goOffline()
     }
 }

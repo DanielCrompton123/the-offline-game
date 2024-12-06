@@ -11,7 +11,6 @@ import SwiftUI
 
 @Observable
 class PermissionsViewModel {
-    
         
     let notificationCenter = UNUserNotificationCenter.current()
     let notificationSettingsURL = URL(string: UIApplication.openNotificationSettingsURLString)!

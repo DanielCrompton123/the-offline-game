@@ -15,7 +15,6 @@ struct OfflineHeader: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxHeight: 260)
-            #warning("Remove white background from logo & make a dark version")
             
             HStack(spacing: 2) { // adjust spacing to meet the spacing betwene characters here
                 Text("THE")
