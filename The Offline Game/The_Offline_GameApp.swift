@@ -21,7 +21,6 @@ struct The_Offline_GameApp: App {
 fileprivate struct AppEntry: View {
     @State private var onboardingViewModel = OnboardingViewModel()
     @State private var offlineViewModel = OfflineViewModel()
-    @State private var tipViewModel = TipViewModel()
     @State private var permissionsViewModel = PermissionsViewModel()
     
     // Store a unique user ID
@@ -38,18 +37,6 @@ fileprivate struct AppEntry: View {
         }
         .environment(onboardingViewModel)
         .environment(offlineViewModel)
-        .environment(tipViewModel)
         .environment(permissionsViewModel)
-    }
-}
-
-
-fileprivate struct Debug: View {
-    
-    @State private var onboardingViewModel = OnboardingViewModel()
-    
-    
-    var body: some View {
-        TipView()
     }
 }

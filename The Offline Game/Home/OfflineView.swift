@@ -12,6 +12,8 @@ struct OfflineView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(OfflineViewModel.self) private var offlineViewModel
     
+    @State private var showActivitiesView = false
+    
     var body: some View {
             ZStack {
                 
@@ -38,6 +40,10 @@ struct OfflineView: View {
                     
                     Spacer()
                     
+                    Button("WHAT TO DO?") {
+                        showActivitiesView = true
+                    }
+                    
                     Button("GO ONLINE") {
                         
                     }
@@ -47,6 +53,9 @@ struct OfflineView: View {
                 
             }
             .toolbarVisibility(.hidden, for: .navigationBar)
+            .sheet(isPresented: $showActivitiesView) {
+                ActivitiesView()
+            }
     }
 }
 

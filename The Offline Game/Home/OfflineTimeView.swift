@@ -11,36 +11,50 @@ struct OfflineTimeView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(OfflineViewModel.self) private var offlineViewModel
+    
+    @State private var tipViewPresented = false
         
     var body: some View {
         
         @Bindable var offlineViewModel = offlineViewModel
         
-        VStack(spacing: 10) {
+        NavigationStack {
             
-            Spacer()
             
-            Text("How long do you want to go offline for?")
-        
-            durationDisplay()
-            
-            Slider(value: $offlineViewModel.durationMinutes,
-                   in: OfflineViewModel.offlineDurationRange,
-                   step: OfflineViewModel.minuteStep) {
-                Text(String(format: "%.0f minutes", offlineViewModel.durationMinutes))
-                // for screen readers
+            VStack(spacing: 10) {
+                
+                Spacer()
+                
+                Text("How long do you want to go offline for?")
+                
+                durationDisplay()
+                
+                Slider(value: $offlineViewModel.durationMinutes,
+                       in: OfflineViewModel.offlineDurationRange,
+                       step: OfflineViewModel.minuteStep) {
+                    Text(String(format: "%.0f minutes", offlineViewModel.durationMinutes))
+                    // for screen readers
+                }
+                       .labelsHidden()
+                
+                Spacer()
+                
+                Button("CONTINUE") {
+                    tipViewPresented = true
+                }
+                .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
             }
-            .labelsHidden()
+            .font(.main30)
+            .textCase(.uppercase)
+            .multilineTextAlignment(.center)
+            .padding()
+            .navigationDestination(isPresented: $tipViewPresented) {
+                TipView()
+            }
             
-            Spacer()
             
-            Button("CONTINUE", action: startOffline)
-            .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
+            
         }
-        .font(.main30)
-        .textCase(.uppercase)
-        .multilineTextAlignment(.center)
-        .padding()
     }
     
     
@@ -55,11 +69,6 @@ struct OfflineTimeView: View {
         Text(time.unitString)
     }
     
-    
-    private func startOffline() {
-        dismiss()
-        offlineViewModel.goOffline()
-    }
 }
 
 #Preview {

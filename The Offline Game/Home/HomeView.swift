@@ -12,9 +12,7 @@ struct HomeView: View {
     
     @Environment(OfflineViewModel.self) private var offlineViewModel
     @Environment(PermissionsViewModel.self) private var permissionsViewModel
-    
-    @State private var offlineSliderViewPresented = false
-    
+        
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
     
@@ -40,13 +38,13 @@ struct HomeView: View {
                 Spacer()
                 
                 Button("GO OFFLINE") {
-                    offlineSliderViewPresented = true
+                    offlineViewModel.isPickingDuration = true
                 }
                 .buttonStyle(FilledRedButtonStyle())
                 
                 Spacer()
             }
-            .sheet(isPresented: $offlineSliderViewPresented) {
+            .sheet(isPresented: $offlineViewModel.isPickingDuration) {
                 OfflineTimeView()
             }
             .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated) {
@@ -71,6 +69,5 @@ struct HomeView: View {
     HomeView()
         .environment(OnboardingViewModel())
         .environment(OfflineViewModel())
-        .environment(TipViewModel())
         .environment(PermissionsViewModel())
 }

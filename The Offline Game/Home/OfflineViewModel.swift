@@ -132,8 +132,13 @@ class OfflineViewModel {
     
     //MARK: - UI Updating
     
-    var secondTimer: Timer?
-    var userShouldBeCongratulated = false
+    var isPickingDuration = false // Makes the OfflinetimeView appear to pick duration
+    var secondTimer: Timer? // the main timer that updates the UI each second
+    var userShouldBeCongratulated = false // Makes the congratulatory view appear in the main view
+    
+    
+    
+    //MARK: - Helper
 
     func format(_ timeInterval: TimeInterval) -> String {
         let formatter = DateComponentsFormatter()
