@@ -6,19 +6,95 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		650682932D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */; };
+		6506829A2D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */; };
+		650682A92D21E4B4006EC566 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 650682A82D21E4B4006EC566 /* ActivityKit.framework */; };
+		6510945B2D03954700F0853C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6510945A2D03954700F0853C /* SwiftUI.framework */; };
+		651094662D03954A00F0853C /* OfflineWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		651094642D03954A00F0853C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BD0C2E2CFBBB35004031F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 651094552D03954700F0853C;
+			remoteInfo = OfflineWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		651094672D03954A00F0853C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				651094662D03954A00F0853C /* OfflineWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityTimerAttributes.swift; sourceTree = "<group>"; };
+		650682A82D21E4B4006EC566 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
+		651094562D03954700F0853C /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		651094582D03954700F0853C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		6510945A2D03954700F0853C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		65BD0C362CFBBB35004031F5 /* The Offline Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Offline Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		650682DD2D21E631006EC566 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
+		};
+		6532882F2D08B461000F778F /* Exceptions for "The Offline Game" folder in "OfflineWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Helper/NotificationsHelper.swift,
+				ViewModel/LiveActivityViewModel.swift,
+				ViewModel/OfflineViewModel.swift,
+			);
+			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		6510945C2D03954700F0853C /* OfflineWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				650682DD2D21E631006EC566 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */,
+			);
+			path = OfflineWidget;
+			sourceTree = "<group>";
+		};
 		65BD0C382CFBBB35004031F5 /* The Offline Game */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6532882F2D08B461000F778F /* Exceptions for "The Offline Game" folder in "OfflineWidgetExtension" target */,
+			);
 			path = "The Offline Game";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		651094532D03954700F0853C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				650682A92D21E4B4006EC566 /* ActivityKit.framework in Frameworks */,
+				6510945B2D03954700F0853C /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65BD0C332CFBBB35004031F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -29,10 +105,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		650682E12D21E6A0006EC566 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		651094572D03954700F0853C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				650682A82D21E4B4006EC566 /* ActivityKit.framework */,
+				651094582D03954700F0853C /* WidgetKit.framework */,
+				6510945A2D03954700F0853C /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		65BD0C2D2CFBBB35004031F5 = {
 			isa = PBXGroup;
 			children = (
+				650682E12D21E6A0006EC566 /* Shared */,
 				65BD0C382CFBBB35004031F5 /* The Offline Game */,
+				6510945C2D03954700F0853C /* OfflineWidget */,
+				651094572D03954700F0853C /* Frameworks */,
 				65BD0C372CFBBB35004031F5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				65BD0C362CFBBB35004031F5 /* The Offline Game.app */,
+				651094562D03954700F0853C /* OfflineWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +146,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		651094552D03954700F0853C /* OfflineWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6510946B2D03954A00F0853C /* Build configuration list for PBXNativeTarget "OfflineWidgetExtension" */;
+			buildPhases = (
+				651094522D03954700F0853C /* Sources */,
+				651094532D03954700F0853C /* Frameworks */,
+				651094542D03954700F0853C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6510945C2D03954700F0853C /* OfflineWidget */,
+			);
+			name = OfflineWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = OfflineWidgetExtension;
+			productReference = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		65BD0C352CFBBB35004031F5 /* The Offline Game */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 65BD0C442CFBBB38004031F5 /* Build configuration list for PBXNativeTarget "The Offline Game" */;
@@ -55,10 +175,12 @@
 				65BD0C322CFBBB35004031F5 /* Sources */,
 				65BD0C332CFBBB35004031F5 /* Frameworks */,
 				65BD0C342CFBBB35004031F5 /* Resources */,
+				651094672D03954A00F0853C /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				651094652D03954A00F0853C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				65BD0C382CFBBB35004031F5 /* The Offline Game */,
@@ -80,6 +202,9 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					651094552D03954700F0853C = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					65BD0C352CFBBB35004031F5 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -100,11 +225,19 @@
 			projectRoot = "";
 			targets = (
 				65BD0C352CFBBB35004031F5 /* The Offline Game */,
+				651094552D03954700F0853C /* OfflineWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		651094542D03954700F0853C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65BD0C342CFBBB35004031F5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,16 +248,87 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		651094522D03954700F0853C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6506829A2D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65BD0C322CFBBB35004031F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				650682932D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		651094652D03954A00F0853C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
+			targetProxy = 651094642D03954A00F0853C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		651094682D03954A00F0853C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M63HVY59D3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OfflineWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OfflineWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.daniel.The-Offline-Game.OfflineWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		651094692D03954A00F0853C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M63HVY59D3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OfflineWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OfflineWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.daniel.The-Offline-Game.OfflineWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		65BD0C422CFBBB38004031F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -258,6 +462,7 @@
 				INFOPLIST_FILE = "The-Offline-Game-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera so you can take a profile picture.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photo library so you can select a profile picture from it.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -291,6 +496,7 @@
 				INFOPLIST_FILE = "The-Offline-Game-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera so you can take a profile picture.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photo library so you can select a profile picture from it.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -313,6 +519,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6510946B2D03954A00F0853C /* Build configuration list for PBXNativeTarget "OfflineWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				651094682D03954A00F0853C /* Debug */,
+				651094692D03954A00F0853C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		65BD0C312CFBBB35004031F5 /* Build configuration list for PBXProject "The Offline Game" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

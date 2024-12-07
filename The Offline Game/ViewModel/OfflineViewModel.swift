@@ -31,7 +31,7 @@ class OfflineViewModel {
 #endif
     
     static let offlineDurationRange: ClosedRange<TimeInterval> = minimumOfflineMinutes...maximumOfflineMinutes
-    static let minuteStep: TimeInterval = 1 // Slider increments in minutes
+    static let minuteStep: TimeInterval = 5 // Slider increments in minutes
     
     func formatTimeRemaining() -> (timeString: String, unitString: String) {
         
@@ -83,6 +83,9 @@ class OfflineViewModel {
         startDate = Date()
         timeRemaining = durationSeconds
         
+        // Now add the live activity
+        liveActivityViewModel?.startActivity()
+        
         // Now create the UI updating timer that triggers every second and calls `loadTimeRemaining`.
         // If the offline time runs out, it should call `offlineTimeFinished`
         secondTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] timer in
@@ -118,6 +121,9 @@ class OfflineViewModel {
         timeRemaining = nil
         userShouldBeCongratulated = true
         
+        // stop the live activity
+        liveActivityViewModel?.stopActivity()
+        
         // Post a notification to congratulate the user
         // Post the notification here instantly instead of schedule posting (in goOffline) because it my need to be cancelled if the user goes online (then the notification would be delayed a period).
 //        NotificationsHelper.post(
@@ -138,7 +144,9 @@ class OfflineViewModel {
     
     
     
-    //MARK: - Helper
+    //MARK: - Other
+    
+    var liveActivityViewModel: LiveActivityViewModel?
 
     func format(_ timeInterval: TimeInterval) -> String {
         let formatter = DateComponentsFormatter()

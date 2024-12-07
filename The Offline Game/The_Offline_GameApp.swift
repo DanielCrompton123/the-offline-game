@@ -9,34 +9,36 @@ import SwiftUI
 
 @main
 struct The_Offline_GameApp: App {
-    var body: some Scene {
-        WindowGroup {
-            AppEntry()
-        }
-    }
-}
-
-
-
-fileprivate struct AppEntry: View {
+    
     @State private var onboardingViewModel = OnboardingViewModel()
     @State private var offlineViewModel = OfflineViewModel()
     @State private var permissionsViewModel = PermissionsViewModel()
+    @State private var liveActivityViewModel = LiveActivityViewModel()
     
     // Store a unique user ID
     @AppStorage("userID") private var userID = UUID().uuidString
     
-    var body: some View {
-        VStack {
-            HomeView()
-                .fullScreenCover(
-                    isPresented: $onboardingViewModel.hasNotSeenOnboarding
-                ) {
-                    OnboardingView()
-                }
+    
+    var body: some Scene {
+        WindowGroup {
+            
+            VStack {
+                HomeView()
+                    .fullScreenCover(
+                        isPresented: $onboardingViewModel.hasNotSeenOnboarding
+                    ) {
+                        OnboardingView()
+                    }
+            }
+            .onAppear {
+                liveActivityViewModel.offlineViewModel = offlineViewModel
+                offlineViewModel.liveActivityViewModel = liveActivityViewModel
+            }
+            .environment(onboardingViewModel)
+            .environment(offlineViewModel)
+            .environment(permissionsViewModel)
+            .environment(liveActivityViewModel)
+            
         }
-        .environment(onboardingViewModel)
-        .environment(offlineViewModel)
-        .environment(permissionsViewModel)
     }
 }

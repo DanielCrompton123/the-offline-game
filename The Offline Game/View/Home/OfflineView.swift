@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+
 struct OfflineView: View {
     
     @Environment(\.colorScheme) private var colorScheme
@@ -48,6 +50,7 @@ struct OfflineView: View {
                         
                     }
                     .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
+    
                 }
                 .padding(.horizontal)
                 
@@ -57,6 +60,7 @@ struct OfflineView: View {
                 ActivitiesView()
             }
     }
+
 }
 
 #Preview {

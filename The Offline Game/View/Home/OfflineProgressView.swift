@@ -14,10 +14,11 @@ struct OfflineProgressView: View {
     
     var body: some View {
                 
-        if let timeRemainingString = offlineViewModel.timeRemainingString {
-            Text(timeRemainingString)
+        if let endDate = offlineViewModel.endDate {
+            Text(endDate, style: .timer)
                 .font(.display88)
                 .foregroundStyle(.white)
+                .contentTransition(.numericText(countsDown: true))
         }
         
     }
