@@ -7,11 +7,20 @@
 
 import SwiftUI
 
+
+
+
+import ActivityKit
+
+
+
+
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
     
     @Environment(OfflineViewModel.self) private var offlineViewModel
     @Environment(PermissionsViewModel.self) private var permissionsViewModel
+    @Environment(LiveActivityViewModel.self) private var liveActivityViewModel
         
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
@@ -43,6 +52,7 @@ struct HomeView: View {
                 .buttonStyle(FilledRedButtonStyle())
                 
                 Spacer()
+                
             }
             .sheet(isPresented: $offlineViewModel.isPickingDuration) {
                 OfflineTimeView()
@@ -63,6 +73,7 @@ struct HomeView: View {
             
         }
     }
+
 }
 
 #Preview {
@@ -70,4 +81,5 @@ struct HomeView: View {
         .environment(OnboardingViewModel())
         .environment(OfflineViewModel())
         .environment(PermissionsViewModel())
+        .environment(LiveActivityViewModel())
 }
