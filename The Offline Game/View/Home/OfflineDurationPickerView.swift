@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OfflineTimeView: View {
+struct OfflineDurationPickerView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(OfflineViewModel.self) private var offlineViewModel
@@ -30,12 +30,12 @@ struct OfflineTimeView: View {
                 durationDisplay()
                 
                 Slider(value: $offlineViewModel.durationMinutes,
-                       in: OfflineViewModel.offlineDurationRange,
-                       step: OfflineViewModel.minuteStep) {
+                       in: K.offlineDurationRange,
+                       step: K.minuteStep) {
                     Text(String(format: "%.0f minutes", offlineViewModel.durationMinutes))
                     // for screen readers
                 }
-                       .labelsHidden()
+                .labelsHidden()
                 
                 Spacer()
                 
@@ -59,7 +59,7 @@ struct OfflineTimeView: View {
     
     
     @ViewBuilder private func durationDisplay() -> some View {
-        let time = offlineViewModel.formatTimeRemaining()
+        let time = DurationDisplayHelper.formatDurationWithUnits(offlineViewModel.durationSeconds)
         
         Text(time.timeString)
             .font(.display256)
@@ -72,6 +72,6 @@ struct OfflineTimeView: View {
 }
 
 #Preview {
-    OfflineTimeView()
+    OfflineDurationPickerView()
         .environment(OfflineViewModel())
 }

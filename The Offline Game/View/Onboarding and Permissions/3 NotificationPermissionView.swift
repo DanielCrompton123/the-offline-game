@@ -10,8 +10,8 @@ import UserNotifications
 
 
 struct NotificationPermissionView: View {
-    @Environment(OnboardingViewModel.self) private var onboardingViewModel
     @Environment(PermissionsViewModel.self) private var permissionsViewModel
+    @AppStorage(K.userDefaultsShouldShowOnboardingKey) private var shouldShowOnboarding = false
     
     @Environment(\.dismiss) private var dismiss
     
@@ -95,7 +95,7 @@ struct NotificationPermissionView: View {
 
 
     private func endOnboarding() {
-        onboardingViewModel.hasSeenOnboarding = true
+        shouldShowOnboarding = false
         
         // If the user turns off notifications when the app is closed, it opens by presenting the notification permission view as a warning.
         // Therefore in this case it is not in a navigation stack during onboarding, so this will not dismiss it.
@@ -107,5 +107,4 @@ struct NotificationPermissionView: View {
 
 #Preview {
     NotificationPermissionView()
-        .environment(OnboardingViewModel())
 }

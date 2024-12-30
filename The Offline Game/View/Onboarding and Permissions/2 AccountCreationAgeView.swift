@@ -11,16 +11,13 @@ import SwiftUI
 
 struct AccountCreationAgeView: View {
     
-    @AppStorage("userAgeRawValue") private var userAgeRawValue: Int?
+    @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
     
     @State private var navigateToNotificationPermissionsView = false
         
     var body: some View {
             
         VStack {
-            
-            // AGE INPUT IS THE FIRST OF 3 ACCOUNT-CREATION STEPS
-            // NAVIGATE TO EACH
             
             Spacer()
             

@@ -10,6 +10,8 @@
 		650682932D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */; };
 		6506829A2D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */; };
 		650682A92D21E4B4006EC566 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 650682A82D21E4B4006EC566 /* ActivityKit.framework */; };
+		650682E52D22CF11006EC566 /* Constants (K).swift in Sources */ = {isa = PBXBuildFile; fileRef = 650682E42D22CF11006EC566 /* Constants (K).swift */; };
+		650682E62D22CF11006EC566 /* Constants (K).swift in Sources */ = {isa = PBXBuildFile; fileRef = 650682E42D22CF11006EC566 /* Constants (K).swift */; };
 		6510945B2D03954700F0853C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6510945A2D03954700F0853C /* SwiftUI.framework */; };
 		651094662D03954A00F0853C /* OfflineWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -41,6 +43,7 @@
 /* Begin PBXFileReference section */
 		6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityTimerAttributes.swift; sourceTree = "<group>"; };
 		650682A82D21E4B4006EC566 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
+		650682E42D22CF11006EC566 /* Constants (K).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants (K).swift"; sourceTree = "<group>"; };
 		651094562D03954700F0853C /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		651094582D03954700F0853C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		6510945A2D03954700F0853C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -58,6 +61,7 @@
 		6532882F2D08B461000F778F /* Exceptions for "The Offline Game" folder in "OfflineWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Helper/DurationDisplayHelper.swift,
 				Helper/NotificationsHelper.swift,
 				ViewModel/LiveActivityViewModel.swift,
 				ViewModel/OfflineViewModel.swift,
@@ -109,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */,
+				650682E42D22CF11006EC566 /* Constants (K).swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -253,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6506829A2D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
+				650682E62D22CF11006EC566 /* Constants (K).swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				650682E52D22CF11006EC566 /* Constants (K).swift in Sources */,
 				650682932D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

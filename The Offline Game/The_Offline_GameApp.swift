@@ -9,8 +9,8 @@ import SwiftUI
 
 @main
 struct The_Offline_GameApp: App {
-    
-    @State private var onboardingViewModel = OnboardingViewModel()
+    @AppStorage(K.userDefaultsShouldShowOnboardingKey) var shouldShowOnboarding = true
+
     @State private var offlineViewModel = OfflineViewModel()
     @State private var permissionsViewModel = PermissionsViewModel()
     @State private var liveActivityViewModel = LiveActivityViewModel()
@@ -25,7 +25,7 @@ struct The_Offline_GameApp: App {
             VStack {
                 HomeView()
                     .fullScreenCover(
-                        isPresented: $onboardingViewModel.hasNotSeenOnboarding
+                        isPresented: $shouldShowOnboarding
                     ) {
                         OnboardingView()
                     }
@@ -34,7 +34,6 @@ struct The_Offline_GameApp: App {
                 liveActivityViewModel.offlineViewModel = offlineViewModel
                 offlineViewModel.liveActivityViewModel = liveActivityViewModel
             }
-            .environment(onboardingViewModel)
             .environment(offlineViewModel)
             .environment(permissionsViewModel)
             .environment(liveActivityViewModel)

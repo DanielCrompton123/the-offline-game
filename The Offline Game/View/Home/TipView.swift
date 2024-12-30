@@ -62,9 +62,6 @@ struct TipView: View {
             Button("I'M READY!", action: startOffline)
                 .buttonStyle(FilledRedButtonStyle())
         }
-        .onAppear {
-            print("Settings URL = \(settingsURL.relativePath)")
-        }
     }
     
     private func startOffline() {

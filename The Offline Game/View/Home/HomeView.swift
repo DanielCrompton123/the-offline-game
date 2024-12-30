@@ -49,7 +49,7 @@ struct HomeView: View {
                 
             }
             .sheet(isPresented: $offlineViewModel.isPickingDuration) {
-                OfflineTimeView()
+                OfflineDurationPickerView()
             }
             .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated) {
                 CongratulatoryView()
@@ -62,7 +62,9 @@ struct HomeView: View {
             }
             .task(priority: .high) {
                 await permissionsViewModel.loadNotificationStatus()
-                shouldShowNotificationWarning = permissionsViewModel.notificationStatus == .denied
+                await MainActor.run {
+                    shouldShowNotificationWarning = permissionsViewModel.notificationStatus == .denied
+                }
             }
             
         }
@@ -72,7 +74,6 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
-        .environment(OnboardingViewModel())
         .environment(OfflineViewModel())
         .environment(PermissionsViewModel())
         .environment(LiveActivityViewModel())
