@@ -13,7 +13,6 @@ import SwiftUI
 class PermissionsViewModel {
         
     let notificationCenter = UNUserNotificationCenter.current()
-    let notificationSettingsURL = URL(string: UIApplication.openNotificationSettingsURLString)!
     
     var notificationStatus: UNAuthorizationStatus? = nil
     
@@ -22,8 +21,8 @@ class PermissionsViewModel {
     }
     
     func openNotificationSettings() {
-        guard UIApplication.shared.canOpenURL(notificationSettingsURL) else { return }
-        UIApplication.shared.open(notificationSettingsURL)
+        guard UIApplication.shared.canOpenURL(K.notificationSettingsURL) else { return }
+        UIApplication.shared.open(K.notificationSettingsURL)
     }
     
     func requestNotificationPermission() {

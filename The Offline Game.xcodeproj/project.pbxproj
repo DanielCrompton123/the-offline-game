@@ -58,11 +58,18 @@
 			);
 			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
 		};
+		650682F22D231944006EC566 /* Exceptions for "Helper" folder in "OfflineWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DurationDisplayHelper.swift,
+				NetworkMonitor.swift,
+				NotificationsHelper.swift,
+			);
+			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
+		};
 		6532882F2D08B461000F778F /* Exceptions for "The Offline Game" folder in "OfflineWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Helper/DurationDisplayHelper.swift,
-				Helper/NotificationsHelper.swift,
 				ViewModel/LiveActivityViewModel.swift,
 				ViewModel/OfflineViewModel.swift,
 			);
@@ -71,6 +78,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		650682ED2D231943006EC566 /* Helper */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				650682F22D231944006EC566 /* Exceptions for "Helper" folder in "OfflineWidgetExtension" target */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		650682F42D231948006EC566 /* Model */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Model;
+			sourceTree = "<group>";
+		};
 		6510945C2D03954700F0853C /* OfflineWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -114,6 +134,8 @@
 			children = (
 				6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */,
 				650682E42D22CF11006EC566 /* Constants (K).swift */,
+				650682ED2D231943006EC566 /* Helper */,
+				650682F42D231948006EC566 /* Model */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -188,6 +210,8 @@
 				651094652D03954A00F0853C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				650682ED2D231943006EC566 /* Helper */,
+				650682F42D231948006EC566 /* Model */,
 				65BD0C382CFBBB35004031F5 /* The Offline Game */,
 			);
 			name = "The Offline Game";

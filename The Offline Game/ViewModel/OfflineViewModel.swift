@@ -43,6 +43,7 @@ class OfflineViewModel {
     var endOfflineTimer: Timer? // ONLY TRIGGERS at the `endDate`
     
     func goOffline() {
+        isPickingDuration = false
         isOffline = true
         startDate = Date()
         

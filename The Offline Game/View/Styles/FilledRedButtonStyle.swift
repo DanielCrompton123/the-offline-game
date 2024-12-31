@@ -11,24 +11,14 @@ import SwiftUI
 struct SpacedOutLabelStyle: LabelStyle {
     var edge: HorizontalEdge = .trailing
     
-    func makeBody(configuration: Configuration) -> some View {
-        HStack(spacing: 0) {
-            if edge == .trailing {
-                
-                Spacer(minLength: 0)
-                configuration.title
-                Spacer(minLength: 0)
+    func makeBody(configuration: Configuration) -> some View {        
+        let alignment = edge == .leading ? Alignment.leading : Alignment.trailing
+        
+        configuration.title
+            .frame(maxWidth: .infinity)
+            .overlay(alignment: alignment) {
                 configuration.icon
-                
-            } else if edge == .leading {
-                
-                configuration.icon
-                Spacer(minLength: 0)
-                configuration.title
-                Spacer(minLength: 0)
-                
             }
-        }
     }
     
 }
@@ -67,9 +57,34 @@ struct FilledRedButtonStyle: ButtonStyle {
 }
 
 
-#Preview("Button style") {
-    Button("Hello!", systemImage: "info.circle") {
+struct RedButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled
         
+    func makeBody(configuration: Configuration) -> some View {
+        
+        return configuration.label
+            .foregroundStyle(
+                !isEnabled ? .smog : (configuration.isPressed ? .ruby : .accent)
+            )
+            .padding(.horizontal, 26)
+            .padding(.vertical, 8)
+            .font(.main26)
+            .textCase(.uppercase)
     }
+}
+
+
+
+
+
+#Preview("Filled red") {
+    Button("Hello!", systemImage: "info.circle") {}
     .buttonStyle(FilledRedButtonStyle())
+}
+
+
+#Preview("Red") {
+    Button("Hello!", systemImage: "info.circle") { }
+    .buttonStyle(RedButtonStyle())
+//    .disabled(true)
 }
