@@ -33,7 +33,7 @@ struct OfflineView: View {
                     
                     Spacer()
                     
-                    OfflineProgressView(progress: 0.01)
+                    OfflineProgressView()
                     
                     Text("I'm offline")
                         .font(.display88)

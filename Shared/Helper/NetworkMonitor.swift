@@ -16,6 +16,7 @@ class NetworkMonitor {
         networkMonitor.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async {
                 self?.isConnected = path.status == .satisfied
+                #warning("This isn't called when connectivity changes")
             }
         }
     }

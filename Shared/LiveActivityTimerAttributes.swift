@@ -11,7 +11,7 @@ import SwiftUI
 
 struct LiveActivityTimerAttributes: ActivityAttributes {
     
-    // ConentState represents all the data that the widget relies on and can be refreshed from within the main app
+    // ContentState represents all the data that the widget relies on and can be refreshed from within the main app
     // A bit like an @State
     
     struct ContentState: Codable, Hashable {

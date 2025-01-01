@@ -61,6 +61,7 @@ struct OfflineDurationPickerView: View {
         // This allows us to check if wifi is on or off
         // That is used to determine if we should present the tips view or not, since we don't ned to tell them to turn off wifi if they did already.
         .onAppear(perform: NetworkMonitor.shared.startListening)
+        .onDisappear(perform: NetworkMonitor.shared.stopListening)
     }
     
     
