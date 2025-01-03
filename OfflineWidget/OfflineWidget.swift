@@ -51,6 +51,9 @@ struct TimerView : View {
     }
 }
 
+
+
+
 struct OfflineWidget: Widget {
     let kind: String = "OfflineWidget"
     
@@ -63,18 +66,80 @@ struct OfflineWidget: Widget {
         } dynamicIsland: { context in
             DynamicIsland {
                 // Expanded
+                DynamicIslandExpandedRegion(.leading) {
+                    Image(.offlineIcon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100)
+                        .bold()
+                        .font(.largeTitle)
+                        .foregroundStyle(.smog)
+                }
+                
+                DynamicIslandExpandedRegion(.trailing) {
+                    Text("Don't use your phone when you are offline!")
+//                        .font(.system(size: 18))
+                        .minimumScaleFactor(0.6)
+                        .foregroundStyle(.smog)
+                        .multilineTextAlignment(.trailing)
+                }
+                
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("Dynamic island isn't supported yet")
+                    Divider()
+                    
+                    Text("I'm offline!")
+                        .frame(maxWidth: .infinity)
+                        .font(.title)
+                        .bold()
+                        .foregroundStyle(.linearGradient(colors: [.accent, .ruby], startPoint: .top, endPoint: .bottom))
+                }
+                
+                DynamicIslandExpandedRegion(.center) {
+                    if let endDate = context.state.endDate {
+                        Text("\(Text(endDate, style: .timer).bold()) offline")
+                            .multilineTextAlignment(.center)
+                    }
+                    
                 }
             } compactLeading: {
-                Text("Dynamic island isn't supported yet")
+                Image(systemName: "wifi.exclamationmark")
+                    .bold()
+                    .foregroundStyle(.red.gradient)
+                
             } compactTrailing: {
-                Text("Dynamic island isn't supported yet")
+                if let date = context.state.endDate {
+                    Text(date, style: .timer)
+                        .multilineTextAlignment(.trailing)
+                }
+                
             } minimal: {
-                Text("Dynamic island isn't supported yet")
+                Image(systemName: "wifi.exclamationmark")
+                    .bold()
+                    .foregroundStyle(.red.gradient)
             }
             
         }
         
     }
 }
+
+
+#Preview("Dynamic island compact", as: .dynamicIsland(.compact), using: LiveActivityTimerAttributes(), widget: {
+    OfflineWidget()
+}, contentStates: {
+    LiveActivityTimerAttributes.ContentState.preview
+})
+
+
+
+#Preview("Dynamic island minimal", as: .dynamicIsland(.minimal), using: LiveActivityTimerAttributes(), widget: {
+    OfflineWidget()
+}, contentStates: {
+    LiveActivityTimerAttributes.ContentState.preview
+})
+
+#Preview("Dynamic island extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes(), widget: {
+    OfflineWidget()
+}, contentStates: {
+    LiveActivityTimerAttributes.ContentState.preview
+})

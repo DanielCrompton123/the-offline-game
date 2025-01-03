@@ -33,7 +33,7 @@ class LiveActivityViewModel {
         
         // Request to start activity
         do {
-            activity = try Activity/*<LiveActivityTimerAttributes>*/.request(
+            activity = try Activity.request(
                 attributes: attributes,
                 content: content,
                 pushType: nil // NEED to pass nil here. Defaut is to allow push notifications to update the live activity
@@ -58,7 +58,9 @@ class LiveActivityViewModel {
         let content = ActivityContent(state: state, staleDate: nil)
         
         Task {
-            await activity?.end(content, dismissalPolicy: .immediate)
+            for activity in Activity<LiveActivityTimerAttributes>.activities {
+                await activity.end(content, dismissalPolicy: .immediate)
+            }
         }
     }
     

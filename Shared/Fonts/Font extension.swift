@@ -16,6 +16,7 @@ extension Font {
     static let display108 = Font.custom("Maquire", size: 108)
     static let display128 = Font.custom("Maquire", size: 128)
     static let display88 = Font.custom("Maquire", size: 88)
+    static let display28 = Font.custom("Maquire", size: 28)
     
     static let main26 = Font.custom("RobotoCondensed-Bold", size: 26)
     static let main20 = Font.custom("RobotoCondensed-Bold", size: 20)

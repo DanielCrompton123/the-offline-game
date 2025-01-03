@@ -32,6 +32,8 @@ struct LiveActivityTimerAttributes: ActivityAttributes {
         
         // Other properties that can be accessed
         var peopleOffline: Int
+        
+        static let preview = ContentState(duration: 60, startDate: Date(), peopleOffline: 590)
     }
     
 }

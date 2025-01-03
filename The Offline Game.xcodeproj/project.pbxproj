@@ -99,6 +99,11 @@
 			path = OfflineWidget;
 			sourceTree = "<group>";
 		};
+		65704A752D284B4900EC54DB /* Fonts */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		65BD0C382CFBBB35004031F5 /* The Offline Game */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -132,6 +137,7 @@
 		650682E12D21E6A0006EC566 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				65704A752D284B4900EC54DB /* Fonts */,
 				6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */,
 				650682E42D22CF11006EC566 /* Constants (K).swift */,
 				650682ED2D231943006EC566 /* Helper */,
@@ -187,6 +193,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				6510945C2D03954700F0853C /* OfflineWidget */,
+				65704A752D284B4900EC54DB /* Fonts */,
 			);
 			name = OfflineWidgetExtension;
 			packageProductDependencies = (
@@ -212,6 +219,7 @@
 			fileSystemSynchronizedGroups = (
 				650682ED2D231943006EC566 /* Helper */,
 				650682F42D231948006EC566 /* Model */,
+				65704A752D284B4900EC54DB /* Fonts */,
 				65BD0C382CFBBB35004031F5 /* The Offline Game */,
 			);
 			name = "The Offline Game";
@@ -492,7 +500,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The-Offline-Game-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera so you can take a profile picture.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photo library so you can select a profile picture from it.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -526,7 +533,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The-Offline-Game-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera so you can take a profile picture.";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your photo library so you can select a profile picture from it.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
