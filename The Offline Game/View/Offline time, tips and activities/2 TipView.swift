@@ -69,10 +69,20 @@ struct TipView: View {
         }
         .navigationDestination(isPresented: $activitiesViewPresented) {
             ActivitiesView()
+                .safeAreaInset(edge: .bottom) {
+                    ZStack(alignment: .top) {
+                        Button("Go offline", action: offlineViewModel.goOffline)
+                            .buttonStyle(FilledRedButtonStyle())
+                            .padding()
+                            .background(.bar)
+                        
+                        Divider()
+                    }
+                }
         }
     }
     
-    // Continue the logic from the last stage (offloine duration picker view)
+    // Continue the logic from the last stage (offline duration picker view)
     // navigate to ther activities view or go offline
     private func nextStage() {
         // If we have wifi turned off BUT this is the first app usage, navigate to the activities view
@@ -90,6 +100,8 @@ struct TipView: View {
 }
 
 #Preview {
-    TipView()
-        .environment(OfflineViewModel())
+    NavigationStack {
+        TipView()
+            .environment(OfflineViewModel())
+    }
 }

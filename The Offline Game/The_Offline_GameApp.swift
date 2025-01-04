@@ -14,6 +14,7 @@ struct The_Offline_GameApp: App {
     @State private var offlineViewModel = OfflineViewModel()
     @State private var permissionsViewModel = PermissionsViewModel()
     @State private var liveActivityViewModel = LiveActivityViewModel()
+    @State private var activityViewModel = ActivityViewModel()
     
     // Store a unique user ID
     @AppStorage("userID") private var userID = UUID().uuidString
@@ -37,6 +38,7 @@ struct The_Offline_GameApp: App {
             .environment(offlineViewModel)
             .environment(permissionsViewModel)
             .environment(liveActivityViewModel)
+            .environment(activityViewModel)
             
         }
     }

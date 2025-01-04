@@ -10,24 +10,30 @@ import SwiftUI
 
 struct SpacedOutLabelStyle: LabelStyle {
     var edge: HorizontalEdge = .trailing
+    var spacedOut = true
     
     func makeBody(configuration: Configuration) -> some View {        
         let alignment = edge == .leading ? Alignment.leading : Alignment.trailing
         
-        configuration.title
-            .frame(maxWidth: .infinity)
-            .overlay(alignment: alignment) {
-                configuration.icon
+        if spacedOut {
+            configuration.title
+                .frame(maxWidth: .infinity) // infinity because we are spaced out
+                .overlay(alignment: alignment) {
+                    configuration.icon
+                }
+        } else {
+            HStack {
+                if edge == .trailing {
+                    configuration.title
+                    configuration.icon
+                } else {
+                    configuration.icon
+                    configuration.title
+                }
             }
+        }
     }
     
-}
-
-
-#Preview("Label style") {
-    Label("Hello!", systemImage: "info.circle")
-        .labelStyle(SpacedOutLabelStyle(edge: .leading))
-        .padding()
 }
 
 
@@ -43,9 +49,9 @@ struct FilledRedButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         
         return configuration.label
-            .labelStyle(SpacedOutLabelStyle(edge: edge))
+            .labelStyle(SpacedOutLabelStyle(edge: edge, spacedOut: horizontalContentMode == .fill))
             .foregroundStyle(.white)
-            .frame(maxWidth: horizontalContentMode == .fill ? .infinity : nil)
+            .frame(maxWidth: horizontalContentMode == .fill ? .infinity : nil) // applied by label style BUT we may or may not have an icon so we apply it here too
             .padding(.horizontal, 26)
             .padding(.vertical, 8)
             .background(
@@ -59,6 +65,8 @@ struct FilledRedButtonStyle: ButtonStyle {
 
 struct RedButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
+    var edge = HorizontalEdge.trailing
+    var horizontalContentMode = ContentMode.fill
         
     func makeBody(configuration: Configuration) -> some View {
         
@@ -66,6 +74,7 @@ struct RedButtonStyle: ButtonStyle {
             .foregroundStyle(
                 !isEnabled ? .smog : (configuration.isPressed ? .ruby : .accent)
             )
+            .labelStyle(SpacedOutLabelStyle(edge: edge, spacedOut: horizontalContentMode == .fill))
             .padding(.horizontal, 26)
             .padding(.vertical, 8)
             .font(.main26)
@@ -79,12 +88,12 @@ struct RedButtonStyle: ButtonStyle {
 
 #Preview("Filled red") {
     Button("Hello!", systemImage: "info.circle") {}
-    .buttonStyle(FilledRedButtonStyle())
+        .buttonStyle(FilledRedButtonStyle(edge: .leading, horizontalContentMode: .fit))
 }
 
 
 #Preview("Red") {
     Button("Hello!", systemImage: "info.circle") { }
-    .buttonStyle(RedButtonStyle())
+        .buttonStyle(RedButtonStyle(edge: .leading))
 //    .disabled(true)
 }

@@ -1,0 +1,194 @@
+[
+	{
+		"category": "Creative",
+        "systemImage": "paintbrush",
+		"activities": [
+			{
+				"title": "Read a book",
+				"description": "Pick up a novel, biography, or something you've been meaning to learn about."
+			},
+			{
+				"title": "Write or journal",
+				"description": "Reflect on your day, jot down goals, or explore creative writing."
+			},
+			{
+				"title": "Draw or paint",
+				"description": "Express yourself artistically."
+			},
+			{
+				"title": "Make a scrapbook",
+				"description": "Collect memories, photos, or clippings to create a physical keepsake."
+			},
+			{
+				"title": "Start a DIY project",
+				"description": "Build something, upcycle old items, or craft something for your space."
+			},
+			{
+				"title": "Learn an instrument",
+				"description": "Practice if you already know one or start learning with a guidebook."
+			},
+			{
+				"title": "Write a story or poetry",
+				"description": "Use your imagination to create something meaningful or fun."
+			}
+		]
+	},
+	{
+		"category": "Outdoor",
+        "systemImage": "figure.walk",
+		"activities": [
+			{
+				"title": "Go for a walk or run",
+				"description": "Explore your neighborhood, park, or nearby nature trail."
+			},
+			{
+				"title": "Exercise or play sports",
+				"description": "Get moving and boost your energy."
+			},
+			{
+				"title": "Stargaze",
+				"description": "Spend an evening under the stars."
+			},
+			{
+				"title": "Plant a garden",
+				"description": "Start small with herbs or flowers if you're new to gardening."
+			},
+			{
+				"title": "Bike ride",
+				"description": "Explore areas you haven't been to before."
+			},
+			{
+				"title": "Go camping",
+				"description": "Even if it's in your backyard, enjoy some time under the stars."
+			},
+			{
+				"title": "Birdwatch",
+				"description": "Use a guidebook or just enjoy observing nature around you."
+			}
+		]
+	},
+	{
+		"category": "Social",
+        "systemImage": "person.line.dotted.person",
+		"activities": [
+			{
+				"title": "Spend time with friends or family",
+				"description": "Have a conversation or plan an offline activity."
+			},
+			{
+				"title": "Spend time with friends or family",
+				"description": "Have a conversation or plan an offline activity."
+			},
+			{
+				"title": "Board games or card games",
+				"description": "Play something that doesn't involve a screen."
+			},
+			{
+				"title": "Host a game night",
+				"description": "Play classic board games, puzzles, or trivia with friends or family."
+			},
+			{
+				"title": "Volunteer",
+				"description": "Help out at a local shelter, food bank, or community event."
+			},
+			{
+				"title": "Plan a potluck",
+				"description": "Bring people together with food and conversation."
+			},
+			{
+				"title": "Write letters",
+				"description": "Send handwritten notes to friends, family, or even yourself for the future."
+			}
+		]
+	},
+	{
+		"category": "Productive tasks",
+        "systemImage": "tray.full",
+		"activities": [
+			{
+				"title": "Tidy up your space",
+				"description": "Declutter or reorganize your room."
+			},
+			{
+				"title": "Cook or bake",
+				"description": "Try a new recipe or meal prep."
+			},
+			{
+				"title": "Learn something new",
+				"description": "Dive into a hobby or hands-on skill."
+			},
+			{
+				"title": "Organize old photos",
+				"description": "Create albums or sort through digital files."
+			},
+			{
+				"title": "Learn to cook a challenging dish",
+				"description": "Make something from scratch that you've always wanted try."
+			},
+			{
+				"title": "Study a new language",
+				"description": "Use offline resources like books, flashcards, or notebooks."
+			},
+			{
+				"title": "Tackle a personal project",
+				"description": "Complete something you've been putting off for a while."
+			}
+		]
+	},
+	{
+		"category": "Relaxation",
+        "systemImage": "figure.yoga",
+		"activities": [
+			{
+				"title": "Meditate",
+				"description": "Practice mindfulness or simply sit in silence."
+			},
+			{
+				"title": "Listen to music or podcasts (offline)",
+				"description": "Enjoy a downloaded playlist or audiobook."
+			},
+			{
+				"title": "Take a nap",
+				"description": "Recharge with some extra rest."
+			},
+			{
+				"title": "Yoga",
+				"description": "Practice gentle stretches or follow a sequence you've learned."
+			},
+			{
+				"title": "Deep cleaning",
+				"description": "Make your space feel refreshed and organized."
+			},
+			{
+				"title": "Enjoy a warm bath",
+				"description": "Use candles, music, or just silence for added relaxation."
+			},
+			{
+				"title": "Play with pets",
+				"description": "If you have animals, spend quality time with them."
+			}
+		]
+	},
+	{
+		"category": "Offline entertainment",
+        "systemImage": "puzzlepiece",
+		"activities": [
+			{
+				"title": "Read comics or magazines",
+				"description": "Something lighter than a book but just as enjoyable."
+			},
+			{
+				"title": "Solve puzzles",
+				"description": "Crosswords, Sudoku, or jigsaw puzzles can keep your mind engaged."
+			},
+			{
+				"title": "Build something",
+				"description": "Try LEGO, model kits, or other hands-on building sets."
+			},
+			{
+				"title": "Dance",
+				"description": "Turn on music and dance like nobody's watching."
+			}
+		]
+	}
+]

@@ -41,4 +41,12 @@ struct K {
     static let appSettingsURL = URL(string: UIApplication.openSettingsURLString)! // force unwrapping a system property in a variable
     static let notificationSettingsURL = URL(string: UIApplication.openNotificationSettingsURLString)!
     
+    //MARK: - Strings / UI
+    
+    static let activityIcons = ["figure.walk", "figure.run.treadmill", "figure.american.football", "figure.archery", "figure.basketball", "figure.climbing", "figure.curling", "figure.dance", "figure.skiing.downhill", "figure.hiking", "figure.outdoor.cycle", "figure.pool.swim", "figure.ice.skating"]
+    
+    //MARK: - APIs
+    
+    static let boredAPIEndpoint = "https://bored-api.appbrewery.com/random"
+    
 }
