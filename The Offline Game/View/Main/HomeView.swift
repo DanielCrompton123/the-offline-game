@@ -15,6 +15,7 @@ struct HomeView: View {
     @Environment(OfflineViewModel.self) private var offlineViewModel
     @Environment(PermissionsViewModel.self) private var permissionsViewModel
     @Environment(LiveActivityViewModel.self) private var liveActivityViewModel
+    @Environment(OfflineCountViewModel.self) private var offlineCountViewModel
         
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
@@ -32,8 +33,9 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                Text("\(Text("2,571").foregroundStyle(.ruby)) people are offline right now, competing to see who can avoid their phone the longest.\n\(Text("Up for the challenge?").foregroundStyle(colorScheme == .light ? .black : .white))")
+                Text("\(Text(String(offlineCountViewModel.count)).foregroundStyle(.ruby)) people are offline right now, competing to see who can avoid their phone the longest.\n\(Text("Up for the challenge?").foregroundStyle(colorScheme == .light ? .black : .white))")
                     .textCase(.uppercase)
+                    .contentTransition(.numericText(countsDown: true))
                     .font(.main20)
                     .foregroundStyle(.smog)
                     .multilineTextAlignment(.center)

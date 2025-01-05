@@ -104,6 +104,9 @@ class OfflineViewModel {
         isOffline = true
         startDate = Date()
         
+        // Add one to the offline count
+        offlineCountViewModel?.increase()
+        
         // Now add the live activity
         liveActivityViewModel?.startActivity()
         
@@ -141,6 +144,9 @@ class OfflineViewModel {
         endOfflineTimer = nil
         startDate = nil
         
+        // Now subtract 1 from the offline count
+        offlineCountViewModel?.decrease()
+        
         // Manage presentation of sheets
         isOffline = false
         userShouldBeCongratulated = true
@@ -159,4 +165,5 @@ class OfflineViewModel {
     //MARK: - Other
     
     var liveActivityViewModel: LiveActivityViewModel?
+    var offlineCountViewModel: OfflineCountViewModel?
 }

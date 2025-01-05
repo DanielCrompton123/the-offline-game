@@ -12,10 +12,10 @@
 		650682A92D21E4B4006EC566 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 650682A82D21E4B4006EC566 /* ActivityKit.framework */; };
 		650682E52D22CF11006EC566 /* Constants (K).swift in Sources */ = {isa = PBXBuildFile; fileRef = 650682E42D22CF11006EC566 /* Constants (K).swift */; };
 		650682E62D22CF11006EC566 /* Constants (K).swift in Sources */ = {isa = PBXBuildFile; fileRef = 650682E42D22CF11006EC566 /* Constants (K).swift */; };
+		65093E462D2AA80A00EC7E7D /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 65093E452D2AA80A00EC7E7D /* FirebaseDatabase */; };
 		6510945B2D03954700F0853C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6510945A2D03954700F0853C /* SwiftUI.framework */; };
 		651094662D03954A00F0853C /* OfflineWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		654CD5F02D29B2AB00530632 /* activities.json in Resources */ = {isa = PBXBuildFile; fileRef = 654CD5EF2D29B2AB00530632 /* activities.json */; };
-		654CD5F12D29B2AB00530632 /* activities.json in Resources */ = {isa = PBXBuildFile; fileRef = 654CD5EF2D29B2AB00530632 /* activities.json */; };
+		654CD6AA2D29ED5700530632 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 654CD6A92D29ED5700530632 /* FirebaseDatabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,15 +49,32 @@
 		651094562D03954700F0853C /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		651094582D03954700F0853C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		6510945A2D03954700F0853C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		654CD5EF2D29B2AB00530632 /* activities.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = activities.json; sourceTree = "<group>"; };
 		65BD0C362CFBBB35004031F5 /* The Offline Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Offline Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		654CD5F82D29B90200530632 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */ = {
+		650682DD2D21E631006EC566 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+			);
+			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
+		};
+		650682F22D231944006EC566 /* Exceptions for "Helper" folder in "OfflineWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DurationDisplayHelper.swift,
+				NetworkMonitor.swift,
+				NotificationsHelper.swift,
+			);
+			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
+		};
+		6532882F2D08B461000F778F /* Exceptions for "The Offline Game" folder in "OfflineWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ViewModel/LiveActivityViewModel.swift,
+				ViewModel/OfflineCountViewModel.swift,
+				ViewModel/OfflineViewModel.swift,
 			);
 			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
 		};
@@ -66,6 +83,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		650682ED2D231943006EC566 /* Helper */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				650682F22D231944006EC566 /* Exceptions for "Helper" folder in "OfflineWidgetExtension" target */,
+			);
 			path = Helper;
 			sourceTree = "<group>";
 		};
@@ -77,7 +97,7 @@
 		6510945C2D03954700F0853C /* OfflineWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				654CD5F82D29B90200530632 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */,
+				650682DD2D21E631006EC566 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */,
 			);
 			path = OfflineWidget;
 			sourceTree = "<group>";
@@ -89,6 +109,9 @@
 		};
 		65BD0C382CFBBB35004031F5 /* The Offline Game */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6532882F2D08B461000F778F /* Exceptions for "The Offline Game" folder in "OfflineWidgetExtension" target */,
+			);
 			path = "The Offline Game";
 			sourceTree = "<group>";
 		};
@@ -99,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65093E462D2AA80A00EC7E7D /* FirebaseDatabase in Frameworks */,
 				650682A92D21E4B4006EC566 /* ActivityKit.framework in Frameworks */,
 				6510945B2D03954700F0853C /* SwiftUI.framework in Frameworks */,
 			);
@@ -108,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				654CD6AA2D29ED5700530632 /* FirebaseDatabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +147,6 @@
 				650682E42D22CF11006EC566 /* Constants (K).swift */,
 				650682ED2D231943006EC566 /* Helper */,
 				650682F42D231948006EC566 /* Model */,
-				654CD5EF2D29B2AB00530632 /* activities.json */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -178,6 +202,7 @@
 			);
 			name = OfflineWidgetExtension;
 			packageProductDependencies = (
+				65093E452D2AA80A00EC7E7D /* FirebaseDatabase */,
 			);
 			productName = OfflineWidgetExtension;
 			productReference = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */;
@@ -205,6 +230,7 @@
 			);
 			name = "The Offline Game";
 			packageProductDependencies = (
+				654CD6A92D29ED5700530632 /* FirebaseDatabase */,
 			);
 			productName = "The Offline Game";
 			productReference = 65BD0C362CFBBB35004031F5 /* The Offline Game.app */;
@@ -237,6 +263,9 @@
 			);
 			mainGroup = 65BD0C2D2CFBBB35004031F5;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				654CD6A82D29ED5600530632 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 65BD0C372CFBBB35004031F5 /* Products */;
 			projectDirPath = "";
@@ -253,7 +282,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				654CD5F02D29B2AB00530632 /* activities.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +289,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				654CD5F12D29B2AB00530632 /* activities.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,6 +594,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		654CD6A82D29ED5600530632 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		65093E452D2AA80A00EC7E7D /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 654CD6A82D29ED5600530632 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		654CD6A92D29ED5700530632 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 654CD6A82D29ED5600530632 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 65BD0C2E2CFBBB35004031F5 /* Project object */;
 }
