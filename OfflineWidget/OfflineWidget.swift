@@ -29,16 +29,23 @@ struct TimerView : View {
                         Text("Don't use your phone!")
                             .font(.headline)
                         
-                        Text("You've been offline for 45 minutes, you can do it!")
+                        let timeElapsed = context.state.startDate.distance(to: Date())
+                        let offlineTimeElapsedString = DurationDisplayHelper.formatDuration(timeElapsed)
+                        
+                        Text("You've been offline for \(offlineTimeElapsedString), keep going!")
                             .font(.callout)
                         
-                        ProgressView(value: context.state.offlineDurationProgress)
-                            .tint(.white)
-                        
-                        Text("\(context.state.peopleOffline) other people are offline right now!")
-                            .font(.caption)
-                            .foregroundStyle(.ruby)
-                            .brightness(0.5)
+//                        // DOESN'T UPDATE!!!
+//                        if let endDate = context.state.endDate {
+//                            TimelineView(.animation) { _ in
+//                                let offlineCompletion = context.state.startDate.completionTo(endDate)
+//                                let _ = print("Refreshing offline widget view now")
+//                                Gauge(value: offlineCompletion) {
+//                                    Label("Offline...", systemImage: "wifi.exclamationmark")
+//                                }
+//                                .tint(.white)
+//                            }
+//                        }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -78,7 +85,7 @@ struct OfflineWidget: Widget {
                 
                 DynamicIslandExpandedRegion(.trailing) {
                     Text("Don't use your phone when you are offline!")
-//                        .font(.system(size: 18))
+                    //                        .font(.system(size: 18))
                         .minimumScaleFactor(0.6)
                         .foregroundStyle(.smog)
                         .multilineTextAlignment(.trailing)

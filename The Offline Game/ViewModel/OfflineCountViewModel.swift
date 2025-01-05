@@ -40,7 +40,7 @@ class OfflineCountViewModel {
         
         // The transactions are good for concurrency
         countRef.runTransactionBlock { data in
-            data.value = (data.value as? Int ?? 0) + 1
+            data.value = max((data.value as? Int ?? 0) + 1, 0)
             return .success(withValue: data)
         }
     }
@@ -50,7 +50,7 @@ class OfflineCountViewModel {
         
         // The transactions are good for concurrency
         countRef.runTransactionBlock { data in
-            data.value = (data.value as? Int ?? 0) - 1
+            data.value = max((data.value as? Int ?? 0) - 1, 0)
             return .success(withValue: data)
         }
     }

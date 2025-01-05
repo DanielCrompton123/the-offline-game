@@ -24,7 +24,7 @@ struct OfflineProgressView: View {
             }
             
             // PROGRESS VIEW -- see how long's been
-            TimelineView(.animation) { context in
+            TimelineView(.animation) { _ in
                 if let offlineProgress = offlineViewModel.offlineProgress,
                    let elapsedTime = offlineViewModel.elapsedTime {
                                         

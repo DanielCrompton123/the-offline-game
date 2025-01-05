@@ -86,8 +86,9 @@ class OfflineViewModel {
     
     // Used in the offline progress bar gauges
     var offlineProgress: CGFloat? {
-        guard let elapsedTime else { return nil }
-        return min(max(CGFloat(elapsedTime / durationSeconds), 0), 1)
+        // The start date's distance to the current date
+        guard let endDate else { return nil }
+        return startDate?.completionTo(endDate)
     }
     
     // Elapsed time used in ther live activity and the offline progress calculation

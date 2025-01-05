@@ -63,6 +63,7 @@
 		650682F22D231944006EC566 /* Exceptions for "Helper" folder in "OfflineWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Date extension.swift",
 				DurationDisplayHelper.swift,
 				NetworkMonitor.swift,
 				NotificationsHelper.swift,
