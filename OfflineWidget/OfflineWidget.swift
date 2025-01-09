@@ -41,7 +41,7 @@ struct TimerView : View {
 //                                let offlineCompletion = context.state.startDate.completionTo(endDate)
 //                                let _ = print("Refreshing offline widget view now")
 //                                Gauge(value: offlineCompletion) {
-//                                    Label("Offline...", systemImage: "wifi.exclamationmark")
+//                                    Label("Offline...", systemImage: K.systemOfflineIcon)
 //                                }
 //                                .tint(.white)
 //                            }
@@ -109,7 +109,7 @@ struct OfflineWidget: Widget {
                     
                 }
             } compactLeading: {
-                Image(systemName: "wifi.exclamationmark")
+                Image(systemName: K.systemOfflineIcon)
                     .bold()
                     .foregroundStyle(.red.gradient)
                 
@@ -120,7 +120,7 @@ struct OfflineWidget: Widget {
                 }
                 
             } minimal: {
-                Image(systemName: "wifi.exclamationmark")
+                Image(systemName: K.systemOfflineIcon)
                     .bold()
                     .foregroundStyle(.red.gradient)
             }

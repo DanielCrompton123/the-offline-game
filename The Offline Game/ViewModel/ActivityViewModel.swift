@@ -6,11 +6,16 @@
 //
 
 import Foundation
+import Combine
 
 @Observable
 class ActivityViewModel {
     var preloadedActivities: [PreloadedActivityCollection]?
     var boredActivities: [BoredActivity] = []
+    
+    var activityIcon = "figure.walk.motion"
+    
+    private var cancellables: Set<AnyCancellable> = []
     
     var isFetchingBoredActivity = false
     
@@ -53,6 +58,20 @@ class ActivityViewModel {
             
             isFetchingBoredActivity = false
         }
+    }
+    
+    
+    func startUpdatingActivityIcon() {
+        Timer.publish(every: K.activityIconChangeInterval, on: RunLoop.main, in: RunLoop.Mode.common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.activityIcon = K.activityIcons.randomElement()!
+            }
+            .store(in: &cancellables)
+    }
+    
+    func stopUpdatingActivityIcon() {
+        cancellables.removeAll()
     }
     
 }

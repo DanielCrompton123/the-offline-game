@@ -114,9 +114,10 @@ class OfflineViewModel {
         scheduleOfflineTimer()
         
         // Now schedule a notification to be posted to the user when their offline time ends
+        let formattedDuration = DurationDisplayHelper.formatDuration(durationSeconds)
         NotificationsHelper.post(
             title: "You did it!",
-            message: "Congrats for going offline for \(durationSeconds) seconds! Open the app to review your experience.",
+            message: "Congrats for going offline for \(formattedDuration)! Open the app to review your experience.",
             id: K.offlineDurationEndedNotificationId,
             at: endDate! // Unwrapped because we just set startDate and endDate depends on it
         )
@@ -134,13 +135,15 @@ class OfflineViewModel {
                                                repeats: false) { [weak self] timer in
             // may execute on a background thread
             DispatchQueue.main.async {
-                self?.offlineTimeFinished()
+                self?.offlineTimeFinished(successfully: true)
             }
         }
     }
     
     
-    func offlineTimeFinished() {
+    func offlineTimeFinished(successfully: Bool) {
+        print("offline time finished")
+        
         endOfflineTimer?.invalidate()
         endOfflineTimer = nil
         startDate = nil
@@ -150,16 +153,20 @@ class OfflineViewModel {
         
         // Manage presentation of sheets
         isOffline = false
-        userShouldBeCongratulated = true
+        userShouldBeCongratulated = successfully
+        userDidFail = !successfully
         
         // stop the live activity
         liveActivityViewModel?.stopActivity()
+        
+        // Now revoke any success notifications if we need to
+        NotificationsHelper.revoke(notification: K.offlineDurationEndedNotificationId)
     }
-    
     
     
     var isPickingDuration = false // Makes the OfflinetimeView appear to pick duration
     var userShouldBeCongratulated = false // Makes the congratulatory view appear in the main view
+    var userDidFail = false // Presents the failure view
     
     
     

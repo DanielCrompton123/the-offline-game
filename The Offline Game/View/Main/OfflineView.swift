@@ -13,6 +13,7 @@ struct OfflineView: View {
     
     @Environment(\.colorScheme) private var colorScheme
     @Environment(OfflineViewModel.self) private var offlineViewModel
+    @Environment(ActivityViewModel.self) private var activityViewModel
     
     @State private var showActivitiesView = false
     
@@ -42,12 +43,15 @@ struct OfflineView: View {
                     
                     Spacer()
                     
-                    Button("WHAT TO DO?") {
+                    Button("WHAT TO DO?", systemImage: activityViewModel.activityIcon) {
                         showActivitiesView = true
                     }
+                    .buttonStyle(RedButtonStyle())
+                    .onAppear(perform: activityViewModel.startUpdatingActivityIcon)
+                    .onDisappear(perform: activityViewModel.stopUpdatingActivityIcon)
                     
                     Button("GO ONLINE") {
-                        
+                        offlineViewModel.offlineTimeFinished(successfully: true)
                     }
                     .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
     
