@@ -506,7 +506,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"The Offline Game/Preview Content\"";
-				DEVELOPMENT_TEAM = M63HVY59D3;
+				DEVELOPMENT_TEAM = JGS842YL6F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The-Offline-Game-Info.plist";
@@ -523,7 +523,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.daniel.The-Offline-Game";
+				PRODUCT_BUNDLE_IDENTIFIER = "co.antigrav.The-Offline-Game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -539,7 +539,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"The Offline Game/Preview Content\"";
-				DEVELOPMENT_TEAM = M63HVY59D3;
+				DEVELOPMENT_TEAM = JGS842YL6F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The-Offline-Game-Info.plist";
@@ -556,7 +556,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.daniel.The-Offline-Game";
+				PRODUCT_BUNDLE_IDENTIFIER = "co.antigrav.The-Offline-Game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
