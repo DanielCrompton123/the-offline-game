@@ -64,9 +64,11 @@ struct CongratulatoryView: View {
                 preview: SharePreview("My \(formattedDur) offline!",
                                       image: congratulatoryImage)
             ) {
-                Label("Share my sucess!", systemImage: "medal.star.fill")
+                Label("Share success", systemImage: "medal.star.fill")
+                    .foregroundStyle(.green)
             }
             .buttonStyle(FilledRedButtonStyle())
+            .tint(.white)
             
             Spacer()
         }
