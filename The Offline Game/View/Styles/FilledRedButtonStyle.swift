@@ -48,15 +48,15 @@ struct FilledRedButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         
+        let bgCol = !isEnabled ? AnyShapeStyle(Color.smog) : (configuration.isPressed ? AnyShapeStyle(TintShapeStyle().secondary) : AnyShapeStyle(TintShapeStyle()))
+        
         return configuration.label
             .labelStyle(SpacedOutLabelStyle(edge: edge, spacedOut: horizontalContentMode == .fill))
             .foregroundStyle(.white)
             .frame(maxWidth: horizontalContentMode == .fill ? .infinity : nil) // applied by label style BUT we may or may not have an icon so we apply it here too
             .padding(.horizontal, 26)
             .padding(.vertical, 8)
-            .background(
-                !isEnabled ? .smog : (configuration.isPressed ? .ruby : .accent),
-                in: Rectangle())
+            .background(bgCol, in: Rectangle())
             .font(.main26)
             .textCase(.uppercase)
     }
@@ -89,6 +89,8 @@ struct RedButtonStyle: ButtonStyle {
 #Preview("Filled red") {
     Button("Hello!", systemImage: "info.circle") {}
         .buttonStyle(FilledRedButtonStyle(edge: .leading, horizontalContentMode: .fit))
+    
+        .tint(.green)
 }
 
 
