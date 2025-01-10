@@ -30,7 +30,7 @@ struct OfflineProgressView: View {
                                         
                     Gauge(value: offlineProgress) {
                         // Label
-                        Label("Offline duration", systemImage: "wifi.exclamationmark")
+                        Label("Offline duration", systemImage: K.systemOfflineIcon)
                     } currentValueLabel: {
                         // Current value -- display "7Hrs offline (so far)"
                         let formattedElapsedTime = DurationDisplayHelper.formatDuration(elapsedTime)

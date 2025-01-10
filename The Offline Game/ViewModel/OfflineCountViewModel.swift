@@ -20,14 +20,13 @@ class OfflineCountViewModel {
     }
     
     func setupDatabaseObserver() {
-        let countRef = realtimeDB.child("offlineCount")
+        let countRef = realtimeDB.child(K.firebaseOfflineCountKey)
         
         countRef.observe(.value) { [weak self] snapshot in
-            if let c = snapshot.value as? Int {
-                print("Count changed")
-                
+            if let c = snapshot.value as? Int {                
                 DispatchQueue.main.async {
                     self?.count = c
+                    print("Offline count changed to \(self?.count ?? -1)")
                 }
             } else {
                 print("Cannot get Int value from snapshot")
@@ -46,11 +45,15 @@ class OfflineCountViewModel {
     }
     
     func decrease() {
+        // Concurrency handled properly?
+        
         let countRef = realtimeDB.child("offlineCount")
         
         // The transactions are good for concurrency
         countRef.runTransactionBlock { data in
             data.value = max((data.value as? Int ?? 0) - 1, 0)
+            print("Decreased")
+            
             return .success(withValue: data)
         }
     }

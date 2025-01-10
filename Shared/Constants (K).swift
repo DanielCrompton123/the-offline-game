@@ -19,10 +19,12 @@ struct K {
     static let userDefaultsDurationSecondsKey = "durationSeconds"
     static let userDefaultsIsOfflineKey = "isOffline"
     static let userDefaultsStartDateKey = "startDate"
+    static let userDefaultsUserIdKey = "userID"
     
     //MARK: - IDs
     
     static let offlineDurationEndedNotificationId = (Bundle.main.bundleIdentifier ?? "") + ".offlineTimeEndedNotificationIdentifier"
+    static let firebaseOfflineCountKey = "offlineCount"
     
     //MARK: - Offline duration constants
     
@@ -36,6 +38,9 @@ struct K {
     static let offlineDurationRange: ClosedRange<TimeInterval> = minimumOfflineMinutes...maximumOfflineMinutes
     static let minuteStep: TimeInterval = 5 // Slider increments in minutes
     
+    static let offlineGracePeriod: TimeInterval = 20
+    static let offlineGracePeriodDelaySinceProtectedDataAvailability: TimeInterval = 5
+    
     //MARK: - Deep links
     
     static let appSettingsURL = URL(string: UIApplication.openSettingsURLString)! // force unwrapping a system property in a variable
@@ -47,6 +52,9 @@ struct K {
     
     static let systemOfflineIcon = "wifi.exclamationmark"
     
+    static let activityIconChangeInterval: TimeInterval = 2.25
+
+
     //MARK: - APIs
     
     static let boredAPIEndpoint = "https://bored-api.appbrewery.com/random"

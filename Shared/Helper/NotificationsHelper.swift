@@ -19,7 +19,7 @@ struct NotificationsHelper {
     static func post(title: String,
                      message: String,
                      id: String = UUID().uuidString,
-                     trigger: UNNotificationTrigger) {
+                     trigger: UNNotificationTrigger?) {
         Task {
             // Create notification
             let notification = UNMutableNotificationContent()

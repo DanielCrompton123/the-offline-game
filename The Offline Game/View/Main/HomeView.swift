@@ -56,6 +56,9 @@ struct HomeView: View {
             .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated) {
                 CongratulatoryView()
             }
+            .sheet(isPresented: $offlineViewModel.userDidFail) {
+                FailureView()
+            }
             .fullScreenCover(isPresented: $shouldShowNotificationWarning) {
                 NotificationPermissionView()
             }
