@@ -42,6 +42,16 @@ class OfflineCountViewModel {
             data.value = max((data.value as? Int ?? 0) + 1, 0)
             return .success(withValue: data)
         }
+        
+//        countRef.runTransactionBlock { data in
+//            data.value = max((data.value as? Int ?? 0) + 1, 0)
+//            return .success(withValue: data)
+//        } andCompletionBlock: { error, _, _ in
+//            if let error {
+//                print("ERROR WITH FIREBASE: \(error.localizedDescription)")
+//            }
+//        }
+//
     }
     
     func decrease() {

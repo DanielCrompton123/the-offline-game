@@ -31,6 +31,8 @@ struct ActivitiesListView: View {
                             Label("Your activities", systemImage: "figure.wave")
                                 .font(.headline)
                         }
+                        .transition(.slide)
+                        .animation(.bouncy, value: activityViewModel.boredActivities)
                     }
                     
                     ForEach(preloadedActivities) { activityCollection in
@@ -49,6 +51,7 @@ struct ActivitiesListView: View {
                 ContentUnavailableView("No preloaded activities yet...", systemImage: "questionmark")
             }
         }
+        .onAppear(perform: activityViewModel.loadPreloadedActivities)
     }
     
     

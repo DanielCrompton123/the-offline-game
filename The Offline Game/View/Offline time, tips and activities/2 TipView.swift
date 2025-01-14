@@ -16,56 +16,45 @@ struct TipView: View {
         
     var body: some View {
         
-        VStack {
-                        
-            Text("PRO TIP")
-                .font(.display88)
-                .foregroundStyle(.accent)
+        VStack(spacing: 20) {
             
             Spacer()
             
-            // Display the focus symbol & text and Airplane symbol & text
-            
-            VStack(spacing: 20) {
-                HStack(spacing: 0) {
-                    Image(systemName: "airplane")
-                        .font(.system(size: 88))
-                    
-                    Spacer(minLength: 0)
-                    
-                    Text("TURN ON AIRPLANE MODE")
-                        .font(.main20)
-                }
+            VStack {
+                DelayedLottieAnimation(name: "Lightbulb", endCompletion: 0.9, delay: 0)
+                    .frame(height: 120)
+                    .scaleEffect(1.6)
                 
-                HStack(spacing: 0) {
-                    Image(systemName: "moon.fill")
-                        .font(.system(size: 66))
-                    
-                    Spacer(minLength: 0)
-                    
-                    Text("TURN ON FOCUS")
-                        .font(.main14)
-                }
-                .foregroundStyle(.smog)
+                Text("PRO TIP")
+                    .font(.display88)
+                    .foregroundStyle(.accent)
             }
-            .multilineTextAlignment(.leading)
-            .minimumScaleFactor(0.6)
+            
+            Spacer()
+            
+            VStack {
+                // Display the focus symbol & text and Airplane symbol & text
+                tip(image: .plane, title: "Turn on airplane mode", alignment: .topLeading)
+                tip(image: .moon, title: "Turn on focus", alignment: .topTrailing)
+            }
             .padding(.horizontal)
             
             Spacer()
             
-            if UIApplication.shared.canOpenURL(K.appSettingsURL) {
-                Button("OPEN SETTINGS", systemImage: "gear") {
-                    UIApplication.shared.open(K.appSettingsURL)
+            VStack {
+                if UIApplication.shared.canOpenURL(K.appSettingsURL) {
+                    Button("OPEN SETTINGS", systemImage: "gear") {
+                        UIApplication.shared.open(K.appSettingsURL)
+                    }
+                    .buttonStyle(RedButtonStyle())
                 }
-                .buttonStyle(RedButtonStyle())
-            }
-            
-            // Make ths sheet (containing duration selection and tip view) disappear and present full screen cover offline view
-            Button("CONTINUE",
-                   systemImage: "gear.badge.checkmark",
-                   action: nextStage)
+                
+                // Make ths sheet (containing duration selection and tip view) disappear and present full screen cover offline view
+                Button("CONTINUE",
+                       systemImage: "gear.badge.checkmark",
+                       action: nextStage)
                 .buttonStyle(FilledRedButtonStyle())
+            }
         }
         .navigationDestination(isPresented: $activitiesViewPresented) {
             ActivitiesView()
@@ -81,6 +70,23 @@ struct TipView: View {
                 }
         }
     }
+    
+    
+    // Draw the tip -- i.e. icon with text on top
+    @ViewBuilder private func tip(image: ImageResource, title: String, alignment: Alignment = .center) -> some View {
+        Text(title)
+            .font(.main26)
+            .textCase(.uppercase)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background {
+                Image(image)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(.smog.opacity(0.4))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
+            }
+    }
+    
     
     // Continue the logic from the last stage (offline duration picker view)
     // navigate to ther activities view or go offline

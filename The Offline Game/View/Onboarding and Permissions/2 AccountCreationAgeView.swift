@@ -60,7 +60,6 @@ struct AccountCreationAgeView: View {
         }
         .buttonStyle(FilledRedButtonStyle())
         
-        .padding(.horizontal)
         .navigationDestination(isPresented: $navigateToNotificationPermissionsView) {
             NotificationPermissionView()
         }

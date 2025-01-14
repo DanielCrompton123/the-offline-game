@@ -14,6 +14,9 @@ struct OfflineDurationPickerView: View {
     @AppStorage(K.userDefaultsShouldShowActivitiesViewKey) private var shouldShowActivitiesView = true
     @State private var tipsViewPresented = false
     @State private var activitiesViewPresented = false
+    @State private var wifiAnimate = true
+    
+    private let wifiLogoRotation: Double = 15
             
     var body: some View {
         
@@ -26,7 +29,27 @@ struct OfflineDurationPickerView: View {
                 
                 Spacer()
                 
-                Text("How long do you want to go offline for?")
+                ZStack(alignment: .bottom) {
+                    Image(.wifiBrushstrokeSlash)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 150)
+                        .foregroundStyle(.smog)
+                        .opacity(0.25)
+                        .scaleEffect(1.75)
+                        .offset(x: wifiAnimate ? -15 : 15)
+                        .rotationEffect(
+                            .degrees(wifiAnimate ? -wifiLogoRotation : wifiLogoRotation),
+                            anchor: .bottom
+                        )
+                        .animation(.easeInOut(duration: 4.5).repeatForever(), value: wifiAnimate)
+                        .onAppear {
+                            wifiAnimate.toggle()
+                        }
+                    
+                    Text("How long do you want to go offline for?")
+                        .padding()
+                }
                 
                 durationDisplay()
                 
@@ -40,13 +63,12 @@ struct OfflineDurationPickerView: View {
                 
                 Spacer()
                 
-                Button("CONTINUE", action: nextStage)
-                .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
+                Button("CONTINUE", systemImage: K.systemArrowIcon, action: nextStage)
+                .buttonStyle(FilledRedButtonStyle())
             }
             .font(.main30)
             .textCase(.uppercase)
             .multilineTextAlignment(.center)
-            .padding()
             .navigationDestination(isPresented: $tipsViewPresented) {
                 TipView()
             }

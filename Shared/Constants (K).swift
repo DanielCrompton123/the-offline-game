@@ -17,13 +17,17 @@ struct K {
     static let userDefaultsUserAgeRawValueKey = "userAgeRawValue"
     static let userDefaultsShouldShowActivitiesViewKey = "shouldShowActivities"
     static let userDefaultsDurationSecondsKey = "durationSeconds"
-    static let userDefaultsIsOfflineKey = "isOffline"
+    static let userDefaultsOfflineStateKey = "isOffline"
     static let userDefaultsStartDateKey = "startDate"
     static let userDefaultsUserIdKey = "userID"
     
     //MARK: - IDs
     
     static let offlineDurationEndedNotificationId = (Bundle.main.bundleIdentifier ?? "") + ".offlineTimeEndedNotificationIdentifier"
+    static let offlineReminderNotificationId = (Bundle.main.bundleIdentifier ?? "") + ".offlineReminderNotificationIdentifier"
+    static let appTerminatedNotificationId = "appTerminated"
+    static let gracePeriodStartedNotificationId = "gracePeriodStarted"
+    static let gracePeriodEndedNotSuccessfullyNotificationId = "gracePeriodEndedNotSuccessfully"
     static let firebaseOfflineCountKey = "offlineCount"
     
     //MARK: - Offline duration constants
@@ -49,10 +53,10 @@ struct K {
     //MARK: - Strings / UI
     
     static let activityIcons = ["figure.walk", "figure.run.treadmill", "figure.american.football", "figure.archery", "figure.basketball", "figure.climbing", "figure.curling", "figure.dance", "figure.skiing.downhill", "figure.hiking", "figure.outdoor.cycle", "figure.pool.swim", "figure.ice.skating"]
-    
-    static let systemOfflineIcon = "wifi.exclamationmark"
-    
+        
     static let activityIconChangeInterval: TimeInterval = 2.25
+    
+    static let systemArrowIcon = "chevron.forward.dotted.chevron.forward"
 
 
     //MARK: - APIs

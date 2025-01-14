@@ -19,27 +19,30 @@ struct ActivitiesView: View {
             ActivitiesListView()
                 .navigationTitle("Activities")
                 .toolbarTitleDisplayMode(.inline)
-                .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
             
                 .onAppear(perform: activityViewModel.startUpdatingActivityIcon)
-                .onAppear(perform: loadBoredActivity)
                 .onDisappear(perform: activityViewModel.stopUpdatingActivityIcon)
             
-                // Bottom "Go offline" icon
+                // Top "Generate activity" button
+                .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
                 .safeAreaInset(edge: .top) {
-                    ZStackLayout(alignment: .bottom) {
-                        Button("Generate activity", systemImage: activityViewModel.activityIcon, action: loadBoredActivity)
-                            .disabled(activityViewModel.isFetchingBoredActivity)
-                            .buttonStyle(FilledRedButtonStyle())
-                            .padding(.horizontal)
-                            .padding(.bottom)
-                            .background(.bar)
+                    ZStack(alignment: .bottom) {
+                        Button(
+                            "Generate activity",
+                            systemImage: activityViewModel.activityIcon,
+                            action: loadBoredActivity
+                        )
+                        .disabled(activityViewModel.isFetchingBoredActivity)
+                        .buttonStyle(RedButtonStyle())
+//                        .padding(.horizontal)
+//                        .padding(.bottom)
+                        .background(.bar)
                         
                         Divider()
                     }
                 }
             
-                // Error alert
+                // Error alert for bored API activities
                 .alert("Error getting Bored activity", isPresented: $error.condition(\.isEmpty, inverse: true)) {
                     Button("OK", role: .cancel) {
                         error = ""

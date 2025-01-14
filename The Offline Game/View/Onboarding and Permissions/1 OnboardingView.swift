@@ -32,10 +32,12 @@ struct OnboardingView: View {
                 
                 Spacer()
                 
-                NavigationLink("CONTINUE") {
+                NavigationLink {
                     // Link to the User Account Age View
                     AccountCreationAgeView()
                     // Because this view only opens on first launch, assume the user have not entered their age yet.
+                } label: {
+                    Label("Continue", systemImage: K.systemArrowIcon)
                 }
                 .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
                 

@@ -109,8 +109,9 @@ struct OfflineWidget: Widget {
                     
                 }
             } compactLeading: {
-                Image(systemName: K.systemOfflineIcon)
-                    .bold()
+                Image(.offlinePhone)
+                    .resizable()
+                    .scaledToFit()
                     .foregroundStyle(.red.gradient)
                 
             } compactTrailing: {
@@ -120,8 +121,9 @@ struct OfflineWidget: Widget {
                 }
                 
             } minimal: {
-                Image(systemName: K.systemOfflineIcon)
-                    .bold()
+                Image(.offlinePhone)
+                    .resizable()
+                    .scaledToFit()
                     .foregroundStyle(.red.gradient)
             }
             

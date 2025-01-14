@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BoredActivity: Codable, Identifiable {
+struct BoredActivity: Codable, Identifiable, Equatable {
     var id: String { key }
     
     let key: String

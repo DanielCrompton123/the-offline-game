@@ -15,23 +15,26 @@ struct SpacedOutLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {        
         let alignment = edge == .leading ? Alignment.leading : Alignment.trailing
         
-        if spacedOut {
-            configuration.title
-                .frame(maxWidth: .infinity) // infinity because we are spaced out
-                .overlay(alignment: alignment) {
-                    configuration.icon
-                }
-        } else {
-            HStack {
-                if edge == .trailing {
-                    configuration.title
-                    configuration.icon
-                } else {
-                    configuration.icon
-                    configuration.title
+        Group {
+            if spacedOut {
+                configuration.title
+                    .frame(maxWidth: .infinity) // infinity because we are spaced out
+                    .overlay(alignment: alignment) {
+                        configuration.icon
+                    }
+            } else {
+                HStack {
+                    if edge == .trailing {
+                        configuration.title
+                        configuration.icon
+                    } else {
+                        configuration.icon
+                        configuration.title
+                    }
                 }
             }
         }
+        .lineLimit(1)
     }
     
 }
@@ -57,6 +60,7 @@ struct FilledRedButtonStyle: ButtonStyle {
             .padding(.horizontal, 26)
             .padding(.vertical, 8)
             .background(bgCol, in: Rectangle())
+//            .ignoresSafeArea() // for in landscape mode
             .font(.main26)
             .textCase(.uppercase)
     }
@@ -70,10 +74,10 @@ struct RedButtonStyle: ButtonStyle {
         
     func makeBody(configuration: Configuration) -> some View {
         
+        let fgCol = !isEnabled ? AnyShapeStyle(Color.smog) : (configuration.isPressed ? AnyShapeStyle(TintShapeStyle().secondary) : AnyShapeStyle(TintShapeStyle()))
+        
         return configuration.label
-            .foregroundStyle(
-                !isEnabled ? .smog : (configuration.isPressed ? .ruby : .accent)
-            )
+            .foregroundStyle(fgCol)
             .labelStyle(SpacedOutLabelStyle(edge: edge, spacedOut: horizontalContentMode == .fill))
             .padding(.horizontal, 26)
             .padding(.vertical, 8)

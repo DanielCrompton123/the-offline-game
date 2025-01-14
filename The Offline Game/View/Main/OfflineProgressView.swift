@@ -29,8 +29,15 @@ struct OfflineProgressView: View {
                    let elapsedTime = offlineViewModel.elapsedTime {
                                         
                     Gauge(value: offlineProgress) {
-                        // Label
-                        Label("Offline duration", systemImage: K.systemOfflineIcon)
+                        Label {
+                            Text("Offline duration")
+                        } icon: {
+                            Image(.offlinePhone)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxHeight: 35)
+                        }
+
                     } currentValueLabel: {
                         // Current value -- display "7Hrs offline (so far)"
                         let formattedElapsedTime = DurationDisplayHelper.formatDuration(elapsedTime)

@@ -44,7 +44,6 @@ struct NotificationPermissionView: View {
         .font(.main20)
         .multilineTextAlignment(.center)
         .textCase(.uppercase)
-        .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
     }
     
     
@@ -74,22 +73,32 @@ struct NotificationPermissionView: View {
     @ViewBuilder
     private func buttons(for status: UNAuthorizationStatus) -> some View {
         
-        // NOTID NOT ASKED FOR: ASK PERMISSION
+        // NOTIFICATIONS NOT ASKED FOR: ASK PERMISSION
         if status == .notDetermined {
-            Button("GET PERMISSION", action: permissionsViewModel.requestNotificationPermission)
+            Button("GET PERMISSION",
+                   systemImage: "person.badge.shield.exclamationmark",
+                   action: permissionsViewModel.requestNotificationPermission)
+            .buttonStyle(FilledRedButtonStyle())
         }
         
-        // NOTIS ALLOWED: JUST CLOSE
+        // NOTIFICATIONS ALLOWED: JUST CLOSE
         else if status == .denied {
-            Button("CONTINUE WITHOUT", action: endOnboarding)
+            Button("CONTINUE WITHOUT",
+                   systemImage: "exclamationmark.shield.fill",
+                   action: endOnboarding)
+            .buttonStyle(RedButtonStyle())
             
             Button("OPEN IN SETTINGS",
+                   systemImage: "gear",
                    action: permissionsViewModel.openNotificationSettings)
+            .buttonStyle(FilledRedButtonStyle())
         }
         
-        // NOTIS DENIES: TELL THEM TO OPEN SETTINGS OR CONTINUE WITHOUT
+        // NOTIFICATIONS DENIED: TELL THEM TO OPEN SETTINGS OR CONTINUE WITHOUT
         else if status == .authorized {
-            Button("CLOSE", action: endOnboarding)
+            Button("CLOSE", systemImage: "face.smiling.inverse", action: endOnboarding)
+                .buttonStyle(FilledRedButtonStyle())
+                .tint(.green)
         }
     }
 

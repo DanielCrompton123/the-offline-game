@@ -42,13 +42,20 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                Button("GO OFFLINE") {
+                Button {
                     offlineViewModel.isPickingDuration = true
+                } label: {
+                    Label {
+                        Text("Go offline")
+                    } icon: {
+                        Image(.offlinePhone)
+                            .resizable()
+                            .scaledToFit()
+                    }
+
                 }
                 .buttonStyle(FilledRedButtonStyle())
-                
-                Spacer()
-                
+                                
             }
             .sheet(isPresented: $offlineViewModel.isPickingDuration) {
                 OfflineDurationPickerView()
@@ -82,4 +89,5 @@ struct HomeView: View {
         .environment(OfflineViewModel())
         .environment(PermissionsViewModel())
         .environment(LiveActivityViewModel())
+        .environment(OfflineCountViewModel())
 }
