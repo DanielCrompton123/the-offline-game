@@ -32,7 +32,17 @@ struct RequestsManager {
         
         // 3. Get, return and decode data
         let (data, _) = try await URLSession.shared.data(for: request)
-        return try decoder.decode(decodeTo, from: data)
+        
+        do {
+            return try decoder.decode(decodeTo, from: data)
+        } catch {
+            // If an error happens, print the string of the data that was actually retrieved and then forward the error on
+            if let string = String(data: data, encoding: .utf8) {
+                print("ERROR decoding data from requesting URL: Data retrieved is:")
+                print("\n```\n\(string)\n```\n")
+            }
+            throw error
+        }
     }
     
     

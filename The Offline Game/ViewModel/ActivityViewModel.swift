@@ -38,28 +38,25 @@ class ActivityViewModel {
     
     
     func getBoredActivity() async throws {
-        #warning("TODO: Use request helper inside of getBoredActivity.")
-        guard let url = URL(string: K.boredAPIEndpoint) else {
-            print("Cannot make a URL from '\(K.boredAPIEndpoint)'")
-            throw URLError(.badURL)
-        }
-        
         await MainActor.run {
             isFetchingBoredActivity = true
         }
-        
-        let (data, _) = try await URLSession.shared.data(from: url)
-        
-        let decoder = JSONDecoder()
-        
+
         do {
-            let activity = try decoder.decode(BoredActivity.self, from: data)
+            let activity = try await RequestsManager.get(
+                K.boredAPIEndpoint,
+                decodeTo: BoredActivity.self
+            )
             
             await MainActor.run {
                 boredActivities.insert(activity, at: 0)
+                isFetchingBoredActivity = false
             }
+
         } catch {
-            isFetchingBoredActivity = false
+            await MainActor.run {
+                isFetchingBoredActivity = false
+            }
             throw error
         }
     }
