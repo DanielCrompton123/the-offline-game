@@ -32,15 +32,15 @@ struct K {
     
     //MARK: - Offline duration constants
     
-    static let maximumOfflineMinutes: TimeInterval = 24 * 60 // 24 hours
+    static let maximumOfflineSecs: TimeInterval = 24 * 60 * 60 // 24 hours
 #if DEBUG
-    static let minimumOfflineMinutes: TimeInterval = 0.5 // 30 seconds
+    static let minimumOfflineSecs: TimeInterval = 30
 #else
-    static let minimumOfflineMinutes: TimeInterval = 10
+    static let minimumOfflineSecs: TimeInterval = 10 * 60
 #endif
     
-    static let offlineDurationRange: ClosedRange<TimeInterval> = minimumOfflineMinutes...maximumOfflineMinutes
-    static let minuteStep: TimeInterval = 5 // Slider increments in minutes
+    static let offlineDurationSecsRange: ClosedRange<TimeInterval> = minimumOfflineSecs...maximumOfflineSecs
+    static let secsStep: TimeInterval = 5 * 60 // Slider increments in minutes
     
     static let offlineGracePeriod: TimeInterval = 20
     static let offlineGracePeriodDelaySinceProtectedDataAvailability: TimeInterval = 5

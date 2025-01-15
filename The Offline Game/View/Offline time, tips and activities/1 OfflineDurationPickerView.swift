@@ -15,15 +15,16 @@ struct OfflineDurationPickerView: View {
     @State private var tipsViewPresented = false
     @State private var activitiesViewPresented = false
     @State private var wifiAnimate = true
+    @State private var sliderSecsValue: TimeInterval = 0.0
     
     private let wifiLogoRotation: Double = 15
+    
             
     var body: some View {
         
         @Bindable var offlineViewModel = offlineViewModel
         
         NavigationStack {
-            
             
             VStack(spacing: 10) {
                 
@@ -53,10 +54,10 @@ struct OfflineDurationPickerView: View {
                 
                 durationDisplay()
                 
-                Slider(value: $offlineViewModel.durationMinutes,
-                       in: K.offlineDurationRange,
-                       step: K.minuteStep) {
-                    Text(String(format: "%.0f minutes", offlineViewModel.durationMinutes))
+                Slider(value: $sliderSecsValue,
+                       in: K.offlineDurationSecsRange,
+                       step: K.secsStep) {
+                    Text(String(format: "%.0f minutes", offlineViewModel.durationSeconds * 60))
                     // for screen readers
                 }
                 .labelsHidden()
@@ -69,6 +70,10 @@ struct OfflineDurationPickerView: View {
             .font(.main30)
             .textCase(.uppercase)
             .multilineTextAlignment(.center)
+            .onAppear {
+                // Make sure the offline view model slider value is synchronised to here
+                sliderSecsValue = offlineViewModel.durationSeconds
+            }
             .navigationDestination(isPresented: $tipsViewPresented) {
                 TipView()
             }
@@ -88,18 +93,22 @@ struct OfflineDurationPickerView: View {
     
     
     @ViewBuilder private func durationDisplay() -> some View {
-        let time = DurationDisplayHelper.formatDurationWithUnits(offlineViewModel.durationSeconds)
+        let time = DurationDisplayHelper.formatDurationWithUnits(sliderSecsValue)
         
         Text(time.timeString)
             .font(.display256)
             .foregroundStyle(.accent)
-            .contentTransition(.numericText()) // NOT WORKING
+            .animation(.default, value: time.timeString) // FIX? YES
+            .contentTransition(.numericText()) // NOT WORKING (on its own)
         
         Text(time.unitString)
     }
     
     
     private func nextStage() {
+        // 1. Make sure the slider value is synchronised to the view model
+        offlineViewModel.durationSeconds = sliderSecsValue
+        
         // If the wifi is turned on (use network monitor for this) then present the tips view sheet telling them to turn it off
         if NetworkMonitor.shared.isConnected {
             tipsViewPresented = true
