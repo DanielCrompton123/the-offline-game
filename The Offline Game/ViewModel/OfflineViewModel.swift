@@ -40,12 +40,7 @@ class OfflineViewModel {
         didSet {
             // When set, persist it in user defaults
             UserDefaults.standard.set(durationSeconds, forKey: K.userDefaultsDurationSecondsKey)
-#warning("The durationSeconds is set extrenuousely each time the slider changes")
         }
-    }
-    var durationMinutes: TimeInterval {
-        get { durationSeconds / 60 }
-        set { durationSeconds = newValue * 60 }
     }
     
     
@@ -71,9 +66,19 @@ class OfflineViewModel {
     
     // When did the user go offline?
     var startDate: Date? {
+        willSet {
+            // BEFORE updating the start date, set the old elapsed time.
+            // because if setting the startDate to nil, in didSet the elapsed time would be nil too
+            // Only update it if we are resetting the start date back to nil again
+            if newValue == nil { oldElapsedTime = elapsedTime }
+        }
         didSet {
             UserDefaults.standard.set(startDate, forKey: K.userDefaultsStartDateKey)
-            if oldValue != nil { oldStartDate = oldValue }
+            
+            // Now update oldDtartDate & oldElapsedTime
+            if oldValue != nil {
+                oldStartDate = oldValue
+            }
         }
     }
     
@@ -94,11 +99,13 @@ class OfflineViewModel {
         return startDate?.completionTo(endDate)
     }
     
-    // Elapsed time used in ther live activity and the offline progress calculation
+    // Elapsed time used in the live activity and the offline progress calculation
     var elapsedTime: TimeInterval? {
         guard let startDate else { return nil }
         return Date().timeIntervalSince(startDate)
     }
+    // Old elapsed time used in success congrats view when the elaopsedTime has been reset
+    var oldElapsedTime: TimeInterval?
     
     // Used to call the function to end the offline period (e.g. bringing up the congrats view and dismissing the OfflineView)
     var endOfflineTimer: Timer? // ONLY TRIGGERS at the `endDate`
