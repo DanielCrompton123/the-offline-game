@@ -25,7 +25,7 @@ struct The_Offline_GameApp: App {
 }
 
 
-
+#warning("TODO: Add launch screen")
 
 fileprivate struct ENTRY: View {
     
@@ -101,8 +101,9 @@ fileprivate struct ENTRY: View {
             print("Background task ID = \(backgroundTimerTaskId!)")
             
             backgroundTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                print("1 second passed. appDelegate.protectedDataWillBecomeUnavailable = \(appDelegate.protectedDataWillBecomeUnavailable)")
+                print("1.5 seconds passed. Protected data will become UNavailable = \(appDelegate.protectedDataWillBecomeUnavailable)")
                 
+                // End BG task
                 if let backgroundTimerTaskId {
                     UIApplication.shared.endBackgroundTask(backgroundTimerTaskId)
                 }
@@ -118,7 +119,6 @@ fileprivate struct ENTRY: View {
         } else {
             print("App went into foreground/inactive")
             backgroundTimer?.invalidate()
-            print("background timer was \(backgroundTimer)")
             backgroundTimer = nil
             
             // Still make sure any background tasks are terminated (if they weren't in a second)
@@ -127,6 +127,7 @@ fileprivate struct ENTRY: View {
             }
             
             // When the app goes active or inactive, (foreground) end the grace period successfully, but only if a grace period was started.
+            print("Grace period running = \(offlineTracker.gracePeriodRunning)")
             if offlineTracker.gracePeriodRunning {
                 offlineTracker.gracePeriodEnded(successfully: true)
             }

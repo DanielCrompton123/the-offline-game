@@ -43,7 +43,6 @@ struct K {
     static let secsStep: TimeInterval = 5 * 60 // Slider increments in minutes
     
     static let offlineGracePeriod: TimeInterval = 20
-    static let offlineGracePeriodDelaySinceProtectedDataAvailability: TimeInterval = 5
     
     //MARK: - Deep links
     

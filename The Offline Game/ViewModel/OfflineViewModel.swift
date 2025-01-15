@@ -114,6 +114,7 @@ class OfflineViewModel {
     var congratulatoryNotification: OfflineNotification?
     
     func goOffline() {
+        print("Going offline...")
         isPickingDuration = false
         isOffline = true
         startDate = Date()
@@ -151,6 +152,7 @@ class OfflineViewModel {
         ) { [weak self] _ in
             // may execute on a background thread
             DispatchQueue.main.async {
+                print("Offline end timer triggered!")
                 self?.offlineTimeFinished(successfully: true)
             }
         }
@@ -158,7 +160,7 @@ class OfflineViewModel {
     
     
     func offlineTimeFinished(successfully: Bool) {
-        print("offline time finished")
+        print("offline time finished successfully=\(successfully)")
         
         endOfflineTimer?.invalidate()
         endOfflineTimer = nil
@@ -181,6 +183,7 @@ class OfflineViewModel {
     
     var pauseDate: Date?
     func pauseOfflineTime() {
+        print("Pausing offline time")
         // - Record the time we pause at and set state
         pauseDate = Date()
         state = .paused
@@ -200,6 +203,8 @@ class OfflineViewModel {
             print("Only resume offline time when paused")
             return
         }
+        
+        print("Resuming offline time...")
         
         // - Calculate the duration we were paused for
         let pauseDuration = Date().timeIntervalSince(pauseDate)

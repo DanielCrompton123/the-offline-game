@@ -35,10 +35,12 @@ class OfflineTracker {
         // Now start the timer (20s)
         // also start a background task so it can keep running in the background
         backgroundTaskId = UIApplication.shared.beginBackgroundTask { [weak self] in
-            // Expiration handler
-            // When the BG task expires, (shouldn't do) just end the offline time
-            self?.gracePeriodEnded(successfully: false)
-            print("BG task expiration handler called")
+            DispatchQueue.main.async {
+                // Expiration handler
+                // When the BG task expires, (shouldn't do) just end the offline time
+                self?.gracePeriodEnded(successfully: false)
+                print("BG task expiration handler called")
+            }
         }
         
         let startDate = Date()
@@ -52,11 +54,6 @@ class OfflineTracker {
                 
                 let endDate = Date()
                 print("Grace period lasted \(startDate.distance(to: endDate).formatted())")
-                
-                // Now end the background task
-                if let backgroundTaskId = self?.backgroundTaskId {
-                    UIApplication.shared.endBackgroundTask(backgroundTaskId)
-                }
             }
         }
     }

@@ -40,18 +40,25 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
         protectedDataWillBecomeUnavailable = false
         
-        print("offlineViewModel?.isOffline == true = \(offlineViewModel?.isOffline == true)")
         // Only do this if we are offline
         guard offlineViewModel?.isOffline == true else { return }
+        print("The user is offline")
         
         // When the phone turns on, we need to ensure our app is in the foreground, but give the user 5 seconds to open the app before starting their grace period
         DispatchQueue.main.asyncAfter(
-            deadline: .now() + K.offlineGracePeriodDelaySinceProtectedDataAvailability
+            deadline: .now() + 5
         ) { [weak self] in
-            if UIApplication.shared.applicationState != .active {
+            print("Waited 5s for the user to open the app and protectedDataWillBecomeUnavailable = \(self?.protectedDataWillBecomeUnavailable ?? false) and applicationState = \(UIApplication.shared.applicationState)")
+            if UIApplication.shared.applicationState != .active,
+               self?.protectedDataWillBecomeUnavailable == false {
                 self?.offlineTracker?.startGracePeriod()
             }
         }
+        
+        // ^^^^^
+        // Start when the protected data becomes available and end when it becomes unavailable
+        // -Make sure the protected data will become available property is still false in the async After, befoe starting the grace period. IN THOSE 5 SECONDS THE APP HAS CLOSED AGAIN AND THE CONDITION `UIApplication.shared.applicationState != .active` IS FALSE SO THE GRACE PERIOD STARTS
+
     }
     
     func applicationProtectedDataWillBecomeUnavailable(_ application: UIApplication) {

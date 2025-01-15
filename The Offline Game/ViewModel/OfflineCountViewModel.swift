@@ -26,7 +26,7 @@ class OfflineCountViewModel {
             if let c = snapshot.value as? Int {                
                 DispatchQueue.main.async {
                     self?.count = c
-                    print("Offline count changed to \(self?.count ?? -1)")
+//                    print("Offline count changed to \(self?.count ?? -1)")
                 }
             } else {
                 print("Cannot get Int value from snapshot")

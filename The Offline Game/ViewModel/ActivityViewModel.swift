@@ -38,8 +38,9 @@ class ActivityViewModel {
     
     
     func getBoredActivity() async throws {
+        #warning("TODO: Use request helper inside of getBoredActivity.")
         guard let url = URL(string: K.boredAPIEndpoint) else {
-            print("Cannot make a URl from '\(K.boredAPIEndpoint)'")
+            print("Cannot make a URL from '\(K.boredAPIEndpoint)'")
             throw URLError(.badURL)
         }
         
@@ -64,6 +65,7 @@ class ActivityViewModel {
     }
     
     
+    #warning("TODO: Add interval parameter")
     func startUpdatingActivityIcon() {
         Timer.publish(every: K.activityIconChangeInterval, on: RunLoop.main, in: RunLoop.Mode.common)
             .autoconnect()
