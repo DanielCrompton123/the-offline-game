@@ -23,20 +23,31 @@ struct AccountCreationAgeView: View {
             
             // HEADER
             
-            HStack {
-                Text("HOW")
-                    .font(.main20)
+            ZStack(alignment: .bottom) {
+                Image(.dadWithChild)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 260)
+                    .scaleEffect(1.3)
+                    .foregroundStyle(.smog)
+                    .opacity(0.1)
+                    .rotationEffect(.degrees(-7))
                 
-                Text("OLD")
-                    .font(.display128)
-                
-                Text("ARE YOU?")
-                    .font(.main20)
+                VStack {
+                    HStack {
+                        Text("HOW")
+                            .font(.main20)
+                        Text("OLD")
+                            .font(.display128)
+                        Text("ARE YOU?")
+                            .font(.main20)
+                    }
+                    
+                    Text("(WE’VE GOT TO ASK, FOR LEGAL REASONS)")
+                        .font(.main14)
+                        .foregroundStyle(.smog)
+                }
             }
-            
-            Text("(WE’VE GOT TO ASK, FOR LEGAL REASONS)")
-                .font(.main14)
-                .foregroundStyle(.smog)
             
             Spacer()
             

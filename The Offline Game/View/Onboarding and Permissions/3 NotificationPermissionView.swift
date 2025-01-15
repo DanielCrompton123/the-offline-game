@@ -20,21 +20,37 @@ struct NotificationPermissionView: View {
         VStack {
             Spacer()
             
-            OfflineHeader()
+            ZStack(alignment: .bottom) {
+                Image(.bellWithSwoosh)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 260)
+                    .scaleEffect(1.3)
+                    .foregroundStyle(.smog)
+                    .opacity(0.1)
+                    .rotationEffect(.degrees(7))
+                
+                Text("NOTIFICATIONS")
+                    .font(.display88)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
+                    .padding(.horizontal)
+            }
             
             Spacer()
-                        
-            if let notificationStatus = permissionsViewModel.notificationStatus {
-                description(for: notificationStatus)
-                
-                Spacer()
-                
-                buttons(for: notificationStatus)
-            }
             
-            else {
-                ProgressView("Loading focus status")
-            }
+                if let notificationStatus = permissionsViewModel.notificationStatus {
+                    description(for: notificationStatus)
+                        .padding(.horizontal)
+                    
+                    Spacer()
+                    
+                    buttons(for: notificationStatus)
+                }
+                
+                else {
+                    ProgressView("Loading focus status")
+                }
         }
         
         // Load the notification status when the UI appears with high priority
@@ -116,4 +132,5 @@ struct NotificationPermissionView: View {
 
 #Preview {
     NotificationPermissionView()
+        .environment(PermissionsViewModel())
 }

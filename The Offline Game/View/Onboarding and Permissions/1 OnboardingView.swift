@@ -14,23 +14,26 @@ struct OnboardingView: View {
         NavigationStack {
             VStack(spacing: 20) {
                 
-                Spacer()
+                Spacer(minLength: 0)
                 
-                // HEADER
-                OfflineHeader()
-                
-                Spacer()
-                
-                // ONBOARDING CONTENT
-                
-                VStack(spacing: 10) {
-                    onboardingItem(label: "Addicted to your phone?", systemImage: "brain.head.profile")
-                    onboardingItem(label: "See how long you can go offline", systemImage: "stopwatch")
-                    onboardingItem(label: "Challenge friends to do the same!", systemImage: "trophy")
+                VStack(spacing: 20) {
+                    // HEADER
+                    OfflineHeader()
+                    
+                    Spacer(minLength: 0)
+                    
+                    // ONBOARDING CONTENT
+                    
+                    VStack(spacing: 10) {
+                        onboardingItem(label: "Addicted to your phone?", systemImage: "brain.head.profile")
+                        onboardingItem(label: "See how long you can go offline", systemImage: "stopwatch")
+                        onboardingItem(label: "Challenge friends to do the same!", systemImage: "trophy")
+                    }
+                    .minimumScaleFactor(0.6)
                 }
-                .minimumScaleFactor(0.6)
+                .padding(.horizontal)
                 
-                Spacer()
+                Spacer(minLength: 0)
                 
                 NavigationLink {
                     // Link to the User Account Age View
@@ -39,10 +42,9 @@ struct OnboardingView: View {
                 } label: {
                     Label("Continue", systemImage: K.systemArrowIcon)
                 }
-                .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
+                .buttonStyle(FilledRedButtonStyle())
                 
             }
-            .padding()
         }
     }
    
