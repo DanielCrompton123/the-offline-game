@@ -92,7 +92,7 @@ fileprivate struct ENTRY: View {
         
         
         if newValue == .background {
-            print("App went into background")
+            print("App went into background.")
             // If the app went into background because the phone turned off do nothing
             // If the phone was turned on though (the user switched to another app maybe) offer them grace period
             
@@ -100,7 +100,7 @@ fileprivate struct ENTRY: View {
             backgroundTimerTaskId = UIApplication.shared.beginBackgroundTask()
             print("Background task ID = \(backgroundTimerTaskId!)")
             
-            backgroundTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
+            backgroundTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
                 print("1 second passed. appDelegate.protectedDataWillBecomeUnavailable = \(appDelegate.protectedDataWillBecomeUnavailable)")
                 
                 if let backgroundTimerTaskId {

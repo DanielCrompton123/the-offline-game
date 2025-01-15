@@ -24,7 +24,7 @@ struct NotificationPermissionView: View {
                 Image(.bellWithSwoosh)
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: 260)
+                    .frame(maxWidth: 300)
                     .scaleEffect(1.3)
                     .foregroundStyle(.smog)
                     .opacity(0.1)

@@ -51,12 +51,15 @@ class ActivityViewModel {
         
         let decoder = JSONDecoder()
         
-        let activity = try decoder.decode(BoredActivity.self, from: data)
-        
-        await MainActor.run {
-            boredActivities.insert(activity, at: 0)
+        do {
+            let activity = try decoder.decode(BoredActivity.self, from: data)
             
+            await MainActor.run {
+                boredActivities.insert(activity, at: 0)
+            }
+        } catch {
             isFetchingBoredActivity = false
+            throw error
         }
     }
     

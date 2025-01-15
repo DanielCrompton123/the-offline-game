@@ -16,21 +16,19 @@ struct OnboardingView: View {
                 
                 Spacer(minLength: 0)
                 
-                VStack(spacing: 20) {
-                    // HEADER
-                    OfflineHeader()
-                    
-                    Spacer(minLength: 0)
-                    
-                    // ONBOARDING CONTENT
-                    
-                    VStack(spacing: 10) {
-                        onboardingItem(label: "Addicted to your phone?", systemImage: "brain.head.profile")
-                        onboardingItem(label: "See how long you can go offline", systemImage: "stopwatch")
-                        onboardingItem(label: "Challenge friends to do the same!", systemImage: "trophy")
-                    }
-                    .minimumScaleFactor(0.6)
+                // HEADER
+                OfflineHeader()
+                
+                Spacer(minLength: 0)
+                
+                // ONBOARDING CONTENT
+                
+                VStack(spacing: 10) {
+                    onboardingItem(label: "Addicted to your phone?", systemImage: "brain.head.profile")
+                    onboardingItem(label: "See how long you can go offline", systemImage: "stopwatch")
+                    onboardingItem(label: "Challenge friends to do the same!", systemImage: "trophy")
                 }
+                .minimumScaleFactor(0.6)
                 .padding(.horizontal)
                 
                 Spacer(minLength: 0)
