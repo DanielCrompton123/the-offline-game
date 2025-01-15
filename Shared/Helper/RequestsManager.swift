@@ -24,6 +24,8 @@ struct RequestsManager {
             throw URLError(.badURL)
         }
         
+        print("Requesting \(url.absoluteString)")
+        
         // 2. Make request
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = headers
@@ -45,6 +47,8 @@ struct RequestsManager {
         guard let url = URL(string: "\(url)?\(parameters.urlQuery())") else {
             throw URLError(.badURL)
         }
+        
+        print("Requesting \(url.absoluteString)")
         
         // 2. Make request
         var request = URLRequest(url: url)

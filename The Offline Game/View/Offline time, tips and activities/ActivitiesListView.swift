@@ -10,7 +10,10 @@ import SwiftUI
 struct ActivitiesListView: View {
     @Environment(ActivityViewModel.self) private var activityViewModel
     
+    @State private var error = ""
+    
     var body: some View {
+        
         Group {
             if let preloadedActivities = activityViewModel.preloadedActivities {
                 List {
@@ -31,8 +34,6 @@ struct ActivitiesListView: View {
                             Label("Your activities", systemImage: "figure.wave")
                                 .font(.headline)
                         }
-                        .transition(.slide)
-                        .animation(.bouncy, value: activityViewModel.boredActivities)
                     }
                     
                     ForEach(preloadedActivities) { activityCollection in
@@ -52,6 +53,44 @@ struct ActivitiesListView: View {
             }
         }
         .onAppear(perform: activityViewModel.loadPreloadedActivities)
+        .safeAreaInset(edge: .top) {
+            ZStack(alignment: .bottom) {
+                Button(
+                    "Generate activity",
+                    systemImage: activityViewModel.activityIcon,
+                    action: loadBoredActivity
+                )
+                .disabled(activityViewModel.isFetchingBoredActivity)
+                .buttonStyle(RedButtonStyle())
+//                        .padding(.horizontal)
+//                        .padding(.bottom)
+                .background(.bar)
+                
+                Divider()
+            }
+        }
+        // Error alert for bored API activities
+        .alert("Error getting Bored activity", isPresented: $error.condition(\.isEmpty, inverse: true)) {
+            Button("OK", role: .cancel) {
+                error = ""
+            }
+        } message: {
+            Text(error)
+        }
+
+    }
+
+    
+    
+    private func loadBoredActivity() {
+        Task {
+            do {
+                try await activityViewModel.getBoredActivity()
+            } catch {
+                print("Error getting bored activity: \(error)")
+                self.error = error.localizedDescription
+            }
+        }
     }
     
     
@@ -95,4 +134,6 @@ struct ActivitiesListView: View {
 
 #Preview {
     ActivitiesListView()
+        .environment(ActivityViewModel())
+
 }
