@@ -18,7 +18,9 @@ struct ActivitiesView: View {
                 .navigationTitle("Activities")
                 .toolbarTitleDisplayMode(.inline)
             
-                .onAppear(perform: activityViewModel.startUpdatingActivityIcon)
+                .onAppear {
+                    activityViewModel.startUpdatingActivityIcon(timeInterval: 2)
+                }
                 .onDisappear(perform: activityViewModel.stopUpdatingActivityIcon)
             
                 // Top "Generate activity" button

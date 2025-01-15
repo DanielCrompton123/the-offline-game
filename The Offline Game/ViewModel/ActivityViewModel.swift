@@ -62,9 +62,8 @@ class ActivityViewModel {
     }
     
     
-    #warning("TODO: Add interval parameter")
-    func startUpdatingActivityIcon() {
-        Timer.publish(every: K.activityIconChangeInterval, on: RunLoop.main, in: RunLoop.Mode.common)
+    func startUpdatingActivityIcon(timeInterval: TimeInterval) {
+        Timer.publish(every: timeInterval, on: RunLoop.main, in: RunLoop.Mode.common)
             .autoconnect()
             .sink { [weak self] _ in
                 self?.activityIcon = K.activityIcons.randomElement()!

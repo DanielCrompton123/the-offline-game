@@ -62,7 +62,9 @@ struct OfflineView: View {
                 }
                 .tint(.white)
                 .buttonStyle(RedButtonStyle())
-                .onAppear(perform: activityViewModel.startUpdatingActivityIcon)
+                .onAppear {
+                    activityViewModel.startUpdatingActivityIcon(timeInterval: 5)
+                }
                 .onDisappear(perform: activityViewModel.stopUpdatingActivityIcon)
                 
                 Button("GO ONLINE", systemImage: "iphone.and.arrow.left.and.arrow.right.inward") {

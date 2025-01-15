@@ -52,9 +52,7 @@ struct K {
     //MARK: - Strings / UI
     
     static let activityIcons = ["figure.walk", "figure.run.treadmill", "figure.american.football", "figure.archery", "figure.basketball", "figure.climbing", "figure.curling", "figure.dance", "figure.skiing.downhill", "figure.hiking", "figure.outdoor.cycle", "figure.pool.swim", "figure.ice.skating"]
-        
-    static let activityIconChangeInterval: TimeInterval = 2.25
-    
+            
     static let systemArrowIcon = "chevron.forward.dotted.chevron.forward"
 
 
