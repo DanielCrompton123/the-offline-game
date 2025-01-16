@@ -20,6 +20,9 @@ struct HomeView: View {
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
     
+    // Show or hide settings view
+    @State private var settingsIsOpen = false
+    
     var body: some View {
         
         @Bindable var offlineViewModel = offlineViewModel
@@ -66,6 +69,9 @@ struct HomeView: View {
             .sheet(isPresented: $offlineViewModel.userDidFail) {
                 FailureView()
             }
+            .sheet(isPresented: $settingsIsOpen) {
+                SettingsView()
+            }
             .fullScreenCover(isPresented: $shouldShowNotificationWarning) {
                 NotificationPermissionView()
             }
@@ -76,6 +82,22 @@ struct HomeView: View {
                 await permissionsViewModel.loadNotificationStatus()
                 await MainActor.run {
                     shouldShowNotificationWarning = permissionsViewModel.notificationStatus == .denied
+                }
+            }
+            
+            // Add the settings button to top leading
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        settingsIsOpen = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "gear")
+                            Text("Settings")
+                        }
+                    }
+                    .font(.main14)
+                    .tint(.smog)
                 }
             }
             
