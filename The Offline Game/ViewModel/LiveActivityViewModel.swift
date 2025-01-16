@@ -14,6 +14,7 @@ class LiveActivityViewModel {
     private var activity: Activity<LiveActivityTimerAttributes>?
     
     weak var offlineViewModel: OfflineViewModel?
+    weak var offlineCountViewModel: OfflineCountViewModel?
     
     func startActivity() {
         guard let offlineViewModel, let startDate = offlineViewModel.startDate else { return }
@@ -25,9 +26,8 @@ class LiveActivityViewModel {
         let state = LiveActivityTimerAttributes.ContentState(
             duration: offlineViewModel.durationSeconds,
             startDate: startDate,
-            peopleOffline: 549
+            peopleOffline: offlineCountViewModel?.count ?? 0
         )
-#warning("Set proper people offine count")
         
         let content = ActivityContent(state: state, staleDate: nil)
         
@@ -72,9 +72,8 @@ class LiveActivityViewModel {
         let state = LiveActivityTimerAttributes.ContentState(
             duration: offlineViewModel.durationSeconds,
             startDate: startDate,
-            peopleOffline: 549
+            peopleOffline: offlineCountViewModel?.count ?? 0
         )
-#warning("Set proper people offine count")
 
         let content = ActivityContent(state: state, staleDate: nil)
         

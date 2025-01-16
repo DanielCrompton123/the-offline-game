@@ -19,7 +19,7 @@ class OfflineViewModel {
         
         // The `UserDefaults.standard.double` defaults to 0.0 if the value doesn't exist but we want it to default to 20 minutes.
         let durationSeconds = UserDefaults.standard.double(forKey: K.userDefaultsDurationSecondsKey)
-        self.durationSeconds = durationSeconds == 0.0 ? 20*60 : durationSeconds
+        self.durationSeconds = durationSeconds == 0.0 ? .seconds(20*60) : .seconds(durationSeconds)
         
         let stateRawValue = UserDefaults.standard.integer(forKey: K.userDefaultsOfflineStateKey)
         state = State(rawValue: stateRawValue) ?? .none
@@ -36,10 +36,10 @@ class OfflineViewModel {
     //MARK: - Offline duration
     
     // store the number of offline minutes selected by the user
-    var durationSeconds: TimeInterval = 20 * 60 { // 20 minutes
+    var durationSeconds: Duration = .seconds(20 * 60) { // 20 minutes
         didSet {
             // When set, persist it in user defaults
-            UserDefaults.standard.set(durationSeconds, forKey: K.userDefaultsDurationSecondsKey)
+            UserDefaults.standard.set(durationSeconds.components.seconds, forKey: K.userDefaultsDurationSecondsKey)
         }
     }
     
@@ -89,7 +89,7 @@ class OfflineViewModel {
     // Diaplayed in the UI with Text(Date, style: .timer)
     var endDate: Date? {
         guard let startDate else { return nil }
-        return startDate.addingTimeInterval(durationSeconds)
+        return startDate.addingTimeInterval(durationSeconds.seconds)
     }
     
     // Used in the offline progress bar gauges
@@ -128,7 +128,7 @@ class OfflineViewModel {
         scheduleOfflineTimer()
         
         // Now schedule a notification to be posted to the user when their offline time ends
-        let formattedDuration = DurationDisplayHelper.formatDuration(durationSeconds)
+        let formattedDuration = durationSeconds.offlineDisplayFormat(width: .abbreviated)
         
         congratulatoryNotification = OfflineNotification.congratulatoryNotification(
             endDate: endDate!, // unwrapped- just set startDate and endDate depends on it
@@ -210,12 +210,13 @@ class OfflineViewModel {
         let pauseDuration = Date().timeIntervalSince(pauseDate)
         
         // - modify the end date. To do this we need to change the offline duration
-        durationSeconds += pauseDuration
+        durationSeconds += .seconds(pauseDuration)
         
         // - reschedule the notification and end timer
         scheduleOfflineTimer()
         
-        let formattedDuration = DurationDisplayHelper.formatDuration(durationSeconds)
+        // abbreviated because we're in a notification
+        let formattedDuration = durationSeconds.offlineDisplayFormat(width: .abbreviated)
         congratulatoryNotification = OfflineNotification.congratulatoryNotification(
             endDate: endDate!, // unwrapped- just set startDate and endDate depends on it
             formattedDuration: formattedDuration

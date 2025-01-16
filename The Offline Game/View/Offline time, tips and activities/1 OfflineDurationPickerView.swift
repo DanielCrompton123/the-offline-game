@@ -57,7 +57,7 @@ struct OfflineDurationPickerView: View {
                 Slider(value: $sliderSecsValue,
                        in: K.offlineDurationSecsRange,
                        step: K.secsStep) {
-                    Text(String(format: "%.0f minutes", offlineViewModel.durationSeconds * 60))
+                    Text(offlineViewModel.durationSeconds.offlineDisplayFormat())
                     // for screen readers
                 }
                 .labelsHidden()
@@ -72,7 +72,7 @@ struct OfflineDurationPickerView: View {
             .multilineTextAlignment(.center)
             .onAppear {
                 // Make sure the offline view model slider value is synchronised to here
-                sliderSecsValue = offlineViewModel.durationSeconds
+                sliderSecsValue = offlineViewModel.durationSeconds.seconds
             }
             .navigationDestination(isPresented: $tipsViewPresented) {
                 TipView()
@@ -93,21 +93,35 @@ struct OfflineDurationPickerView: View {
     
     
     @ViewBuilder private func durationDisplay() -> some View {
-        let time = DurationDisplayHelper.formatDurationWithUnits(sliderSecsValue)
+        let timeComponents = Duration.seconds(sliderSecsValue).offlineDisplayFormatComponents(width: .abbreviated)
         
-        Text(time.timeString)
-            .font(.display256)
-            .foregroundStyle(.accent)
-            .animation(.default, value: time.timeString) // FIX? YES
-            .contentTransition(.numericText()) // NOT WORKING (on its own)
-        
-        Text(time.unitString)
+        if let firstComponent = timeComponents.first {
+            Text("\(firstComponent.0)") // E.g. 9
+                .textCase(.uppercase)
+                .font(.display256)
+                .foregroundStyle(.accent)
+                .animation(.default, value: firstComponent.0) // FIX? YES // value is the number part
+                .contentTransition(.numericText()) // NOT WORKING (on its own)
+            
+            let commaSeperatedComponents = timeComponents[1...]
+                .map { "\($0.0) \($0.1)" }
+                .joined(separator: ", ")
+            
+            Text(
+                firstComponent.1 +
+                (!commaSeperatedComponents.isEmpty ? ", " : "") +
+                commaSeperatedComponents
+            )
+            
+        } else {
+            Text("No first component for duration. Components are \(timeComponents)")
+        }
     }
     
     
     private func nextStage() {
         // 1. Make sure the slider value is synchronised to the view model
-        offlineViewModel.durationSeconds = sliderSecsValue
+        offlineViewModel.durationSeconds = .seconds(sliderSecsValue)
         
         // If the wifi is turned on (use network monitor for this) then present the tips view sheet telling them to turn it off
         if NetworkMonitor.shared.isConnected {

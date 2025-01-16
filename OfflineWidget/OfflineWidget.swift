@@ -10,68 +10,21 @@ import SwiftUI
 import ActivityKit
 
 
-struct TimerView : View {
-    let context: ActivityViewContext<LiveActivityTimerAttributes>
-    
-    var body: some View {
-        ZStack {
-            LinearGradient(colors: [.ruby, .accent],
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing)
-            .ignoresSafeArea()
-            
-            HStack {
-                Image(.offlineIcon)
-                    .padding()
-                
-                VStack {
-                    Group {
-                        Text("Don't use your phone!")
-                            .font(.headline)
-                        
-                        let timeElapsed = context.state.startDate.distance(to: Date())
-                        let offlineTimeElapsedString = DurationDisplayHelper.formatDuration(timeElapsed)
-                        
-                        Text("You've been offline for \(offlineTimeElapsedString), keep going!")
-                            .font(.callout)
-                        
-//                        // DOESN'T UPDATE!!!
-//                        if let endDate = context.state.endDate {
-//                            TimelineView(.animation) { _ in
-//                                let offlineCompletion = context.state.startDate.completionTo(endDate)
-//                                let _ = print("Refreshing offline widget view now")
-//                                Gauge(value: offlineCompletion) {
-//                                    Label("Offline...", systemImage: K.systemOfflineIcon)
-//                                }
-//                                .tint(.white)
-//                            }
-//                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .lineSpacing(-1.5)
-                .foregroundStyle(.white)
-            }
-            .padding(.horizontal)
-            
-        }
-    }
-}
-
-
 
 
 struct OfflineWidget: Widget {
     let kind: String = "OfflineWidget"
     
     var body: some WidgetConfiguration {
+        
         ActivityConfiguration(for: LiveActivityTimerAttributes.self) { context in
             
-            TimerView(context: context)
-            
+            LockScreenLiveActivityView(context: context)
             
         } dynamicIsland: { context in
+            
             DynamicIsland {
+                
                 // Expanded
                 DynamicIslandExpandedRegion(.leading) {
                     Image(.offlineIcon)

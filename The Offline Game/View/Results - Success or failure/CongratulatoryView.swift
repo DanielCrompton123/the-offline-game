@@ -49,7 +49,7 @@ struct CongratulatoryView: View {
                 .font(.display108)
             
             if let elapsedTime = offlineViewModel.oldElapsedTime {
-                let formattedDur = DurationDisplayHelper.formatDuration(elapsedTime)
+                let formattedDur = Duration.seconds(elapsedTime).offlineDisplayFormat()
                 
                 Text("You successfully spent \(formattedDur) offline!")
                     .opacity(0.75)

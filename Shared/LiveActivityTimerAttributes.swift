@@ -17,23 +17,23 @@ struct LiveActivityTimerAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable {
         // If they were a lets the widget cannot be updated
         
-        var duration: TimeInterval?
+        var duration: Duration?
         var startDate: Date
         
         var endDate: Date? {
             guard let duration else { return nil }
-            return startDate.addingTimeInterval(duration)
+            return startDate.addingTimeInterval(duration.seconds)
         }
         
         var offlineDurationProgress: Double? {
             guard let endDate, let duration else { return nil }
-            return endDate.timeIntervalSinceNow / duration
+            return endDate.timeIntervalSinceNow / duration.seconds
         }
         
         // Other properties that can be accessed
         var peopleOffline: Int
         
-        static let preview = ContentState(duration: 60, startDate: Date(), peopleOffline: 590)
+        static let preview = ContentState(duration: .seconds(60), startDate: Date(), peopleOffline: 590)
     }
     
 }

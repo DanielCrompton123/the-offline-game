@@ -25,7 +25,6 @@ struct The_Offline_GameApp: App {
 }
 
 
-#warning("TODO: Add launch screen")
 
 fileprivate struct ENTRY: View {
     
@@ -72,15 +71,14 @@ fileprivate struct ENTRY: View {
     
     private func makeConnections() {
         liveActivityViewModel.offlineViewModel = offlineViewModel
+        liveActivityViewModel.offlineCountViewModel = offlineCountViewModel
         offlineViewModel.liveActivityViewModel = liveActivityViewModel
         offlineViewModel.offlineCountViewModel = offlineCountViewModel
-        
         appDelegate.offlineViewModel = offlineViewModel
         appDelegate.offlineTracker = offlineTracker
         offlineTracker.offlineViewModel = offlineViewModel
         
         FirebaseApp.configure()
-        
         offlineCountViewModel.loadDatabase()
         offlineCountViewModel.setupDatabaseObserver()
     }

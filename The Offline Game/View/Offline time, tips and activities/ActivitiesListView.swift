@@ -32,7 +32,8 @@ struct ActivitiesListView: View {
                             }
                         } header: {
                             Label("Your activities", systemImage: "figure.wave")
-                                .font(.headline)
+                                .font(.title2)
+                                .bold()
                         }
                     }
                     
