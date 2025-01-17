@@ -31,7 +31,7 @@ class GameKitViewModel {
             // Otherwise, if both are nil AND player.isAuthenticated, we signed in successfully
             // If viewController, error = nil AND isAuthenticated are false, the user opted out so we should disable game center.
             
-            print("GKLocalPlayer.local.authenticateHandler called.\nviewController == nil = \(viewController == nil), error = \(error)")
+            print("GKLocalPlayer.local.authenticateHandler called")
             
             // First, present the view controller if we need to
             if let viewController {
@@ -48,6 +48,7 @@ class GameKitViewModel {
             }
             
             // Now we should check if they want game kit enabled or not.
+            print("GKLocalPlayer.local.isAuthenticated = \(GKLocalPlayer.local.isAuthenticated)")
             self?.gameCenterEnabled = GKLocalPlayer.local.isAuthenticated
             
             // Now enable or disable some things
