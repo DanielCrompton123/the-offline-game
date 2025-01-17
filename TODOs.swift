@@ -19,3 +19,8 @@ import Foundation
 #warning("Add attributions for fonts and lottie animations")
 #warning("Add common offline durations to picker")
 #warning("Convert print statements to use logging API with os and Logger.log")
+#warning("Ask users what activity they did while offline after going online")
+#warning("Add offline reminder notifications to configure in settings")
+#warning("After going offline twise ask user to rate the app -- StoreKit")
+#warning("Congratulate a user for offline OVERTIME and reflect in the UI success views.")
+#warning("Create shared assets for offline widget and main app.")
