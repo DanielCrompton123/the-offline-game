@@ -42,6 +42,7 @@ fileprivate struct ENTRY: View {
     @State private var activityViewModel = ActivityViewModel()
     @State private var offlineCountViewModel = OfflineCountViewModel()
     @State private var offlineTracker = OfflineTracker()
+    @State private var gameKitViewModel = GameKitViewModel()
     
     // Store a unique user ID
     @AppStorage(K.userDefaultsUserIdKey) private var userId = UUID().uuidString
@@ -55,6 +56,7 @@ fileprivate struct ENTRY: View {
                 OnboardingView()
             }
             .onAppear(perform: makeConnections)
+            .onAppear(perform: gameKitViewModel.authenticatePlayer)
             .onChange(of: scenePhase) { old, new in
                 scenePhaseChanged(from: old, to: new)
             }
@@ -65,6 +67,7 @@ fileprivate struct ENTRY: View {
             .environment(activityViewModel)
             .environment(offlineCountViewModel)
             .environment(offlineTracker)
+            .environment(gameKitViewModel)
         
     }
     
