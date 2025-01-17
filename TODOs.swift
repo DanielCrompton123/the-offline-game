@@ -7,8 +7,9 @@
 
 import Foundation
 
+#warning("Fix notifications for Josh's phone")
 #warning("Add an offline leaderboard, and game center objectives")
-#warning("Use the Duration API to format minutes/seconds")
+//#warning("Use the Duration API to format minutes/seconds")
 #warning("Fix the lock screen live activity")
 #warning("Create a better offline time gauge")
 #warning("Create a better offline duration slider")

@@ -12,15 +12,26 @@ struct SettingsView: View {
         NavigationStack {
             
             List {
-                NavigationLink {
-                    AttributionsView()
-                } label: {
-                    Label("Attributions", systemImage: "hands.sparkles")
+                Group {
+                    NavigationLink {
+                        AttributionsView()
+                    } label: {
+                        Label("Attributions", systemImage: "hands.sparkles")
+                    }
+                    
+                    NavigationLink {
+//                        AccountCreationAgeView {
+//                            // Action when age is changed:
+//                            // dismiss it.
+//                        }
+                        AccountCreationAgeView(insideOnboarding: false)
+                    } label: {
+                        Label("Change age", systemImage: "figure.and.child.holdinghands")
+                    }
                 }
-                .font(.main20)
-                
-                
+                .frame(height: 50) // too big?
             }
+            .font(.main20)
             .navigationTitle("Settings")
             
         }

@@ -11,9 +11,13 @@ import SwiftUI
 
 struct AccountCreationAgeView: View {
     
+    let insideOnboarding: Bool
+    
     @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
     
     @State private var navigateToNotificationPermissionsView = false
+    
+    @Environment(\.dismiss) private var dismiss
         
     var body: some View {
             
@@ -53,20 +57,11 @@ struct AccountCreationAgeView: View {
             
             // AGE BUTTONS
             
-            Button("I'M AN ADULT, DAMNIT!") {
-                userAgeRawValue = Age.adult.rawValue
-                navigateToNotificationPermissionsView = true
-            }
+            ageSelection(.adult, text: "I'M AN ADULT, DAMNIT!")
             
-            Button("I'M OVER 13 YEARS OLD") {
-                userAgeRawValue = Age.teen.rawValue
-                navigateToNotificationPermissionsView = true
-            }
+            ageSelection(.teen, text: "I'M OVER 13 YEARS OLD")
             
-            Button("I'M A KID, UNDER 13") {
-                userAgeRawValue = Age.child.rawValue
-                navigateToNotificationPermissionsView = true
-            }
+            ageSelection(.child, text: "I'M A KID, UNDER 13")
             
         }
         .buttonStyle(FilledRedButtonStyle())
@@ -75,8 +70,28 @@ struct AccountCreationAgeView: View {
             NotificationPermissionView()
         }
     }
+    
+    
+    @ViewBuilder private func ageSelection(_ age: Age, text: String) -> some View {
+        Button(text) {
+            userAgeRawValue = age.rawValue
+            
+            // If we are inside ther onboarding flow we should move to the next stage. Otherwise, just dismiss it
+            if insideOnboarding {
+                navigateToNotificationPermissionsView = true
+            } else {
+                dismiss()
+            }
+        }
+        .tint(
+            // If the current age has been selected make this button tint green
+            userAgeRawValue == age.rawValue ? .green : .accentColor
+        )
+        
+        .animation(.easeOut(duration: 0.2), value: userAgeRawValue)
+    }
 }
 
 #Preview {
-    AccountCreationAgeView()
+    AccountCreationAgeView(insideOnboarding: false)
 }
