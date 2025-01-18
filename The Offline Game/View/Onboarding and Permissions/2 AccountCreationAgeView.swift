@@ -12,6 +12,7 @@ import SwiftUI
 struct AccountCreationAgeView: View {
         
     @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
+    @Environment(\.colorScheme) private var colorScheme
     
     var action: () -> () = { }
         
@@ -30,7 +31,7 @@ struct AccountCreationAgeView: View {
                     .frame(maxWidth: 300)
                     .scaleEffect(1.3)
                     .foregroundStyle(.smog)
-                    .opacity(0.1)
+                    .opacity(colorScheme == .light ? 0.1 : 0.4) // it's too hard to see the symbol in dark mode at 0.1
                     .rotationEffect(.degrees(-7))
                 
                 VStack {

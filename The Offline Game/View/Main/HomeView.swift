@@ -16,6 +16,7 @@ struct HomeView: View {
     @Environment(PermissionsViewModel.self) private var permissionsViewModel
     @Environment(LiveActivityViewModel.self) private var liveActivityViewModel
     @Environment(OfflineCountViewModel.self) private var offlineCountViewModel
+    @Environment(GameKitViewModel.self) private var gameKitViewModel
         
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
@@ -28,6 +29,7 @@ struct HomeView: View {
         @Bindable var offlineViewModel = offlineViewModel
         
         NavigationStack {
+            
             VStack {
                 
                 Spacer()
@@ -60,24 +62,50 @@ struct HomeView: View {
                 .buttonStyle(FilledRedButtonStyle())
                                 
             }
+            
+            // DURATION PICKER (and tips)
             .sheet(isPresented: $offlineViewModel.isPickingDuration) {
+                // On dismiss, (of either the duration picker or tips) is we are NOT going online then make the access point appear
+                if !offlineViewModel.isOffline {
+                    gameKitViewModel.openAccessPoint()
+                }
+            } content: {
                 OfflineDurationPickerView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
+            
+            // CONGRATS VIEW
             .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated) {
                 CongratulatoryView()
             }
+            
+            // FAILURE VIEW
             .sheet(isPresented: $offlineViewModel.userDidFail) {
                 FailureView()
             }
+            
+            // SETTINGS VIEW
             .sheet(isPresented: $settingsIsOpen) {
                 SettingsView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
+                    .onDisappear(perform: gameKitViewModel.openAccessPoint)
             }
-            .fullScreenCover(isPresented: $shouldShowNotificationWarning) {
+            
+            // NOTIFICATION WARNING
+            .fullScreenCover(isPresented: $shouldShowNotificationWarning,
+                             onDismiss: gameKitViewModel.openAccessPoint) {
                 NotificationPermissionView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
-            .fullScreenCover(isPresented: $offlineViewModel.isOffline) {
+            
+            // OFFLINE
+            .fullScreenCover(isPresented: $offlineViewModel.isOffline,
+                             onDismiss: gameKitViewModel.openAccessPoint) {
                 OfflineView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
+            
+            // LOAD NOTIFICATION STATUS
             .task(priority: .high) {
                 await permissionsViewModel.loadNotificationStatus()
                 await MainActor.run {
@@ -85,7 +113,7 @@ struct HomeView: View {
                 }
             }
             
-            // Add the settings button to top leading
+            // SETTINGS BUTTON
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {

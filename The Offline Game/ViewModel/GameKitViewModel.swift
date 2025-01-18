@@ -13,6 +13,7 @@ class GameKitViewModel {
     
     var error: String?
     var gameCenterEnabled = false
+    var offlineViewModel: OfflineViewModel?
     
     // Get the root view controller
     var rootViewController: UIViewController {
@@ -53,6 +54,22 @@ class GameKitViewModel {
             
             // Now enable or disable some things
         }
+    }
+    
+    
+    func openAccessPoint() {
+        GKAccessPoint.shared.location = .topTrailing
+        GKAccessPoint.shared.isActive = true
+    }
+    
+    
+    func hideAccessPoint() {
+        GKAccessPoint.shared.isActive = false
+    }
+    
+    
+    func openAchievements() {
+        
     }
     
 }

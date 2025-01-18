@@ -52,15 +52,25 @@ fileprivate struct ENTRY: View {
     var body: some View {
         
         HomeView()
+        
+        // ONBOARDING
             .fullScreenCover(isPresented: $shouldShowOnboarding) {
                 OnboardingView()
+                    .onDisappear(perform: setupGameCenter)
             }
+        
+        // GAME CENTER
+            .onAppear(perform: setupGameCenter)
+
+        // CONNECTIONS
             .onAppear(perform: makeConnections)
-            .onAppear(perform: gameKitViewModel.authenticatePlayer)
+        
+        // SCENE PHASE CHANGED
             .onChange(of: scenePhase) { old, new in
                 scenePhaseChanged(from: old, to: new)
             }
         
+        // ENVIRONMENTS
             .environment(offlineViewModel)
             .environment(permissionsViewModel)
             .environment(liveActivityViewModel)
@@ -80,6 +90,7 @@ fileprivate struct ENTRY: View {
         appDelegate.offlineViewModel = offlineViewModel
         appDelegate.offlineTracker = offlineTracker
         offlineTracker.offlineViewModel = offlineViewModel
+        gameKitViewModel.offlineViewModel = offlineViewModel
         
         FirebaseApp.configure()
         offlineCountViewModel.loadDatabase()
@@ -132,6 +143,15 @@ fileprivate struct ENTRY: View {
             if offlineTracker.gracePeriodRunning {
                 offlineTracker.gracePeriodEnded(successfully: true)
             }
+        }
+    }
+    
+    
+    private func setupGameCenter()  {
+        // Only open the access point if we should not present the onboarding screen straight away
+        if !shouldShowOnboarding {
+            gameKitViewModel.authenticatePlayer()
+            gameKitViewModel.openAccessPoint()
         }
     }
 }

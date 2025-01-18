@@ -7,7 +7,7 @@
 
 import Foundation
 
-#warning("Fix notifications for Josh's phone")
+//#warning("Fix notifications for Josh's phone")
 #warning("Add an offline leaderboard, and game center objectives")
 //#warning("Use the Duration API to format minutes/seconds")
 #warning("Fix the lock screen live activity")
@@ -24,3 +24,5 @@ import Foundation
 #warning("After going offline twise ask user to rate the app -- StoreKit")
 #warning("Congratulate a user for offline OVERTIME and reflect in the UI success views.")
 #warning("Create shared assets for offline widget and main app.")
+#warning("Support landscape mode")
+//#warning("Add roboto light font for small text")
