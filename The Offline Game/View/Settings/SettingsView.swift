@@ -24,22 +24,22 @@ struct SettingsView: View {
                         Label("Attributions", systemImage: "hands.sparkles")
                     }
                     
-                    Button("Change age", systemImage: "figure.and.child.holdinghands") {
-                        navigateToAccountCreationAgeView = true
+//                    Button("Change age", systemImage: "figure.and.child.holdinghands") {
+//                        navigateToAccountCreationAgeView = true
+//                    }
+                    NavigationLink(
+                        destination: AccountCreationAgeView {
+                            navigateToAccountCreationAgeView = false
+                        },
+                        isActive: $navigateToAccountCreationAgeView
+                    ) {
+                        Label("Change age", systemImage: "figure.and.child.holdinghands")
                     }
                 }
                 .frame(height: 50)
             }
             .font(.main20)
             .navigationTitle("Settings")
-            
-            .navigationDestination(isPresented: $navigateToAccountCreationAgeView) {
-                AccountCreationAgeView()
-                    .onChange(of: userAgeRawValue) { oldValue, newValue in
-                        // We should dismiss it
-                        navigateToAccountCreationAgeView = false
-                    }
-            }
             
         }
     }

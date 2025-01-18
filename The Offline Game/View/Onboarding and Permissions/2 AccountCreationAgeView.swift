@@ -12,6 +12,8 @@ import SwiftUI
 struct AccountCreationAgeView: View {
         
     @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
+    
+    var action: () -> () = { }
         
     var body: some View {
             
@@ -66,6 +68,7 @@ struct AccountCreationAgeView: View {
     @ViewBuilder private func ageSelection(_ age: Age, text: String) -> some View {
         Button(text) {
             userAgeRawValue = age.rawValue
+            action()
         }
         .tint(
             // If the current age has been selected make this button tint green

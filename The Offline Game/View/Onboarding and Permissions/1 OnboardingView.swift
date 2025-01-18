@@ -46,14 +46,13 @@ struct OnboardingView: View {
                 
             }
             .navigationDestination(isPresented: $navigateToAccountCreationAgeView) {
-                AccountCreationAgeView()
-                    .onChange(of: userAgeRawValue) { oldValue, newValue in
-                        // When the user selects one, we should navigate to the next screen, the notification permissions screen
-                        navigateToNotificationPermissionsView = true
-                    }
-                    .navigationDestination(isPresented: $navigateToNotificationPermissionsView) {
-                        NotificationPermissionView()
-                    }
+                AccountCreationAgeView {
+                    // When the user selects one, we should navigate to the next screen, the notification permissions screen
+                    navigateToNotificationPermissionsView = true
+                }
+                .navigationDestination(isPresented: $navigateToNotificationPermissionsView) {
+                    NotificationPermissionView()
+                }
 
             }
         }
