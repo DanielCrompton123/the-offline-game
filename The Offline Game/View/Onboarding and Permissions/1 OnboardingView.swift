@@ -9,6 +9,11 @@ import SwiftUI
 
 
 struct OnboardingView: View {
+    
+    @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
+    
+    @State private var navigateToAccountCreationAgeView = false
+    @State private var navigateToNotificationPermissionsView = false
         
     var body: some View {
         NavigationStack {
@@ -33,15 +38,23 @@ struct OnboardingView: View {
                 
                 Spacer(minLength: 0)
                 
-                NavigationLink {
+                Button("Continue", systemImage: K.systemArrowIcon) {
                     // Link to the User Account Age View
-                    AccountCreationAgeView(insideOnboarding: true)
-                    // Because this view only opens on first launch, assume the user have not entered their age yet.
-                } label: {
-                    Label("Continue", systemImage: K.systemArrowIcon)
+                    navigateToAccountCreationAgeView = true
                 }
                 .buttonStyle(FilledRedButtonStyle())
                 
+            }
+            .navigationDestination(isPresented: $navigateToAccountCreationAgeView) {
+                AccountCreationAgeView()
+                    .onChange(of: userAgeRawValue) { oldValue, newValue in
+                        // When the user selects one, we should navigate to the next screen, the notification permissions screen
+                        navigateToNotificationPermissionsView = true
+                    }
+                    .navigationDestination(isPresented: $navigateToNotificationPermissionsView) {
+                        NotificationPermissionView()
+                    }
+
             }
         }
     }

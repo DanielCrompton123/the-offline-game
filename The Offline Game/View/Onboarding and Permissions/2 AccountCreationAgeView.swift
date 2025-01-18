@@ -10,14 +10,8 @@
 import SwiftUI
 
 struct AccountCreationAgeView: View {
-    
-    let insideOnboarding: Bool
-    
+        
     @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
-    
-    @State private var navigateToNotificationPermissionsView = false
-    
-    @Environment(\.dismiss) private var dismiss
         
     var body: some View {
             
@@ -66,22 +60,12 @@ struct AccountCreationAgeView: View {
         }
         .buttonStyle(FilledRedButtonStyle())
         
-        .navigationDestination(isPresented: $navigateToNotificationPermissionsView) {
-            NotificationPermissionView()
-        }
     }
     
     
     @ViewBuilder private func ageSelection(_ age: Age, text: String) -> some View {
         Button(text) {
             userAgeRawValue = age.rawValue
-            
-            // If we are inside ther onboarding flow we should move to the next stage. Otherwise, just dismiss it
-            if insideOnboarding {
-                navigateToNotificationPermissionsView = true
-            } else {
-                dismiss()
-            }
         }
         .tint(
             // If the current age has been selected make this button tint green
@@ -93,5 +77,5 @@ struct AccountCreationAgeView: View {
 }
 
 #Preview {
-    AccountCreationAgeView(insideOnboarding: false)
+    AccountCreationAgeView()
 }

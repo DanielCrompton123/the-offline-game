@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct SettingsView: View {
+    
+    @State private var navigateToAccountCreationAgeView = false
+    
+    @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
+    
     var body: some View {
         NavigationStack {
             
@@ -19,20 +24,22 @@ struct SettingsView: View {
                         Label("Attributions", systemImage: "hands.sparkles")
                     }
                     
-                    NavigationLink {
-//                        AccountCreationAgeView {
-//                            // Action when age is changed:
-//                            // dismiss it.
-//                        }
-                        AccountCreationAgeView(insideOnboarding: false)
-                    } label: {
-                        Label("Change age", systemImage: "figure.and.child.holdinghands")
+                    Button("Change age", systemImage: "figure.and.child.holdinghands") {
+                        navigateToAccountCreationAgeView = true
                     }
                 }
-                .frame(height: 50) // too big?
+                .frame(height: 50)
             }
             .font(.main20)
             .navigationTitle("Settings")
+            
+            .navigationDestination(isPresented: $navigateToAccountCreationAgeView) {
+                AccountCreationAgeView()
+                    .onChange(of: userAgeRawValue) { oldValue, newValue in
+                        // We should dismiss it
+                        navigateToAccountCreationAgeView = false
+                    }
+            }
             
         }
     }
