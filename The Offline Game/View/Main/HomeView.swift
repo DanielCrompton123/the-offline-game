@@ -44,6 +44,7 @@ struct HomeView: View {
                     .font(.main20)
                     .foregroundStyle(.smog)
                     .multilineTextAlignment(.center)
+                    .padding(.horizontal)
                 
                 Spacer()
                 

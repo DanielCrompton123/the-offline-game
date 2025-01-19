@@ -9,11 +9,14 @@ import SwiftUI
 import GameKit
 
 @Observable
-class GameKitViewModel {
+class GameKitViewModel: NSObject {
     
     var error: String?
     var gameCenterEnabled = false
     var offlineViewModel: OfflineViewModel?
+    
+    private var presentingGKViewController: GKGameCenterViewController?
+    private var oldRootVCPresentationController: UIViewController?
     
     // Get the root view controller
     var rootViewController: UIViewController {
@@ -68,8 +71,41 @@ class GameKitViewModel {
     }
     
     
-    func openAchievements() {
-        
+    func openGKViewController(at state: GKGameCenterViewControllerState) {
+        // Firstly to avoid the warning X is already presenting Y, dismiss the presenting controller.
+        // Save it so it can be restored later
+        oldRootVCPresentationController = rootViewController.presentedViewController
+        rootViewController.presentedViewController?.dismiss(animated: true, completion: { [weak self] in
+            
+            // When it dismisses, then make this one appear
+            self?.presentingGKViewController = GKGameCenterViewController(state: state)
+            self?.presentingGKViewController?.gameCenterDelegate = self
+            
+            if let presentingGKViewController = self?.presentingGKViewController {
+                self?.rootViewController.present(presentingGKViewController, animated: true)
+            }
+        })
     }
+}
+
+
+
+//MARK: - GKGameCenterControllerDelegate conformance
+
+extension GameKitViewModel: GKGameCenterControllerDelegate {
     
+    // DISMISS IT PROPERLY HERE (not called "once it was dismissed"
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        
+        // Firstly, dismiss it
+        gameCenterViewController.dismiss(animated: true) { [weak self] in
+            // When it finishes, present the old presented controller if we need to
+            
+            if let oldRootVCPresentationController = self?.oldRootVCPresentationController {
+                self?.rootViewController.present(oldRootVCPresentationController, animated: true)
+            }
+        }
+        // When the game center view controller disappears, make the access point re-appear...?
+//        openAccessPoint()
+    }
 }
