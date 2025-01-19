@@ -101,7 +101,7 @@ struct FailureView: View {
                 }
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.capsule)
-                .font(.main14)
+                .font(.main16)
             }
             .padding()
         }

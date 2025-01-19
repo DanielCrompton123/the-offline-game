@@ -96,7 +96,7 @@ struct HomeView: View {
                             Text("Settings")
                         }
                     }
-                    .font(.main14)
+                    .font(.main16)
                     .tint(.smog)
                 }
             }

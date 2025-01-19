@@ -48,7 +48,7 @@ struct AccountCreationAgeView: View {
                     }
                     
                     Text("(WE’VE GOT TO ASK, FOR LEGAL REASONS)")
-                        .font(.main14)
+                        .font(.main16)
                         .foregroundStyle(.smog)
                 }
             }
