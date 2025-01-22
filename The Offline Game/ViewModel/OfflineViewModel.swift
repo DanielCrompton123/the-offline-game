@@ -113,6 +113,8 @@ class OfflineViewModel {
     // The notification posted when offline time completes
     var congratulatoryNotification: OfflineNotification?
     
+    
+    
     func goOffline() {
         print("Going offline...")
         isPickingDuration = false
@@ -139,6 +141,7 @@ class OfflineViewModel {
     }
     
     
+    
     private func scheduleOfflineTimer() {
         guard let endDate else {
             print("Don't call scheduleOfflineTimer is endDate is nil")
@@ -157,6 +160,7 @@ class OfflineViewModel {
             }
         }
     }
+    
     
     
     func offlineTimeFinished(successfully: Bool) {
@@ -179,7 +183,15 @@ class OfflineViewModel {
         
         // Now revoke any success notifications if we need to
         congratulatoryNotification?.revoke()
+        
+        // Now handle achievements by delegating responsibility to the offline achievements view model
+        if successfully {
+            gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(durationSeconds))
+        }
+        
     }
+    
+    
     
     var pauseDate: Date?
     func pauseOfflineTime() {
@@ -194,6 +206,7 @@ class OfflineViewModel {
         congratulatoryNotification?.revoke()
         congratulatoryNotification = nil
     }
+    
     
     
     func resumeOfflineTime() {
@@ -233,4 +246,5 @@ class OfflineViewModel {
     
     var liveActivityViewModel: LiveActivityViewModel?
     var offlineCountViewModel: OfflineCountViewModel?
+    var gameKitViewModel: GameKitViewModel?
 }

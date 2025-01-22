@@ -43,6 +43,7 @@ fileprivate struct ENTRY: View {
     @State private var offlineCountViewModel = OfflineCountViewModel()
     @State private var offlineTracker = OfflineTracker()
     @State private var gameKitViewModel = GameKitViewModel()
+    @State private var gameKitAchievementsViewModel = GameKitAchievementsViewModel()
     
     // Store a unique user ID
     @AppStorage(K.userDefaultsUserIdKey) private var userId = UUID().uuidString
@@ -59,11 +60,11 @@ fileprivate struct ENTRY: View {
                     .onDisappear(perform: setupGameCenter)
             }
         
-        // GAME CENTER
-            .onAppear(perform: setupGameCenter)
-
-        // CONNECTIONS
-            .onAppear(perform: makeConnections)
+        // CONNECTIONS AND GAME CENTER
+            .onAppear {
+                makeConnections()
+                setupGameCenter()
+            }
         
         // SCENE PHASE CHANGED
             .onChange(of: scenePhase) { old, new in
@@ -91,7 +92,8 @@ fileprivate struct ENTRY: View {
         appDelegate.offlineTracker = offlineTracker
         offlineTracker.offlineViewModel = offlineViewModel
         gameKitViewModel.offlineViewModel = offlineViewModel
-        
+        gameKitViewModel.achievementsViewModel = gameKitAchievementsViewModel
+        offlineViewModel.gameKitViewModel = gameKitViewModel
         FirebaseApp.configure()
         offlineCountViewModel.loadDatabase()
         offlineCountViewModel.setupDatabaseObserver()
@@ -152,6 +154,9 @@ fileprivate struct ENTRY: View {
         if !shouldShowOnboarding {
             gameKitViewModel.authenticatePlayer()
             gameKitViewModel.openAccessPoint()
+            
+            // Now also load the achievements
+            gameKitViewModel.achievementsViewModel?.loadAchievements()
         }
     }
 }
