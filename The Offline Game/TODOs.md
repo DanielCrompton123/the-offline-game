@@ -22,3 +22,7 @@
 - Remove unneeded keys from user defaults, e.g. isOffline
 - Add offline rules screen
 - Encourage users to tell friends when they go offline
+- List all user's offline periods ever (and what they did optionally) -- button in settings
+- Extend grace period for "valid" users (who have enough points)
+- Make failure more friendly
+- Make congrsts strings and other UI strings random from a list.

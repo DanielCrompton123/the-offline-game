@@ -81,7 +81,8 @@ struct HomeView: View {
             }
             
             // FAILURE VIEW
-            .sheet(isPresented: $offlineViewModel.userDidFail) {
+            .sheet(isPresented: $offlineViewModel.userDidFail,
+                   onDismiss: gameKitViewModel.openAccessPoint) {
                 FailureView()
             }
             

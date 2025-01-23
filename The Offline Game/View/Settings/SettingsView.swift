@@ -45,7 +45,7 @@ struct SettingsView: View {
                 Section {
                     
                     if !gameKitViewModel.gameCenterEnabled {
-                        Button("Please log into Game Center to get the most out of The Offline Game.", action: gameKitViewModel.authenticatePlayer)
+                        Text("PLEASE LOG INTO GAME CENTER to get the most out of The Offline Game.")
                     }
                     
                     Group {

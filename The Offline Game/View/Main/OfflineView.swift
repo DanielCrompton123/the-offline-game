@@ -41,27 +41,51 @@ struct OfflineView: View {
                 .offset(y: -100)
             
             VStack {
+                
                 Text("DO NOT DISTURB")
                     .frame(maxWidth: 300) // forces text into 2 lines
                     .multilineTextAlignment(.center)
                     .font(.main54)
+                    .lineSpacing(-10)
                 
                 Spacer()
                 
-                OfflineProgressView()
+                // don't display the progress view if we're not in overtime
+                if !offlineViewModel.isInOvertime {
+                    
+                    OfflineProgressView()
+                        .padding(.horizontal)
+                    
+                }
                 
                 Text("I'm offline")
                     .font(.display88)
                     .minimumScaleFactor(0.6)
                     .foregroundStyle(.black)
                 
+                if offlineViewModel.isInOvertime,
+                   let overtimeStartDate = offlineViewModel.overtimeStartDate {
+                    
+                    Text("Overtime!")
+                        .font(.display40)
+                        .foregroundStyle(.white)
+                    
+                    // Now display the text for the overtime duration
+                    // count UP
+                    // If the date is > current date, Text will count up from it
+                    Text(overtimeStartDate, style: .timer)
+                        .font(.display128)
+                        .foregroundStyle(.green.gradient)
+                    
+                }
+                    
                 Spacer()
                 
                 Button("WHAT TO DO?", systemImage: activityViewModel.activityIcon) {
                     showActivitiesView = true
                 }
                 .tint(.white)
-                .buttonStyle(RedButtonStyle())
+                .buttonStyle(RedButtonStyle(horizontalContentMode: .fit))
                 .onAppear {
                     activityViewModel.startUpdatingActivityIcon(timeInterval: 5)
                 }
@@ -73,19 +97,35 @@ struct OfflineView: View {
                 .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
 
             }
-            .padding(.horizontal)
             
         }
         .toolbarVisibility(.hidden, for: .navigationBar)
+        
         .sheet(isPresented: $showActivitiesView) {
             ActivitiesView()
         }
+        
         .confirmationDialog("You will loose your offline progress!", isPresented: $goOnlineConfirmationShows, titleVisibility: .visible) {
-            Button("I really need my phone :(", role: .destructive) {
+            
+            Button(
+                offlineViewModel.isInOvertime ?
+                "I'm finished with my overtime now." :
+                "I really need my phone :(",
+                role: .destructive) {
+                    
                 offlineViewModel.offlineTimeFinished(successfully: true)
+//                offlineViewModel.confirmOfflineTimeFinished()
             }
-            Button("I refuse to be defeated!", role: .cancel) {
+            
+            
+            Button(
+                offlineViewModel.isInOvertime ?
+                "Actually, I want to continue!" :
+                "I refuse to be defeated!",
+                role: .cancel) {
+                    
                 goOnlineConfirmationShows = false
+                    
             }
         }
     }

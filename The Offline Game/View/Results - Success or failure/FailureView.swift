@@ -55,8 +55,10 @@ struct FailureView: View {
                     .font(.main20)
             }
             
-            if let timeElapsed = offlineViewModel.oldElapsedTime {
-                let formattedDur = Duration.seconds(timeElapsed).offlineDisplayFormat()
+            if let elapsedTime = offlineViewModel.elapsedTime {
+                
+                let formattedDur = Duration.seconds(elapsedTime).offlineDisplayFormat()
+                
                 Text("You only spent \(formattedDur) offline!")
                     .opacity(0.75)
                     .font(.display40)
@@ -105,6 +107,7 @@ struct FailureView: View {
             }
             .padding()
         }
+        .onDisappear(perform: offlineViewModel.confirmOfflineTimeFinished)
     }
 }
 

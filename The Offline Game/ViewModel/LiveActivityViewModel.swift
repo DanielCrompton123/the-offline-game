@@ -16,7 +16,7 @@ class LiveActivityViewModel {
     weak var offlineViewModel: OfflineViewModel?
     weak var offlineCountViewModel: OfflineCountViewModel?
     
-    func startActivity() {
+    func startActivity(overtime: Bool) {
         guard let offlineViewModel, let startDate = offlineViewModel.startDate else { return }
         
         // Create attributes
