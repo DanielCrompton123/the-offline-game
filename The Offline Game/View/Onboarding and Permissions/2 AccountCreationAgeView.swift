@@ -10,14 +10,11 @@
 import SwiftUI
 
 struct AccountCreationAgeView: View {
-    
-    let insideOnboarding: Bool
-    
+        
     @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
+    @Environment(\.colorScheme) private var colorScheme
     
-    @State private var navigateToNotificationPermissionsView = false
-    
-    @Environment(\.dismiss) private var dismiss
+    var action: () -> () = { }
         
     var body: some View {
             
@@ -34,7 +31,7 @@ struct AccountCreationAgeView: View {
                     .frame(maxWidth: 300)
                     .scaleEffect(1.3)
                     .foregroundStyle(.smog)
-                    .opacity(0.1)
+                    .opacity(colorScheme == .light ? 0.1 : 0.4) // it's too hard to see the symbol in dark mode at 0.1
                     .rotationEffect(.degrees(-7))
                 
                 VStack {
@@ -48,7 +45,7 @@ struct AccountCreationAgeView: View {
                     }
                     
                     Text("(WE’VE GOT TO ASK, FOR LEGAL REASONS)")
-                        .font(.main16)
+                        .font(.main14)
                         .foregroundStyle(.smog)
                 }
             }
@@ -66,22 +63,13 @@ struct AccountCreationAgeView: View {
         }
         .buttonStyle(FilledRedButtonStyle())
         
-        .navigationDestination(isPresented: $navigateToNotificationPermissionsView) {
-            NotificationPermissionView()
-        }
     }
     
     
     @ViewBuilder private func ageSelection(_ age: Age, text: String) -> some View {
         Button(text) {
             userAgeRawValue = age.rawValue
-            
-            // If we are inside ther onboarding flow we should move to the next stage. Otherwise, just dismiss it
-            if insideOnboarding {
-                navigateToNotificationPermissionsView = true
-            } else {
-                dismiss()
-            }
+            action()
         }
         .tint(
             // If the current age has been selected make this button tint green
@@ -93,5 +81,5 @@ struct AccountCreationAgeView: View {
 }
 
 #Preview {
-    AccountCreationAgeView(insideOnboarding: false)
+    AccountCreationAgeView()
 }

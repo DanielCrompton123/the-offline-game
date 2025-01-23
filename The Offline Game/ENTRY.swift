@@ -42,6 +42,8 @@ fileprivate struct ENTRY: View {
     @State private var activityViewModel = ActivityViewModel()
     @State private var offlineCountViewModel = OfflineCountViewModel()
     @State private var offlineTracker = OfflineTracker()
+    @State private var gameKitViewModel = GameKitViewModel()
+    @State private var gameKitAchievementsViewModel = GameKitAchievementsViewModel()
     
     // Store a unique user ID
     @AppStorage(K.userDefaultsUserIdKey) private var userId = UUID().uuidString
@@ -51,20 +53,32 @@ fileprivate struct ENTRY: View {
     var body: some View {
         
         HomeView()
+        
+        // ONBOARDING
             .fullScreenCover(isPresented: $shouldShowOnboarding) {
                 OnboardingView()
+                    .onDisappear(perform: setupGameCenter)
             }
-            .onAppear(perform: makeConnections)
+        
+        // CONNECTIONS AND GAME CENTER
+            .onAppear {
+                makeConnections()
+                setupGameCenter()
+            }
+        
+        // SCENE PHASE CHANGED
             .onChange(of: scenePhase) { old, new in
                 scenePhaseChanged(from: old, to: new)
             }
         
+        // ENVIRONMENTS
             .environment(offlineViewModel)
             .environment(permissionsViewModel)
             .environment(liveActivityViewModel)
             .environment(activityViewModel)
             .environment(offlineCountViewModel)
             .environment(offlineTracker)
+            .environment(gameKitViewModel)
         
     }
     
@@ -77,7 +91,9 @@ fileprivate struct ENTRY: View {
         appDelegate.offlineViewModel = offlineViewModel
         appDelegate.offlineTracker = offlineTracker
         offlineTracker.offlineViewModel = offlineViewModel
-        
+        gameKitViewModel.offlineViewModel = offlineViewModel
+        gameKitViewModel.achievementsViewModel = gameKitAchievementsViewModel
+        offlineViewModel.gameKitViewModel = gameKitViewModel
         FirebaseApp.configure()
         offlineCountViewModel.loadDatabase()
         offlineCountViewModel.setupDatabaseObserver()
@@ -131,15 +147,16 @@ fileprivate struct ENTRY: View {
             }
         }
     }
-}
-
-
-
-fileprivate struct DEBUG: View {
-    var body: some View {
-        Text("Hello")
-            .delay(time: .now() + 2) {
-                print("Delay")
-            }
+    
+    
+    private func setupGameCenter()  {
+        // Only open the access point if we should not present the onboarding screen straight away
+        if !shouldShowOnboarding {
+            gameKitViewModel.authenticatePlayer()
+            gameKitViewModel.openAccessPoint()
+            
+            // Now also load the achievements
+            gameKitViewModel.achievementsViewModel?.loadAchievements()
+        }
     }
 }

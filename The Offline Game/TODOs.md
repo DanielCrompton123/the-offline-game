@@ -1,0 +1,28 @@
+# Todos
+
+- Fix notifications for Josh's phone
+- ***Add an offline leaderboard, and game center objectives***
+- Use the Duration API to format minutes/seconds
+- Create a better offline time gauge
+- Create a better offline duration slider
+- Add haptic feedback
+- Add “Share via instagram” button to congrats view
+- Add a widget to the home screen to goffline: Offline slider, common offline times, and your next achievement")
+	- *Fix the lock screen live activity*
+- Add common offline durations to picker
+- Convert print statements to use logging API with os and Logger.log
+- Ask users what activity they did while offline after going online
+- Add offline reminder notifications to configure in settings
+- After going offline twise ask user to rate the app -- StoreKit
+	- *Add attributions for fonts and lottie animations*
+- Congratulate a user for offline OVERTIME and reflect in the UI success views.
+- Create shared assets for offline widget and main app.
+- Support landscape mode
+	- *Add roboto light font for small text*
+- Remove unneeded keys from user defaults, e.g. isOffline
+- Add offline rules screen
+- Encourage users to tell friends when they go offline
+- List all user's offline periods ever (and what they did optionally) -- button in settings
+- Extend grace period for "valid" users (who have enough points)
+- Make failure more friendly
+- Make congrsts strings and other UI strings random from a list.

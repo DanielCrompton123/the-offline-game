@@ -39,23 +39,75 @@ struct CongratulatoryView: View {
     
     @ViewBuilder
     private var content: some View {
-        VStack(spacing: 30) {
-            Spacer()
+        VStack {
+            Spacer(minLength: 0)
             
             DelayedLottieAnimation(name: "Checkmark", endCompletion: 0.8)
                 .frame(height: 220)
             
             Text("You did it!")
                 .font(.display108)
+                .lineLimit(2)
+                .minimumScaleFactor(0.6)
             
-            if let elapsedTime = offlineViewModel.oldElapsedTime {
+            // We can not just rely on the oldElapsedTime, because it is still nil when we present this sheet asking the user to do overtime.
+//            if let elapsedTime = offlineViewModel.oldElapsedTime ?? offlineViewModel.elapsedTime {
+            if let elapsedTime = offlineViewModel.elapsedTime {
+                
                 let formattedDur = Duration.seconds(elapsedTime).offlineDisplayFormat()
                 
                 Text("You successfully spent \(formattedDur) offline!")
                     .opacity(0.75)
                     .font(.display40)
+                    .padding(.horizontal)
                 
-                Spacer()
+                // If the overtime duration HAS A VALUE, the user has come here from just being overtime.
+                // so we should tell them
+                if let overtimeDuration = offlineViewModel.overtimeDuration {
+                    
+                    let f = overtimeDuration.offlineDisplayFormat()
+                    
+                    Text("+ \(f) overtime")
+                        .font(.display40)
+                    
+                }
+                
+                // If the offlVM overtime duration is NIL the user HAS NOT been overtime.
+                // So we should display a button to let them
+                else {
+                    
+                    Spacer(minLength: 0)
+                    
+                    Button(action: offlineViewModel.beginOfflineOvertime) {
+                        
+                        VStack(spacing: 20) {
+                            Label {
+                                Text("Stay offline!")
+                            } icon: {
+                                Image(.wifiBrushstrokeSlash)
+                                    .resizable()
+                                    .scaledToFit()
+                            }
+                            .foregroundStyle(.accent)
+                            .font(.display40)
+                            
+                            HStack(alignment: .firstTextBaseline) {
+                                Image(systemName: "gauge.with.dots.needle.bottom.100percent")
+                                Text("You will get achievements for your offline overtime!")
+                            }
+                            .foregroundStyle(.smog)
+                            .multilineTextAlignment(.leading)
+                            .font(.main14)
+                            
+                        }
+                        .padding(.vertical)
+                    }
+                    .tint(.white)
+                    .buttonStyle(FilledRedButtonStyle())
+                    
+                }
+                
+                Spacer(minLength: 0)
                 
                 let congratulatoryImage = Image(.offlineCard)
                 ShareLink(
@@ -66,21 +118,35 @@ struct CongratulatoryView: View {
                                           image: congratulatoryImage)
                 ) {
                     Label("Share success", systemImage: "medal.star.fill")
-                        .foregroundStyle(.green)
                 }
-                .buttonStyle(FilledRedButtonStyle())
+                .buttonStyle(RedButtonStyle())
                 .tint(.white)
-                .padding(.horizontal, -40) // opposite of the padding added by the stack
                 
             }
         }
         .foregroundStyle(.white)
         .multilineTextAlignment(.center)
-        .padding(.horizontal, 40)
+
+        
+        // If this view dismisses WITHOUT overtime, confirm the end offline time (by setting startDate to nil)
+        .onDisappear {
+            print("Congrats view disappeared")
+            if !offlineViewModel.isInOvertime {
+                print("Not in overtime so confirming offline time finished...")
+                offlineViewModel.confirmOfflineTimeFinished()
+            }
+        }
     }
 }
 
 #Preview {
+    
+    let vm = {
+        let vm = OfflineViewModel()
+        vm.startDate = Date()
+        vm.durationSeconds = .seconds(0)
+        return vm
+    }()
     CongratulatoryView()
-        .environment(OfflineViewModel())
+        .environment(vm)
 }
