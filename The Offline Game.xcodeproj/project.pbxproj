@@ -49,7 +49,6 @@
 		6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityTimerAttributes.swift; sourceTree = "<group>"; };
 		650682A82D21E4B4006EC566 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
 		650682E42D22CF11006EC566 /* Constants (K).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants (K).swift"; sourceTree = "<group>"; };
-		650F2D7E2D3943D500B4C4A3 /* TODOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODOs.swift; sourceTree = "<group>"; };
 		651094562D03954700F0853C /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		651094582D03954700F0853C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		6510945A2D03954700F0853C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -158,7 +157,6 @@
 		65BD0C2D2CFBBB35004031F5 = {
 			isa = PBXGroup;
 			children = (
-				650F2D7E2D3943D500B4C4A3 /* TODOs.swift */,
 				650682E12D21E6A0006EC566 /* Shared */,
 				65BD0C382CFBBB35004031F5 /* The Offline Game */,
 				6510945C2D03954700F0853C /* OfflineWidget */,

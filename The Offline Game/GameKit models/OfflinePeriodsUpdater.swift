@@ -28,12 +28,16 @@ class OfflinePeriodsUpdater: AchievementUpdater {
             // Here, only give the relevant achievements if the offline duration is in the correct range:
             
             // Only add progress towards achievemnts if they spent at least to minutes offline.
-            #warning("UNCOMMENT")
-//            if duration.components.seconds > 600 {
+            #if DEBUG
+            return [.periods(num: 5), .periods(num: 10), .periods(num: 50)]
+            #else
+            if duration.components.seconds > 600 {
                 return [.periods(num: 5), .periods(num: 10), .periods(num: 50)]
-//            } else {
-//                return []
-//            }
+            } else {
+                return []
+            }
+            #endif
+            
             
         case .appOpened:
             return []
