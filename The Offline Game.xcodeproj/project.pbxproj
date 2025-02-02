@@ -16,9 +16,8 @@
 		651094662D03954A00F0853C /* OfflineWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		651BB9122D2C7199005BE4E9 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 651BB9112D2C7199005BE4E9 /* FirebaseDatabase */; };
 		651BB9142D2C7268005BE4E9 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 651BB9132D2C7268005BE4E9 /* FirebaseDatabase */; };
-		651F19912D3AD63300A433C4 /* SwiftUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */; };
-		651F19922D3AD63300A433C4 /* SwiftUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */; };
 		65AFF78E2D31AB0A00EE4508 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 65AFF78D2D31AB0A00EE4508 /* Lottie */; };
+		65CAC1622D4FA12E00705F4C /* ConnectivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65CAC1612D4FA12E00705F4C /* ConnectivityKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,11 +48,9 @@
 		6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityTimerAttributes.swift; sourceTree = "<group>"; };
 		650682A82D21E4B4006EC566 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
 		650682E42D22CF11006EC566 /* Constants (K).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants (K).swift"; sourceTree = "<group>"; };
-		650F2D7E2D3943D500B4C4A3 /* TODOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODOs.swift; sourceTree = "<group>"; };
 		651094562D03954700F0853C /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		651094582D03954700F0853C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		6510945A2D03954700F0853C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIViewController.swift; sourceTree = "<group>"; };
 		65BD0C362CFBBB35004031F5 /* The Offline Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Offline Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -70,6 +67,20 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+			);
+			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
+		};
+		65CAC15E2D4F9ABA00705F4C /* Exceptions for "Fonts" folder in "The Offline Game" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Maquire.ttf,
+			);
+			target = 65BD0C352CFBBB35004031F5 /* The Offline Game */;
+		};
+		65CAC15F2D4F9AC300705F4C /* Exceptions for "Fonts" folder in "OfflineWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Maquire.ttf,
 			);
 			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
 		};
@@ -99,6 +110,10 @@
 		};
 		65704A752D284B4900EC54DB /* Fonts */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				65CAC15E2D4F9ABA00705F4C /* Exceptions for "Fonts" folder in "The Offline Game" target */,
+				65CAC15F2D4F9AC300705F4C /* Exceptions for "Fonts" folder in "OfflineWidgetExtension" target */,
+			);
 			path = Fonts;
 			sourceTree = "<group>";
 		};
@@ -125,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				651BB9122D2C7199005BE4E9 /* FirebaseDatabase in Frameworks */,
+				65CAC1622D4FA12E00705F4C /* ConnectivityKit in Frameworks */,
 				65AFF78E2D31AB0A00EE4508 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,7 +156,6 @@
 				650682E42D22CF11006EC566 /* Constants (K).swift */,
 				650682ED2D231943006EC566 /* Helper */,
 				650682F42D231948006EC566 /* Model */,
-				651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -158,7 +173,6 @@
 		65BD0C2D2CFBBB35004031F5 = {
 			isa = PBXGroup;
 			children = (
-				650F2D7E2D3943D500B4C4A3 /* TODOs.swift */,
 				650682E12D21E6A0006EC566 /* Shared */,
 				65BD0C382CFBBB35004031F5 /* The Offline Game */,
 				6510945C2D03954700F0853C /* OfflineWidget */,
@@ -227,6 +241,7 @@
 			packageProductDependencies = (
 				651BB9112D2C7199005BE4E9 /* FirebaseDatabase */,
 				65AFF78D2D31AB0A00EE4508 /* Lottie */,
+				65CAC1612D4FA12E00705F4C /* ConnectivityKit */,
 			);
 			productName = "The Offline Game";
 			productReference = 65BD0C362CFBBB35004031F5 /* The Offline Game.app */;
@@ -262,6 +277,7 @@
 			packageReferences = (
 				651BB9102D2C7199005BE4E9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				65AFF78C2D31AB0A00EE4508 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				65CAC1602D4FA12E00705F4C /* XCRemoteSwiftPackageReference "ConnectivityKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 65BD0C372CFBBB35004031F5 /* Products */;
@@ -296,7 +312,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				651F19912D3AD63300A433C4 /* SwiftUIViewController.swift in Sources */,
 				6506829A2D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
 				650682E62D22CF11006EC566 /* Constants (K).swift in Sources */,
 			);
@@ -307,7 +322,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				650682E52D22CF11006EC566 /* Constants (K).swift in Sources */,
-				651F19922D3AD63300A433C4 /* SwiftUIViewController.swift in Sources */,
 				650682932D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -623,6 +637,14 @@
 				minimumVersion = 4.5.1;
 			};
 		};
+		65CAC1602D4FA12E00705F4C /* XCRemoteSwiftPackageReference "ConnectivityKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AsyncSwiftKits/ConnectivityKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -640,6 +662,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 65AFF78C2D31AB0A00EE4508 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		65CAC1612D4FA12E00705F4C /* ConnectivityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65CAC1602D4FA12E00705F4C /* XCRemoteSwiftPackageReference "ConnectivityKit" */;
+			productName = ConnectivityKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

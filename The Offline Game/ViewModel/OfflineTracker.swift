@@ -12,80 +12,39 @@ import UIKit
 class OfflineTracker {
     
     var offlineViewModel: OfflineViewModel?
-    var gracePeriodRunning = false
     
-    private var gracePeriodTimer: Timer?
-    private var backgroundTaskId: UIBackgroundTaskIdentifier?
+    private let gracePeriodHelper = GracePeriodHelper.shared
     
     
     func startGracePeriod() {
-        // Send the user a notification telling the user their grace period has started, and to open the app in XX minutes/seconds
-        OfflineNotification.gracePeriodStarted.post()
         
-        print("Grace period starting")
-        
-        // Now set the gracePeriodRunning to true
-        gracePeriodRunning = true
-        
-        // Pause the user's offline time:
-        // - this cancels the success notification among others
-        offlineViewModel?.pauseOfflineTime()
-        print("Paused offline time")
-        
-        // Now start the timer (20s)
-        // also start a background task so it can keep running in the background
-        backgroundTaskId = UIApplication.shared.beginBackgroundTask { [weak self] in
-            DispatchQueue.main.async {
-                // Expiration handler
-                // When the BG task expires, (shouldn't do) just end the offline time
-                self?.gracePeriodEnded(successfully: false)
-                print("BG task expiration handler called")
+        gracePeriodHelper.startGracePeriod { [weak self] in
+            
+            // On start
+            // When it started, pause offline time:
+            
+            // - this cancels the success notification among others
+            self?.offlineViewModel?.pauseOfflineTime()
+            
+        } onEnd: { [weak self] successfully in
+            
+            // If it ended successfully, continue the offline time
+            if successfully {
+                self?.offlineViewModel?.resumeOfflineTime()
             }
+            
+            // if it was NOT succcessful, just end the offline time
+            else {
+                self?.offlineViewModel?.offlineTimeFinished(successfully: false)
+            }
+            
         }
         
-        let startDate = Date()
-        
-        gracePeriodTimer = Timer.scheduledTimer(withTimeInterval: K.offlineGracePeriod,
-                                                repeats: false) { [weak self] _ in
-            DispatchQueue.main.async {
-                print("grace period timer triggered")
-                // When the offline time ends, send another notification
-                self?.gracePeriodEnded(successfully: false)
-                
-                let endDate = Date()
-                print("Grace period lasted \(startDate.distance(to: endDate).formatted())")
-            }
-        }
     }
     
     
-    func gracePeriodEnded(successfully: Bool) {
-        // Can only be ended if in grace period
-        guard gracePeriodRunning else {
-            return
-        }
-        
-        print("Ending grace period successfully?\(successfully)")
-        
-        // If the user did not finish successfully, (and the app is still open) tell them
-        if !successfully {
-            OfflineNotification.gracePeriodEndedNotSuccessfully.post()
-            
-            // Also end offline time
-            offlineViewModel?.offlineTimeFinished(successfully: false)
-        } else {
-            // If the user successfully opened the app in the grace period, resume the offline time where it left off when the app closed
-            offlineViewModel?.resumeOfflineTime()
-        }
-        
-        gracePeriodRunning = false
-        gracePeriodTimer?.invalidate()
-        gracePeriodTimer = nil
-        
-        // Now make sure to end the background task here too
-        if let backgroundTaskId {
-            UIApplication.shared.endBackgroundTask(backgroundTaskId)
-        }
+    func endGracePeriod(successfully: Bool) {
+        gracePeriodHelper.endGracePeriod(successfully: successfully)
     }
     
     

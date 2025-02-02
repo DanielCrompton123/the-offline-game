@@ -86,7 +86,7 @@ struct OfflineDurationPickerView: View {
         // When the offline duration picker shows, start listening for network connectivity changes.
         
         // This allows us to check if wifi is on or off
-        // That is used to determine if we should present the tips view or not, since we don't ned to tell them to turn off wifi if they did already.
+        // That is used to determine if we should present the tips view or not, since we don't need to tell them to turn off wifi if they did already.
         .onAppear(perform: NetworkMonitor.shared.startListening)
         .onDisappear(perform: NetworkMonitor.shared.stopListening)
     }

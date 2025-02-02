@@ -96,10 +96,10 @@ fileprivate struct ENTRY: View {
             
             // We need to use a background task here so that the timer can run in the background
             backgroundTimerTaskId = UIApplication.shared.beginBackgroundTask()
-            print("Background task ID = \(backgroundTimerTaskId!)")
+            print("Background task ID = \(backgroundTimerTaskId!.rawValue)")
             
             backgroundTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                print("1.5 seconds passed. Protected data will become UNavailable = \(appDelegate.protectedDataWillBecomeUnavailable)")
+                print("1.5 seconds passed. Protected data will become unavailable = \(appDelegate.protectedDataWillBecomeUnavailable)")
                 
                 // End BG task
                 if let backgroundTimerTaskId {
@@ -125,10 +125,8 @@ fileprivate struct ENTRY: View {
             }
             
             // When the app goes active or inactive, (foreground) end the grace period successfully, but only if a grace period was started.
-            print("Grace period running = \(offlineTracker.gracePeriodRunning)")
-            if offlineTracker.gracePeriodRunning {
-                offlineTracker.gracePeriodEnded(successfully: true)
-            }
+            
+            offlineTracker.endGracePeriod(successfully: true)
         }
     }
 }

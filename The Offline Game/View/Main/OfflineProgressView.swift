@@ -43,7 +43,7 @@ struct OfflineProgressView: View {
                         let formattedElapsedTime = Duration.seconds(elapsedTime).offlineDisplayFormat()
                         
                         Text("\(formattedElapsedTime) offline so far...")
-                            .font(.main14)
+//                            .font(.main14)
                     }
                     .padding(.horizontal)
                     .gaugeStyle(FatGaugeStyle(isTall: true))

@@ -6,36 +6,30 @@
 //
 
 import Foundation
-import Network
+import ConnectivityKit
 
 
 @Observable
 class NetworkMonitor {
     
-    private init() {
-        networkMonitor.pathUpdateHandler = { [weak self] path in
-            DispatchQueue.main.async {
-                self?.isConnected = path.status == .satisfied
-                #warning("This isn't called when connectivity changes")
-            }
-        }
-    }
-    
     static let shared = NetworkMonitor()
     
     
-    private let networkMonitor = NWPathMonitor()
+    private let connectivityMonitor = ConnectivityMonitor()
     private let workerQueue = DispatchQueue(label: "NetworkMonitor.workerQueue")
     
     var isConnected = false
     
     
     func startListening() {
-        networkMonitor.start(queue: workerQueue)
+        connectivityMonitor.start(pathUpdateQueue: workerQueue) { [weak self] path in
+            print("🛜 Network connectivity updated")
+            self?.isConnected = path.status == .satisfied
+        }
     }
     
     func stopListening() {
-        networkMonitor.cancel()
+        connectivityMonitor.cancel()
     }
     
 }
