@@ -23,8 +23,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // offlineViewModel?.isOffline == true = false
         // because it's been destroyed?
         print("offlineViewModel == nil = \(offlineViewModel == nil)")
-        print("offlineViewModel?.isOffline == true = \(offlineViewModel?.isOffline == true)")
-        guard offlineViewModel?.isOffline == true else { return }
+        print("offlineViewModel?.isOffline == true = \(offlineViewModel?.state.isOffline == true)")
+        guard offlineViewModel?.state.isOffline == true else { return }
         
         // When the app terminates, tell the user that their offline time has ended
         offlineViewModel?.offlineTimeFinished(successfully: false)
@@ -41,7 +41,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         protectedDataWillBecomeUnavailable = false
         
         // Only do this if we are offline
-        guard offlineViewModel?.isOffline == true else { return }
+        guard offlineViewModel?.state.isOffline == true else { return }
         print("The user is offline")
         
         // When the phone turns on, we need to ensure our app is in the foreground, but give the user 5 seconds to open the app before starting their grace period

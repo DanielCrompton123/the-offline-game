@@ -86,7 +86,7 @@ fileprivate struct ENTRY: View {
     
     private func scenePhaseChanged(from oldValue: ScenePhase, to newValue: ScenePhase) {
         // Only do this if we are offline
-        guard offlineViewModel.isOffline else { return }
+        guard offlineViewModel.state.isOffline else { return }
         
         
         if newValue == .background {

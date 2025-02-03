@@ -75,7 +75,7 @@ struct HomeView: View {
             .fullScreenCover(isPresented: $shouldShowNotificationWarning) {
                 NotificationPermissionView()
             }
-            .fullScreenCover(isPresented: $offlineViewModel.isOffline) {
+            .fullScreenCover(isPresented: $offlineViewModel.state.isOffline) {
                 OfflineView()
             }
             .task(priority: .high) {

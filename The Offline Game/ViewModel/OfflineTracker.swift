@@ -55,7 +55,7 @@ class OfflineTracker {
         #if DEBUG
         // When debugging, don't wait until tommorrow -- wait 30 seconds then post the reminder notification
         guard
-            let endDate = offlineViewModel?.endDate,
+            let endDate = offlineViewModel?.state.endDate,
             let tomorrow = Calendar.current.date(byAdding: DateComponents(second: 15), to: endDate)
         else {
             print("End date is nil")

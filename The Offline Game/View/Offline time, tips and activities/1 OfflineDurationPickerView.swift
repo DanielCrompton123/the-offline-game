@@ -57,7 +57,7 @@ struct OfflineDurationPickerView: View {
                 Slider(value: $sliderSecsValue,
                        in: K.offlineDurationSecsRange,
                        step: K.secsStep) {
-                    Text(offlineViewModel.durationSeconds.offlineDisplayFormat())
+                    Text(offlineViewModel.state.formattedDuration())
                     // for screen readers
                 }
                 .labelsHidden()
@@ -72,7 +72,7 @@ struct OfflineDurationPickerView: View {
             .multilineTextAlignment(.center)
             .onAppear {
                 // Make sure the offline view model slider value is synchronised to here
-                sliderSecsValue = offlineViewModel.durationSeconds.seconds
+                sliderSecsValue = offlineViewModel.state.durationSeconds.seconds
             }
             .navigationDestination(isPresented: $tipsViewPresented) {
                 TipView()
@@ -121,7 +121,7 @@ struct OfflineDurationPickerView: View {
     
     private func nextStage() {
         // 1. Make sure the slider value is synchronised to the view model
-        offlineViewModel.durationSeconds = .seconds(sliderSecsValue)
+        offlineViewModel.state.durationSeconds = .seconds(sliderSecsValue)
         
         // If the wifi is turned on (use network monitor for this) then present the tips view sheet telling them to turn it off
         if NetworkMonitor.shared.isConnected {
