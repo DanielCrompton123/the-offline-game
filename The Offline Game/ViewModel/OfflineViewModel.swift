@@ -112,9 +112,6 @@ class OfflineViewModel {
 
     var state = OfflineState()
     
-    // The notification posted when offline time completes
-    var congratulatoryNotification: OfflineNotification?
-    
     func goOffline() {
         print("Going offline...")
         isPickingDuration = false
@@ -132,12 +129,10 @@ class OfflineViewModel {
         // Now schedule a notification to be posted to the user when their offline time ends
         let formattedDuration = state.formattedDuration(width: .abbreviated)
         
-        congratulatoryNotification = OfflineNotification.congratulatoryNotification(
+        OfflineNotification.congratulatoryNotification(
             endDate: state.endDate!, // unwrapped- just set startDate and endDate depends on it
             formattedDuration: formattedDuration
-        )
-        
-        congratulatoryNotification?.post()
+        ).post()
     }
     
     
@@ -180,49 +175,28 @@ class OfflineViewModel {
         liveActivityViewModel?.stopActivity()
         
         // Now revoke any success notifications if we need to
-        congratulatoryNotification?.revoke()
+        OfflineNotification.congratulatoryNotification(endDate: .now, formattedDuration: "").revoke()
     }
     
     func pauseOfflineTime() {
         print("Pausing offline time")
-        // - Record the time we pause at and set state
-        state.pauseDate = Date()
-        state.state = .paused
         
         // - Cancel notifications and timers
         endOfflineTimer?.invalidate()
         endOfflineTimer = nil
-        congratulatoryNotification?.revoke()
-        congratulatoryNotification = nil
+        
+        // Now actually pause it
+        OfflinePauseHelper.pause(state: &state)
     }
     
     
     func resumeOfflineTime() {
-        // We can only resume if we have been paused
-        guard state.isPaused,
-              let pauseDate = state.pauseDate else {
-            print("Only resume offline time when paused")
-            return
-        }
         
-        print("Resuming offline time...")
+        OfflinePauseHelper.resume(state: &state)
         
-        // - Calculate the duration we were paused for
-        let pauseDuration = Date().timeIntervalSince(pauseDate)
-        
-        // - modify the end date. To do this we need to change the offline duration
-        state.durationSeconds += .seconds(pauseDuration)
-        
-        // - reschedule the notification and end timer
+        // reschedule the end timer
         scheduleOfflineTimer()
         
-        // abbreviated because we're in a notification
-        let formattedDuration = state.formattedDuration(width: .abbreviated)
-        congratulatoryNotification = OfflineNotification.congratulatoryNotification(
-            endDate: state.endDate!, // unwrapped- just set startDate and endDate depends on it
-            formattedDuration: formattedDuration
-        )
-        congratulatoryNotification?.post()
     }
     
     

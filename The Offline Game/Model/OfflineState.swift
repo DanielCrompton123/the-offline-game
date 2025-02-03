@@ -12,7 +12,11 @@ struct OfflineState {
     //MARK: - Offline duration
     
     // store the number of offline seconds selected by the user
-    var durationSeconds: Duration = .seconds(20 * 60) { // 20 minutes
+    // If nothing is selected, store 20 minutes
+    var durationSeconds: Duration = UserDefaults.standard.double(forKey: K.userDefaultsDurationSecondsKey) == 0 ?
+        .seconds(20 * 60) :
+        .seconds(UserDefaults.standard.double(forKey: K.userDefaultsDurationSecondsKey)) {
+            
         didSet {
             // When set, persist it in user defaults
             UserDefaults.standard.set(durationSeconds.components.seconds, forKey: K.userDefaultsDurationSecondsKey)
@@ -43,6 +47,10 @@ struct OfflineState {
     }
     
     var isPaused: Bool { state == .paused }
+    
+    
+    
+    //MARK: - Dates & durations
     
     // When did the user go offline?
     var startDate: Date? {
