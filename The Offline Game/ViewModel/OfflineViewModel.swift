@@ -112,14 +112,23 @@ class OfflineViewModel {
 
     var state = OfflineState()
     
+    var error: String?
+    
     func goOffline() {
-        print("Going offline...")
+        print("Going offline")
         isPickingDuration = false
         state.isOffline = true
         state.startDate = Date()
         
-        // Add one to the offline count
-        offlineCountViewModel?.increase()
+        Task {
+            // Add one to the offline count
+            do {
+                try await offlineCountViewModel?.increase()
+            } catch {
+                self.error = error.localizedDescription
+                print("🔢 Error increasing offline count: \(error.localizedDescription)")
+            }
+        }
         
         // Now add the live activity
         liveActivityViewModel?.startActivity()
@@ -163,8 +172,15 @@ class OfflineViewModel {
         endOfflineTimer = nil
         state.startDate = nil
         
-        // Now subtract 1 from the offline count
-        offlineCountViewModel?.decrease()
+        Task {
+            do {
+                // Now subtract 1 from the offline count
+                try await offlineCountViewModel?.decrease()
+            } catch {
+                self.error = error.localizedDescription
+                print("🔢 Error decreasing offline count: \(error.localizedDescription)")
+            }
+        }
         
         // Manage presentation of sheets
         state.isOffline = false
@@ -209,3 +225,4 @@ class OfflineViewModel {
     var liveActivityViewModel: LiveActivityViewModel?
     var offlineCountViewModel: OfflineCountViewModel?
 }
+

@@ -26,6 +26,7 @@ struct HomeView: View {
     var body: some View {
         
         @Bindable var offlineViewModel = offlineViewModel
+        @Bindable var offlineCountViewModel = offlineCountViewModel
         
         NavigationStack {
             VStack {
@@ -42,6 +43,7 @@ struct HomeView: View {
                     .font(.main20)
                     .foregroundStyle(.smog)
                     .multilineTextAlignment(.center)
+                    .padding(.horizontal)
                 
                 Spacer()
                 
@@ -101,6 +103,18 @@ struct HomeView: View {
                 }
             }
             
+            // add an alert for errors with the offline count
+            .alert("Error recording offline count",
+                   isPresented: $offlineViewModel.error.condition { $0 != nil }) {
+                
+                Button("OK", role: .cancel) {
+                    offlineViewModel.error = nil
+                }
+                
+            } message: {
+                Text(offlineViewModel.error ?? "No message...")
+            }
+
         }
     }
 

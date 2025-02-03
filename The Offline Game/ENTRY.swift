@@ -55,6 +55,7 @@ fileprivate struct ENTRY: View {
                 OnboardingView()
             }
             .onAppear(perform: makeConnections)
+            .onAppear(perform: setupFirebase)
             .onChange(of: scenePhase) { old, new in
                 scenePhaseChanged(from: old, to: new)
             }
@@ -77,8 +78,12 @@ fileprivate struct ENTRY: View {
         appDelegate.offlineViewModel = offlineViewModel
         appDelegate.offlineTracker = offlineTracker
         offlineTracker.offlineViewModel = offlineViewModel
-        
+    }
+    
+    
+    private func setupFirebase() {
         FirebaseApp.configure()
+        
         offlineCountViewModel.loadDatabase()
         offlineCountViewModel.setupDatabaseObserver()
     }
