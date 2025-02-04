@@ -33,9 +33,6 @@ fileprivate struct ENTRY: View {
     
     @AppStorage(K.userDefaultsShouldShowOnboardingKey) var shouldShowOnboarding = true
     
-    @State private var backgroundTimer: Timer?
-    @State private var backgroundTimerTaskId: UIBackgroundTaskIdentifier?
-    
     @State private var offlineViewModel = OfflineViewModel()
     @State private var permissionsViewModel = PermissionsViewModel()
     @State private var liveActivityViewModel = LiveActivityViewModel()
@@ -58,8 +55,8 @@ fileprivate struct ENTRY: View {
         
             .onAppear(perform: makeConnections)
             .onAppear(perform: setupFirebase)
-            .onChange(of: scenePhase) { old, new in
-                scenePhaseChanged(from: old, to: new)
+            .onChange(of: scenePhase) { _, new in
+                OfflineTracker.shared.scenePhaseChanged(to: new)
             }
         
         // ENVIRONMENT
@@ -79,6 +76,7 @@ fileprivate struct ENTRY: View {
         offlineViewModel.offlineCountViewModel = offlineCountViewModel
         appDelegate.offlineViewModel = offlineViewModel
         OfflineTracker.shared.offlineViewModel = offlineViewModel
+        OfflineTracker.shared.appDelegate = appDelegate
     }
     
     
@@ -89,51 +87,6 @@ fileprivate struct ENTRY: View {
         offlineCountViewModel.setupDatabaseObserver()
     }
     
-    
-    private func scenePhaseChanged(from oldValue: ScenePhase, to newValue: ScenePhase) {
-        // Only do this if we are offline
-        guard offlineViewModel.state.isOffline else { return }
-        
-        
-        if newValue == .background {
-            print("App went into background")
-            // If the app went into background because the phone turned off do nothing
-            // If the phone was turned on though (the user switched to another app maybe) offer them grace period
-            
-            // We need to use a background task here so that the timer can run in the background
-            backgroundTimerTaskId = UIApplication.shared.beginBackgroundTask()
-            
-            backgroundTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
-                print("1.5 seconds passed. Protected data will become unavailable = \(appDelegate.protectedDataWillBecomeUnavailable)")
-                
-                // End BG task
-                if let backgroundTimerTaskId {
-                    UIApplication.shared.endBackgroundTask(backgroundTimerTaskId)
-                }
-
-                // If protected data WILL become unavailable, that's great, stay offline.
-                // Otherwise, the app will have been put into background because the user closed it.
-                // So we should start a grace period
-                if !appDelegate.protectedDataWillBecomeUnavailable {
-                    OfflineTracker.shared.startGracePeriod()
-                }
-            }
-                        
-        } else {
-            print("App went into foreground/inactive")
-            backgroundTimer?.invalidate()
-            backgroundTimer = nil
-            
-            // Still make sure any background tasks are terminated (if they weren't in a second)
-            if let backgroundTimerTaskId {
-                UIApplication.shared.endBackgroundTask(backgroundTimerTaskId)
-            }
-            
-            // When the app goes active or inactive, (foreground) end the grace period successfully, but only if a grace period was started.
-            
-            OfflineTracker.shared.endGracePeriod(successfully: true)
-        }
-    }
 }
 
 
