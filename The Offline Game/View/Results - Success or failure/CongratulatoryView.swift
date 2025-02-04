@@ -78,7 +78,9 @@ struct CongratulatoryView: View {
                     
                     Spacer(minLength: 0)
                     
-                    Button(action: offlineViewModel.beginOfflineOvertime) {
+                    Button {
+                        offlineViewModel.beginOfflineOvertime(offset: 0)
+                    } label: {
                         
                         VStack(spacing: 20) {
                             Label {
@@ -130,8 +132,9 @@ struct CongratulatoryView: View {
         
         // If this view dismisses WITHOUT overtime, confirm the end offline time (by setting startDate to nil)
         .onDisappear {
-            print("Congrats view disappeared")
-            if !offlineViewModel.state.isInOvertime {
+            print("Congrats view disappeared, in overtime?\(offlineViewModel.isInOvertime)")
+            if !offlineViewModel.isInOvertime {
+                #warning("!offlineViewModel.isInOvertime")
                 print("Not in overtime so confirming offline time finished...")
                 offlineViewModel.confirmOfflineTimeFinished()
             }

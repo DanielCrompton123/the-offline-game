@@ -100,6 +100,7 @@ fileprivate struct ENTRY: View {
         
         offlineCountViewModel.loadDatabase()
         offlineCountViewModel.setupDatabaseObserver()
+
     }
     
     

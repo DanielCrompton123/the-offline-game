@@ -109,12 +109,17 @@ struct OfflineView: View {
             
             Button(
                 offlineViewModel.state.isInOvertime ?
-                "I'm finished with my overtime now" :
-                "I really need my phone!",
-                role: .destructive) {
-                    
-                offlineViewModel.endOfflineTime(successfully: true)
-//                offlineViewModel.confirmOfflineTimeFinished()
+                "I'm finished with my overtime now." :
+                "I really need my phone :(",
+                role: .destructive
+            ) {
+                
+                if offlineViewModel.isInOvertime {
+                    offlineViewModel.offlineTimeFinished(successfully: true)
+                    offlineViewModel.confirmOfflineTimeFinished()
+                } else {
+                    offlineViewModel.offlineTimeFinished(successfully: true)
+                }
             }
             
             
