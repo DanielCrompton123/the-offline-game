@@ -50,10 +50,14 @@ struct CongratulatoryView: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.6)
             
+<<<<<<< HEAD
             // We can not just rely on the oldElapsedTime, because it is still nil when we present this sheet asking the user to do overtime.
 //            if let elapsedTime = offlineViewModel.oldElapsedTime ?? offlineViewModel.elapsedTime {
             if let elapsedTime = offlineViewModel.elapsedTime {
                 
+=======
+            if let elapsedTime = offlineViewModel.state.oldElapsedTime {
+>>>>>>> main
                 let formattedDur = Duration.seconds(elapsedTime).offlineDisplayFormat()
                 
                 Text("You successfully spent \(formattedDur) offline!")

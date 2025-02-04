@@ -57,7 +57,7 @@ struct OfflineDurationPickerView: View {
                 Slider(value: $sliderSecsValue,
                        in: K.offlineDurationSecsRange,
                        step: K.secsStep) {
-                    Text(offlineViewModel.durationSeconds.offlineDisplayFormat())
+                    Text(offlineViewModel.state.formattedDuration())
                     // for screen readers
                 }
                 .labelsHidden()
@@ -72,7 +72,7 @@ struct OfflineDurationPickerView: View {
             .multilineTextAlignment(.center)
             .onAppear {
                 // Make sure the offline view model slider value is synchronised to here
-                sliderSecsValue = offlineViewModel.durationSeconds.seconds
+                sliderSecsValue = offlineViewModel.state.durationSeconds.seconds
             }
             .navigationDestination(isPresented: $tipsViewPresented) {
                 TipView()
@@ -86,7 +86,7 @@ struct OfflineDurationPickerView: View {
         // When the offline duration picker shows, start listening for network connectivity changes.
         
         // This allows us to check if wifi is on or off
-        // That is used to determine if we should present the tips view or not, since we don't ned to tell them to turn off wifi if they did already.
+        // That is used to determine if we should present the tips view or not, since we don't need to tell them to turn off wifi if they did already.
         .onAppear(perform: NetworkMonitor.shared.startListening)
         .onDisappear(perform: NetworkMonitor.shared.stopListening)
     }
@@ -121,7 +121,7 @@ struct OfflineDurationPickerView: View {
     
     private func nextStage() {
         // 1. Make sure the slider value is synchronised to the view model
-        offlineViewModel.durationSeconds = .seconds(sliderSecsValue)
+        offlineViewModel.state.durationSeconds = .seconds(sliderSecsValue)
         
         // If the wifi is turned on (use network monitor for this) then present the tips view sheet telling them to turn it off
         if NetworkMonitor.shared.isConnected {

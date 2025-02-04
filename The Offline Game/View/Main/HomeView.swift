@@ -27,6 +27,7 @@ struct HomeView: View {
     var body: some View {
         
         @Bindable var offlineViewModel = offlineViewModel
+        @Bindable var offlineCountViewModel = offlineCountViewModel
         
         NavigationStack {
             
@@ -99,10 +100,14 @@ struct HomeView: View {
                 NotificationPermissionView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
+<<<<<<< HEAD
             
             // OFFLINE
             .fullScreenCover(isPresented: $offlineViewModel.isOffline,
                              onDismiss: gameKitViewModel.openAccessPoint) {
+=======
+            .fullScreenCover(isPresented: $offlineViewModel.state.isOffline) {
+>>>>>>> main
                 OfflineView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
@@ -131,6 +136,18 @@ struct HomeView: View {
                 }
             }
             
+            // add an alert for errors with the offline count
+            .alert("Error recording offline count",
+                   isPresented: $offlineViewModel.error.condition { $0 != nil }) {
+                
+                Button("OK", role: .cancel) {
+                    offlineViewModel.error = nil
+                }
+                
+            } message: {
+                Text(offlineViewModel.error ?? "No message...")
+            }
+
         }
     }
 

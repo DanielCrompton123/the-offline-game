@@ -1,5 +1,5 @@
 {
-  "originHash" : "47f9177f63e0789cab06c1b7d9bc8a441b700066de149a6bb03f3232804c52e2",
+  "originHash" : "7ccc2df2c906fda69fb17c7e52a412c9f8c1a6aff3b87b26e7e46b9195854239",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
         "version" : "11.2.0"
+      }
+    },
+    {
+      "identity" : "connectivitykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AsyncSwiftKits/ConnectivityKit.git",
+      "state" : {
+        "revision" : "a0045809597915caeceb6b7f92a0df67e1143986",
+        "version" : "1.1.0"
       }
     },
     {

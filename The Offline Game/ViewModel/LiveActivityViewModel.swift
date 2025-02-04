@@ -16,15 +16,20 @@ class LiveActivityViewModel {
     weak var offlineViewModel: OfflineViewModel?
     weak var offlineCountViewModel: OfflineCountViewModel?
     
+<<<<<<< HEAD
     func startActivity(overtime: Bool) {
         guard let offlineViewModel, let startDate = offlineViewModel.startDate else { return }
+=======
+    func startActivity() {
+        guard let offlineViewModel, let startDate = offlineViewModel.state.startDate else { return }
+>>>>>>> main
         
         // Create attributes
         let attributes = LiveActivityTimerAttributes()
         
         // Create initial state
         let state = LiveActivityTimerAttributes.ContentState(
-            duration: offlineViewModel.durationSeconds,
+            duration: offlineViewModel.state.durationSeconds,
             startDate: startDate,
             peopleOffline: offlineCountViewModel?.count ?? 0
         )
@@ -67,10 +72,10 @@ class LiveActivityViewModel {
     
     
     func updateActivity() {
-        guard let offlineViewModel, let startDate = offlineViewModel.startDate else { return }
+        guard let offlineViewModel, let startDate = offlineViewModel.state.startDate else { return }
         
         let state = LiveActivityTimerAttributes.ContentState(
-            duration: offlineViewModel.durationSeconds,
+            duration: offlineViewModel.state.durationSeconds,
             startDate: startDate,
             peopleOffline: offlineCountViewModel?.count ?? 0
         )

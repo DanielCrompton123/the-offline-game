@@ -16,7 +16,7 @@ struct OfflineProgressView: View {
         VStack(spacing: 20) {
             
             // COUNTDOWN TIMER -- see how long to go
-            if let endDate = offlineViewModel.endDate {
+            if let endDate = offlineViewModel.state.endDate {
                 Text(endDate, style: .timer)
                     .font(.display88)
                     .foregroundStyle(.white)
@@ -25,8 +25,8 @@ struct OfflineProgressView: View {
             
             // PROGRESS VIEW -- see how long's been
             TimelineView(.animation) { _ in
-                if let offlineProgress = offlineViewModel.offlineProgress,
-                   let elapsedTime = offlineViewModel.elapsedTime {
+                if let offlineProgress = offlineViewModel.state.offlineProgress,
+                   let elapsedTime = offlineViewModel.state.elapsedTime {
                                         
                     Gauge(value: offlineProgress) {
                         Label {
@@ -42,9 +42,14 @@ struct OfflineProgressView: View {
                         // Current value -- display "7Hrs offline (so far)"
                         let formattedElapsedTime = Duration.seconds(elapsedTime).offlineDisplayFormat()
                         
+<<<<<<< HEAD
                         Text("\(formattedElapsedTime) offline so far")
                             .textCase(.uppercase)
                             .font(.main14)
+=======
+                        Text("\(formattedElapsedTime) offline so far...")
+//                            .font(.main14)
+>>>>>>> main
                     }
                     .padding(.horizontal)
                     .gaugeStyle(FatGaugeStyle(isTall: true))

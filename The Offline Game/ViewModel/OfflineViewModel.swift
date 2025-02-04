@@ -14,6 +14,7 @@ class OfflineViewModel {
     
     //MARK: - Initialization
         
+<<<<<<< HEAD
     init() {
         // Restore the things from user defaults
         
@@ -21,6 +22,15 @@ class OfflineViewModel {
         let durationSeconds = UserDefaults.standard.double(forKey: K.userDefaultsDurationSecondsKey)
         self.durationSeconds = durationSeconds == 0.0 ? .seconds(20*60) : .seconds(durationSeconds)
         
+=======
+//    init() {
+//        // Restore the things from user defaults
+//        
+//        // The `UserDefaults.standard.double` defaults to 0.0 if the value doesn't exist but we want it to default to 20 minutes.
+//        let durationSeconds = UserDefaults.standard.double(forKey: K.userDefaultsDurationSecondsKey)
+//        self.durationSeconds = durationSeconds == 0.0 ? .seconds(20*60) : .seconds(durationSeconds)
+//        
+>>>>>>> main
 //        let stateRawValue = UserDefaults.standard.integer(forKey: K.userDefaultsOfflineStateKey)
 //        state = State(rawValue: stateRawValue) ?? .none
 //        
@@ -29,21 +39,27 @@ class OfflineViewModel {
 //        if isOffline {
 //            scheduleOfflineTimer()
 //        }
+<<<<<<< HEAD
     }
+=======
+//    }
+>>>>>>> main
     
     
     
-    //MARK: - Offline duration
+//    //MARK: - Offline duration
+//    
+//    // store the number of offline minutes selected by the user
+//    var durationSeconds: Duration = .seconds(20 * 60) { // 20 minutes
+//        didSet {
+//            // When set, persist it in user defaults
+//            UserDefaults.standard.set(durationSeconds.components.seconds, forKey: K.userDefaultsDurationSecondsKey)
+//        }
+//    }
+//    
     
-    // store the number of offline minutes selected by the user
-    var durationSeconds: Duration = .seconds(20 * 60) { // 20 minutes
-        didSet {
-            // When set, persist it in user defaults
-            UserDefaults.standard.set(durationSeconds.components.seconds, forKey: K.userDefaultsDurationSecondsKey)
-        }
-    }
     
-    
+<<<<<<< HEAD
     
     //MARK: - Offline state
     
@@ -137,22 +153,94 @@ class OfflineViewModel {
     // Set when the overtime ends
     var overtimeDuration: Duration?
     
+=======
+//    //MARK: - Offline state
+//    
+//    enum State: Int {
+//        case none, offline, paused
+//    }
+//    
+//    var state = State.none {
+//        // When we set the state value, store in user defaults
+//        didSet { UserDefaults.standard.set(state.rawValue, forKey: K.userDefaultsOfflineStateKey) }
+//    }
+//    
+//    // Is the user offline?
+//    // Used to trigger presentation of the offline view
+//    var isOffline: Bool {
+//        get { state != .none } // We are offline if the state is either paused or actually offline
+//        set { state = newValue ? .offline : .none }
+//    }
+//    var isPaused: Bool { state == .paused }
+//    
+//    // When did the user go offline?
+//    var startDate: Date? {
+//        willSet {
+//            // BEFORE updating the start date, set the old elapsed time.
+//            // because if setting the startDate to nil, in didSet the elapsed time would be nil too
+//            // Only update it if we are resetting the start date back to nil again
+//            if newValue == nil { oldElapsedTime = elapsedTime }
+//        }
+//        didSet {
+//            UserDefaults.standard.set(startDate, forKey: K.userDefaultsStartDateKey)
+//            
+//            // Now update oldDtartDate & oldElapsedTime
+//            if oldValue != nil {
+//                oldStartDate = oldValue
+//            }
+//        }
+//    }
+//    
+//    // Used to access the previous start date even when it's reset
+//    var oldStartDate: Date?
+//    
+//    // When can they do online?
+//    // Diaplayed in the UI with Text(Date, style: .timer)
+//    var endDate: Date? {
+//        guard let startDate else { return nil }
+//        return startDate.addingTimeInterval(durationSeconds.seconds)
+//    }
+//    
+//    // Used in the offline progress bar gauges
+//    var offlineProgress: CGFloat? {
+//        // The start date's distance to the current date
+//        guard let endDate else { return nil }
+//        return startDate?.completionTo(endDate)
+//    }
+//    
+//    // Elapsed time used in the live activity and the offline progress calculation
+//    var elapsedTime: TimeInterval? {
+//        guard let startDate else { return nil }
+//        return Date().timeIntervalSince(startDate)
+//    }
+//    // Old elapsed time used in success congrats view when the elaopsedTime has been reset
+//    var oldElapsedTime: TimeInterval?
+//    
+>>>>>>> main
     // Used to call the function to end the offline period (e.g. bringing up the congrats view and dismissing the OfflineView)
     var endOfflineTimer: Timer? // ONLY TRIGGERS at the `endDate`
+
+    var state = OfflineState()
     
-    // The notification posted when offline time completes
-    var congratulatoryNotification: OfflineNotification?
+    var error: String?
     
     
     
     func goOffline() {
         print("Going offline")
         isPickingDuration = false
-        isOffline = true
-        startDate = Date()
+        state.isOffline = true
+        state.startDate = Date()
         
-        // Add one to the offline count
-        offlineCountViewModel?.increase()
+        Task {
+            // Add one to the offline count
+            do {
+                try await offlineCountViewModel?.increase()
+            } catch {
+                self.error = error.localizedDescription
+                print("🔢 Error increasing offline count: \(error.localizedDescription)")
+            }
+        }
         
         // Now add the live activity
         liveActivityViewModel?.startActivity(overtime: false)
@@ -160,20 +248,18 @@ class OfflineViewModel {
         scheduleOfflineTimer()
         
         // Now schedule a notification to be posted to the user when their offline time ends
-        let formattedDuration = durationSeconds.offlineDisplayFormat(width: .abbreviated)
+        let formattedDuration = state.formattedDuration(width: .abbreviated)
         
-        congratulatoryNotification = OfflineNotification.congratulatoryNotification(
-            endDate: endDate!, // unwrapped- just set startDate and endDate depends on it
+        OfflineNotification.congratulatoryNotification(
+            endDate: state.endDate!, // unwrapped- just set startDate and endDate depends on it
             formattedDuration: formattedDuration
-        )
-        
-        congratulatoryNotification?.post()
+        ).post()
     }
     
     
     
     private func scheduleOfflineTimer() {
-        guard let endDate else {
+        guard let endDate = state.endDate else {
             print("Don't call scheduleOfflineTimer is endDate is nil")
             return
         }
@@ -198,6 +284,7 @@ class OfflineViewModel {
         
         endOfflineTimer?.invalidate()
         endOfflineTimer = nil
+<<<<<<< HEAD
         
         // DON'T set it to nil straight away because the user may want to stay offline, if they succeeded with this one and take their overtime
         // Instead do it in another func and call this if the user dismisses the congrats view without pressing "stay offline"
@@ -206,12 +293,22 @@ class OfflineViewModel {
         if !successfully {
             startDate = nil
         }
+=======
+        state.startDate = nil
+>>>>>>> main
         
-        // Now subtract 1 from the offline count
-        offlineCountViewModel?.decrease()
+        Task {
+            do {
+                // Now subtract 1 from the offline count
+                try await offlineCountViewModel?.decrease()
+            } catch {
+                self.error = error.localizedDescription
+                print("🔢 Error decreasing offline count: \(error.localizedDescription)")
+            }
+        }
         
         // Manage presentation of sheets
-        isOffline = false
+        state.isOffline = false
         userShouldBeCongratulated = successfully
         userDidFail = !successfully
         
@@ -219,6 +316,7 @@ class OfflineViewModel {
         liveActivityViewModel?.stopActivity()
         
         // Now revoke any success notifications if we need to
+<<<<<<< HEAD
         congratulatoryNotification?.revoke()
         
         // Now handle achievements by delegating responsibility to the offline achievements view model
@@ -277,30 +375,37 @@ class OfflineViewModel {
     var pauseDate: Date?
     var totalPauseDuration = Duration.seconds(0)
     
+=======
+        OfflineNotification.congratulatoryNotification(endDate: .now, formattedDuration: "").revoke()
+    }
+    
+>>>>>>> main
     func pauseOfflineTime() {
         print("Pausing offline time")
-        // - Record the time we pause at and set state
-        pauseDate = Date()
-        state = .paused
         
         // - Cancel notifications and timers
         endOfflineTimer?.invalidate()
         endOfflineTimer = nil
-        congratulatoryNotification?.revoke()
-        congratulatoryNotification = nil
+        
+        // Now actually pause it
+        OfflinePauseHelper.pause(state: &state)
     }
     
     
     
     func resumeOfflineTime() {
+<<<<<<< HEAD
         // We can only resume if we have been paused
         guard isPaused, let pauseDate else {
             print("Only resume offline time when paused")
             return
         }
+=======
+>>>>>>> main
         
-        print("Resuming offline time...")
+        OfflinePauseHelper.resume(state: &state)
         
+<<<<<<< HEAD
         // - Calculate the duration we were paused for
         let pauseDuration = Date().timeIntervalSince(pauseDate)
         
@@ -320,15 +425,11 @@ class OfflineViewModel {
 //        startDate = startDate?.addingTimeInterval(pauseDuration)
         
         // - reschedule the notification and end timer
+=======
+        // reschedule the end timer
+>>>>>>> main
         scheduleOfflineTimer()
         
-        // abbreviated because we're in a notification
-        let formattedDuration = durationSeconds.offlineDisplayFormat(width: .abbreviated)
-        congratulatoryNotification = OfflineNotification.congratulatoryNotification(
-            endDate: endDate!, // unwrapped- just set startDate and endDate depends on it
-            formattedDuration: formattedDuration
-        )
-        congratulatoryNotification?.post()
     }
     
     
@@ -342,3 +443,4 @@ class OfflineViewModel {
     var offlineCountViewModel: OfflineCountViewModel?
     var gameKitViewModel: GameKitViewModel?
 }
+
