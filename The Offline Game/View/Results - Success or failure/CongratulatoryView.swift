@@ -50,14 +50,10 @@ struct CongratulatoryView: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.6)
             
-<<<<<<< HEAD
             // We can not just rely on the oldElapsedTime, because it is still nil when we present this sheet asking the user to do overtime.
 //            if let elapsedTime = offlineViewModel.oldElapsedTime ?? offlineViewModel.elapsedTime {
-            if let elapsedTime = offlineViewModel.elapsedTime {
+            if let elapsedTime = offlineViewModel.state.elapsedTime {
                 
-=======
-            if let elapsedTime = offlineViewModel.state.oldElapsedTime {
->>>>>>> main
                 let formattedDur = Duration.seconds(elapsedTime).offlineDisplayFormat()
                 
                 Text("You successfully spent \(formattedDur) offline!")
@@ -67,7 +63,7 @@ struct CongratulatoryView: View {
                 
                 // If the overtime duration HAS A VALUE, the user has come here from just being overtime.
                 // so we should tell them
-                if let overtimeDuration = offlineViewModel.overtimeDuration {
+                if let overtimeDuration = offlineViewModel.state.overtimeDuration {
                     
                     let f = overtimeDuration.offlineDisplayFormat()
                     
@@ -135,7 +131,7 @@ struct CongratulatoryView: View {
         // If this view dismisses WITHOUT overtime, confirm the end offline time (by setting startDate to nil)
         .onDisappear {
             print("Congrats view disappeared")
-            if !offlineViewModel.isInOvertime {
+            if !offlineViewModel.state.isInOvertime {
                 print("Not in overtime so confirming offline time finished...")
                 offlineViewModel.confirmOfflineTimeFinished()
             }
@@ -147,8 +143,8 @@ struct CongratulatoryView: View {
     
     let vm = {
         let vm = OfflineViewModel()
-        vm.startDate = Date()
-        vm.durationSeconds = .seconds(0)
+        vm.state.startDate = Date()
+        vm.state.durationSeconds = .seconds(0)
         return vm
     }()
     CongratulatoryView()

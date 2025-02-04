@@ -68,7 +68,7 @@ struct HomeView: View {
             // DURATION PICKER (and tips)
             .sheet(isPresented: $offlineViewModel.isPickingDuration) {
                 // On dismiss, (of either the duration picker or tips) is we are NOT going online then make the access point appear
-                if !offlineViewModel.isOffline {
+                if !offlineViewModel.state.isOffline {
                     gameKitViewModel.openAccessPoint()
                 }
             } content: {
@@ -100,14 +100,12 @@ struct HomeView: View {
                 NotificationPermissionView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
-<<<<<<< HEAD
             
             // OFFLINE
-            .fullScreenCover(isPresented: $offlineViewModel.isOffline,
-                             onDismiss: gameKitViewModel.openAccessPoint) {
-=======
-            .fullScreenCover(isPresented: $offlineViewModel.state.isOffline) {
->>>>>>> main
+            .fullScreenCover(
+                isPresented: $offlineViewModel.state.isOffline,
+                onDismiss: gameKitViewModel.openAccessPoint
+            ) {
                 OfflineView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }

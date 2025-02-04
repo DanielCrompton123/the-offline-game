@@ -51,7 +51,7 @@ struct OfflineView: View {
                 Spacer()
                 
                 // don't display the progress view if we're not in overtime
-                if !offlineViewModel.isInOvertime {
+                if !offlineViewModel.state.isInOvertime {
                     
                     OfflineProgressView()
                         .padding(.horizontal)
@@ -63,8 +63,8 @@ struct OfflineView: View {
                     .minimumScaleFactor(0.6)
                     .foregroundStyle(.black)
                 
-                if offlineViewModel.isInOvertime,
-                   let overtimeStartDate = offlineViewModel.overtimeStartDate {
+                if offlineViewModel.state.isInOvertime,
+                   let overtimeStartDate = offlineViewModel.state.overtimeStartDate {
                     
                     Text("Overtime!")
                         .font(.display40)
@@ -108,7 +108,7 @@ struct OfflineView: View {
         .confirmationDialog("You will loose your offline progress!", isPresented: $goOnlineConfirmationShows, titleVisibility: .visible) {
             
             Button(
-                offlineViewModel.isInOvertime ?
+                offlineViewModel.state.isInOvertime ?
                 "I'm finished with my overtime now." :
                 "I really need my phone :(",
                 role: .destructive) {
@@ -119,7 +119,7 @@ struct OfflineView: View {
             
             
             Button(
-                offlineViewModel.isInOvertime ?
+                offlineViewModel.state.isInOvertime ?
                 "Actually, I want to continue!" :
                 "I refuse to be defeated!",
                 role: .cancel) {

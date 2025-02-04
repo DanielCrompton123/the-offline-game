@@ -60,12 +60,12 @@ struct OfflineState {
     
     // When did the user go offline?
     var startDate: Date? {
-        willSet {
-            // BEFORE updating the start date, set the old elapsed time.
-            // because if setting the startDate to nil, in didSet the elapsed time would be nil too
-            // Only update it if we are resetting the start date back to nil again
-            if newValue == nil { oldElapsedTime = elapsedTime }
-        }
+//        willSet {
+//            // BEFORE updating the start date, set the old elapsed time.
+//            // because if setting the startDate to nil, in didSet the elapsed time would be nil too
+//            // Only update it if we are resetting the start date back to nil again
+//            if newValue == nil { oldElapsedTime = elapsedTime }
+//        }
         didSet {
             UserDefaults.standard.set(startDate, forKey: K.userDefaultsStartDateKey)
             
