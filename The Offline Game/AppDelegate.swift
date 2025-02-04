@@ -11,7 +11,6 @@ import UIKit
 class AppDelegate: NSObject, UIApplicationDelegate {
     
     var offlineViewModel: OfflineViewModel?
-    var offlineTracker: OfflineTracker?
     
     var protectedDataWillBecomeUnavailable = false
             
@@ -22,13 +21,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // Only do this if we are offline
         // offlineViewModel?.isOffline == true = false
         // because it's been destroyed?
-        print("offlineViewModel == nil = \(offlineViewModel == nil)")
-        print("offlineViewModel?.isOffline == true = \(offlineViewModel?.state.isOffline == true)")
         guard offlineViewModel?.state.isOffline == true else { return }
         
         // When the app terminates, tell the user that their offline time has ended
         offlineViewModel?.offlineTimeFinished(successfully: false)
-        print("Offline time finished NOT successfully")
         
         #warning("`OfflineNotification.appTerminated.post()` -- notification never posted")
         OfflineNotification.appTerminated.post()
@@ -42,16 +38,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         // Only do this if we are offline
         guard offlineViewModel?.state.isOffline == true else { return }
-        print("The user is offline")
         
         // When the phone turns on, we need to ensure our app is in the foreground, but give the user 5 seconds to open the app before starting their grace period
-        DispatchQueue.main.asyncAfter(
-            deadline: .now() + 5
-        ) { [weak self] in
+        #warning("Do we need to convert it to Timer?")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            
             print("Waited 5s for the user to open the app and protectedDataWillBecomeUnavailable = \(self?.protectedDataWillBecomeUnavailable ?? false) and applicationState = \(UIApplication.shared.applicationState)")
+            
             if UIApplication.shared.applicationState != .active,
                self?.protectedDataWillBecomeUnavailable == false {
-                self?.offlineTracker?.startGracePeriod()
+                OfflineTracker.shared.startGracePeriod()
             }
         }
         

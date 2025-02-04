@@ -8,8 +8,11 @@
 import UIKit
 
 
-@Observable
 class OfflineTracker {
+    
+    private init() { }
+    
+    static let shared = OfflineTracker()
     
     var offlineViewModel: OfflineViewModel?
     
@@ -47,37 +50,4 @@ class OfflineTracker {
         gracePeriodHelper.endGracePeriod(successfully: successfully)
     }
     
-    
-    func scheduleOfflineReminder() {
-        // Schedule a notification to be sent tomorrow
-        // At the same time as they went offline today
-        
-        #if DEBUG
-        // When debugging, don't wait until tommorrow -- wait 30 seconds then post the reminder notification
-        guard
-            let endDate = offlineViewModel?.state.endDate,
-            let tomorrow = Calendar.current.date(byAdding: DateComponents(second: 15), to: endDate)
-        else {
-            print("End date is nil")
-            return
-        }
-        #else
-        guard
-            let startDate = offlineViewModel?.oldStartDate,
-            let tomorrow = Calendar.current.date(byAdding: DateComponents(day: 1), to: startDate)
-        else {
-            print("Start date is nil")
-            return
-        }
-        #endif
-        
-        print("Will post reminder at \(tomorrow)")
-        
-        OfflineNotification.offlineReminder(tomorrow: tomorrow).post()
-    }
-    
-    
-    func revokeOfflineReminder() {
-        NotificationsHelper.revoke(notification: K.offlineReminderNotificationId)
-    }
 }

@@ -41,7 +41,6 @@ fileprivate struct ENTRY: View {
     @State private var liveActivityViewModel = LiveActivityViewModel()
     @State private var activityViewModel = ActivityViewModel()
     @State private var offlineCountViewModel = OfflineCountViewModel()
-    @State private var offlineTracker = OfflineTracker()
     
     // Store a unique user ID
     @AppStorage(K.userDefaultsUserIdKey) private var userId = UUID().uuidString
@@ -51,21 +50,24 @@ fileprivate struct ENTRY: View {
     var body: some View {
         
         HomeView()
+        
+        // ONBOARDING
             .fullScreenCover(isPresented: $shouldShowOnboarding) {
                 OnboardingView()
             }
+        
             .onAppear(perform: makeConnections)
             .onAppear(perform: setupFirebase)
             .onChange(of: scenePhase) { old, new in
                 scenePhaseChanged(from: old, to: new)
             }
         
+        // ENVIRONMENT
             .environment(offlineViewModel)
             .environment(permissionsViewModel)
             .environment(liveActivityViewModel)
             .environment(activityViewModel)
             .environment(offlineCountViewModel)
-            .environment(offlineTracker)
         
     }
     
@@ -76,8 +78,7 @@ fileprivate struct ENTRY: View {
         offlineViewModel.liveActivityViewModel = liveActivityViewModel
         offlineViewModel.offlineCountViewModel = offlineCountViewModel
         appDelegate.offlineViewModel = offlineViewModel
-        appDelegate.offlineTracker = offlineTracker
-        offlineTracker.offlineViewModel = offlineViewModel
+        OfflineTracker.shared.offlineViewModel = offlineViewModel
     }
     
     
@@ -95,13 +96,12 @@ fileprivate struct ENTRY: View {
         
         
         if newValue == .background {
-            print("App went into background.")
+            print("App went into background")
             // If the app went into background because the phone turned off do nothing
             // If the phone was turned on though (the user switched to another app maybe) offer them grace period
             
             // We need to use a background task here so that the timer can run in the background
             backgroundTimerTaskId = UIApplication.shared.beginBackgroundTask()
-            print("Background task ID = \(backgroundTimerTaskId!.rawValue)")
             
             backgroundTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
                 print("1.5 seconds passed. Protected data will become unavailable = \(appDelegate.protectedDataWillBecomeUnavailable)")
@@ -115,7 +115,7 @@ fileprivate struct ENTRY: View {
                 // Otherwise, the app will have been put into background because the user closed it.
                 // So we should start a grace period
                 if !appDelegate.protectedDataWillBecomeUnavailable {
-                    offlineTracker.startGracePeriod()
+                    OfflineTracker.shared.startGracePeriod()
                 }
             }
                         
@@ -131,7 +131,7 @@ fileprivate struct ENTRY: View {
             
             // When the app goes active or inactive, (foreground) end the grace period successfully, but only if a grace period was started.
             
-            offlineTracker.endGracePeriod(successfully: true)
+            OfflineTracker.shared.endGracePeriod(successfully: true)
         }
     }
 }

@@ -11,7 +11,6 @@ import Lottie
 struct FailureView: View {
     
     @Environment(OfflineViewModel.self) private var offlineViewModel
-    @Environment(OfflineTracker.self) private var offlineTracker
     
     @State private var notificationToastShows = false
     @State private var userWillBeReminded = false
@@ -65,8 +64,14 @@ struct FailureView: View {
             Spacer()
             
             Button {
-                offlineTracker.scheduleOfflineReminder()
-                notificationToastShows = true
+                if let oldStartDate = offlineViewModel.state.oldStartDate {
+                    OfflineReminderHelper.scheduleReminderForTomorrow(today: oldStartDate)
+                }
+                
+                withAnimation {
+                    notificationToastShows = true
+                }
+                
                 userWillBeReminded = true
             } label: {
                 Label {
@@ -96,8 +101,11 @@ struct FailureView: View {
                 
                 Button("Actually, don't remind me",
                        systemImage: "bell.badge.slash") {
-                    offlineTracker.revokeOfflineReminder()
-                    notificationToastShows = false
+                    
+                    OfflineReminderHelper.revokeOfflineReminder()
+                    withAnimation {
+                        notificationToastShows = false
+                    }
                 }
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.capsule)
@@ -111,5 +119,4 @@ struct FailureView: View {
 #Preview {
     FailureView()
         .environment(OfflineViewModel())
-        .environment(OfflineTracker())
 }
