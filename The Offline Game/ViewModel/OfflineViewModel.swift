@@ -87,14 +87,14 @@ class OfflineViewModel {
             // may execute on a background thread
             DispatchQueue.main.async {
                 print("Offline end timer triggered!")
-                self?.offlineTimeFinished(successfully: true)
+                self?.endOfflineTime(successfully: true)
             }
         }
     }
     
     
     
-    func offlineTimeFinished(successfully: Bool) {
+    func endOfflineTime(successfully: Bool) {
         print("offline time finished successfully=\(successfully)")
         
         endOfflineTimer?.invalidate()
@@ -119,7 +119,6 @@ class OfflineViewModel {
         liveActivityViewModel?.stopActivity()
         
         // Now revoke any success notifications if we need to
-
         OfflineNotification.congratulatoryNotification(endDate: .now, formattedDuration: "").revoke()
         
         // Now handle achievements by delegating responsibility to the offline achievements view model

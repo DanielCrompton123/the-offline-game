@@ -43,9 +43,8 @@ struct OfflineState {
     
     // Check if the user is in overtime offline
     var isInOvertime: Bool {
-        // Is end date BEFORE now?
-        guard let endDate else { return false }
-        return isOffline && ( Date().distance(to: endDate) < 0 )
+        // Does the elapsed time have a value > 0
+        overtimeElapsedTime != nil
     }
     
     
