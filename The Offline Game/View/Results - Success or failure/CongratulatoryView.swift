@@ -54,7 +54,7 @@ struct CongratulatoryView: View {
 //            if let elapsedTime = offlineViewModel.oldElapsedTime ?? offlineViewModel.elapsedTime {
             if let elapsedTime = offlineViewModel.state.elapsedTime {
                 
-                let formattedDur = Duration.seconds(elapsedTime).offlineDisplayFormat()
+                let formattedDur = elapsedTime.offlineDisplayFormat()
                 
                 Text("You successfully spent \(formattedDur) offline!")
                     .opacity(0.75)
@@ -63,9 +63,9 @@ struct CongratulatoryView: View {
                 
                 // If the overtime duration HAS A VALUE, the user has come here from just being overtime.
                 // so we should tell them
-                if let overtimeDuration = offlineViewModel.state.overtimeDuration {
+                if let overtimeElapsedTime = offlineViewModel.state.overtimeElapsedTime {
                     
-                    let f = overtimeDuration.offlineDisplayFormat()
+                    let f = overtimeElapsedTime.offlineDisplayFormat()
                     
                     Text("+ \(f) overtime")
                         .font(.display40)

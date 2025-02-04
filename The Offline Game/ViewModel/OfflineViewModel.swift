@@ -38,15 +38,7 @@ class OfflineViewModel {
         state.isOffline = true
         state.startDate = Date()
         
-        Task {
-            // Add one to the offline count
-            do {
-                try await offlineCountViewModel?.increase()
-            } catch {
-                self.error = error.localizedDescription
-                print("🔢 Error increasing offline count: \(error.localizedDescription)")
-            }
-        }
+        count(increasing: true)
         
         // Now add the live activity
         liveActivityViewModel?.startActivity(overtime: false)
@@ -54,12 +46,29 @@ class OfflineViewModel {
         scheduleOfflineTimer()
         
         // Now schedule a notification to be posted to the user when their offline time ends
-        let formattedDuration = state.formattedDuration(width: .abbreviated)
+        let formattedDuration = state.durationSeconds.offlineDisplayFormat(width: .abbreviated)
         
         OfflineNotification.congratulatoryNotification(
             endDate: state.endDate!, // unwrapped- just set startDate and endDate depends on it
             formattedDuration: formattedDuration
         ).post()
+    }
+    
+    
+    private func count(increasing: Bool) {
+        Task {
+            // Add one to the offline count
+            do {
+                if increasing {
+                    try await offlineCountViewModel?.increase()
+                } else {
+                    try await offlineCountViewModel?.decrease()
+                }
+            } catch {
+                self.error = error.localizedDescription
+                print("🔢 Error \(increasing ? "increasing" : "increasing") offline count: \(error.localizedDescription)")
+            }
+        }
     }
     
     
@@ -99,15 +108,7 @@ class OfflineViewModel {
             state.startDate = nil
         }
         
-        Task {
-            do {
-                // Now subtract 1 from the offline count
-                try await offlineCountViewModel?.decrease()
-            } catch {
-                self.error = error.localizedDescription
-                print("🔢 Error decreasing offline count: \(error.localizedDescription)")
-            }
-        }
+        count(increasing: false)
         
         // Manage presentation of sheets
         state.isOffline = false
@@ -162,24 +163,13 @@ class OfflineViewModel {
     func beginOfflineOvertime() {
         // When the user wants OVERTIME this is called.
         // Set isOffline, and update the counter and the live activity
-        
-        state.isOffline = true
-        
-        Task {
-            // Add one to the offline count
-            do {
-                try await offlineCountViewModel?.increase()
-            } catch {
-                self.error = error.localizedDescription
-                print("🔢 Error increasing offline count: \(error.localizedDescription)")
-            }
-        }
+                
+        count(increasing: true)
         
         userShouldBeCongratulated = false
         liveActivityViewModel?.startActivity(overtime: true)
         
-        // Also set the overtime start date
-        state.overtimeStartDate = Date()
+        OfflineOvertimeHelper.startOvertime(state: &state)
     }
     
     

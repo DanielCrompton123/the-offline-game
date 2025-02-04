@@ -40,7 +40,7 @@ struct OfflineProgressView: View {
 
                     } currentValueLabel: {
                         // Current value -- display "7Hrs offline (so far)"
-                        let formattedElapsedTime = Duration.seconds(elapsedTime).offlineDisplayFormat()
+                        let formattedElapsedTime = elapsedTime.offlineDisplayFormat()
                         
                         Text("\(formattedElapsedTime) offline so far")
                             .textCase(.uppercase)

@@ -23,10 +23,6 @@ struct OfflineState {
         }
     }
     
-    func formattedDuration(width: Duration.UnitsFormatStyle.UnitWidth = .wide) -> String {
-        durationSeconds.offlineDisplayFormat(width: width)
-    }
-    
     
     //MARK: - Offline state
     
@@ -34,10 +30,7 @@ struct OfflineState {
         case none, offline, paused
     }
     
-    var state = State.none {
-        // When we set the state value, store in user defaults
-        didSet { UserDefaults.standard.set(state.rawValue, forKey: K.userDefaultsOfflineStateKey) }
-    }
+    var state = State.none
     
     // Is the user offline?
     // Used to trigger presentation of the offline view
@@ -94,7 +87,7 @@ struct OfflineState {
     }
     
     // Elapsed time used in the live activity and the offline progress calculation
-    var elapsedTime: TimeInterval? {
+    var elapsedTime: Duration? {
         // It is the time between going offline and (either now, or when the user paused offline time due to going on the home screen)
         // It is the lower value of either that or now.
         // Because we may be accessing the elapsed time after going overtime.
@@ -103,10 +96,12 @@ struct OfflineState {
         
         guard let startDate else { return nil }
         
-//        #error("Time interval incorrectly calculated")
-        return min(
-            Date().timeIntervalSince(startDate) - totalPauseDuration.seconds,
-            durationSeconds.seconds
+        return .seconds(
+            min(
+                Date().timeIntervalSince(startDate) - totalPauseDuration.seconds,
+                
+                durationSeconds.seconds
+            )
         )
     }
     // Old elapsed time used in success congrats view when the elapsedTime has been reset
@@ -118,10 +113,14 @@ struct OfflineState {
     
     // This is the duration that the user was overtime for
     // Set when the overtime ends
-    var overtimeDuration: Duration?
+    var overtimeElapsedTime: Duration? {
+        
+        // Account for pause time too
+        nil
+    }
     
     // Used in pausing the offline time
-    var pauseDate: Date?
+    var previousPauseDate: Date?
     
     // Accumulate the pause time (i.e. if pausing multiple times)
     var totalPauseDuration = Duration.seconds(0)
