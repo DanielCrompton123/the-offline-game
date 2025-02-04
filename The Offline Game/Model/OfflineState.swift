@@ -48,6 +48,12 @@ struct OfflineState {
     
     var isPaused: Bool { state == .paused }
     
+    // Check if the user is in overtime offline
+    var isInOvertime: Bool {
+        // Is end date BEFORE now?
+        guard let endDate else { return false }
+        return isOffline && ( Date().distance(to: endDate) < 0 )
+    }
     
     
     //MARK: - Dates & durations
@@ -89,13 +95,35 @@ struct OfflineState {
     
     // Elapsed time used in the live activity and the offline progress calculation
     var elapsedTime: TimeInterval? {
+        // It is the time between going offline and (either now, or when the user paused offline time due to going on the home screen)
+        // It is the lower value of either that or now.
+        // Because we may be accessing the elapsed time after going overtime.
+        // This WOULD be a sum of offline time + delay on congrats view + overtime.
+        // Also make sure pause time is deducted
+        
         guard let startDate else { return nil }
-        return Date().timeIntervalSince(startDate)
+        
+//        #error("Time interval incorrectly calculated")
+        return min(
+            Date().timeIntervalSince(startDate) - totalPauseDuration.seconds,
+            durationSeconds.seconds
+        )
     }
-    // Old elapsed time used in success congrats view when the elaopsedTime has been reset
-    var oldElapsedTime: TimeInterval?
+    // Old elapsed time used in success congrats view when the elapsedTime has been reset
+//    var oldElapsedTime: TimeInterval?
+    
+    // The start date for overtime
+    // This is NOT the same as the end date because the user may spend some time on the congrats screen or in the game center access point.
+    var overtimeStartDate: Date?
+    
+    // This is the duration that the user was overtime for
+    // Set when the overtime ends
+    var overtimeDuration: Duration?
     
     // Used in pausing the offline time
     var pauseDate: Date?
+    
+    // Accumulate the pause time (i.e. if pausing multiple times)
+    var totalPauseDuration = Duration.seconds(0)
     
 }
