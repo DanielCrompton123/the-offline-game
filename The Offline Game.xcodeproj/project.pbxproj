@@ -59,7 +59,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Extension/Duration extension.swift",
-				Modifiers/DelayModifier.swift,
 			);
 			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
 		};
