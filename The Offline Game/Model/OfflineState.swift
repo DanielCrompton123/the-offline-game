@@ -96,13 +96,10 @@ struct OfflineState {
         
         guard let startDate else { return nil }
         
-        return .seconds(
-            min(
-                Date().timeIntervalSince(startDate) - totalPauseDuration.seconds,
-                
-                durationSeconds.seconds
-            )
-        )
+        let interval = startDate.distance(to: Date())
+        let pauseSecs = Double(totalPauseDuration.components.seconds)
+        
+        return .seconds( min(interval - pauseSecs,durationSeconds.seconds) )
     }
     // Old elapsed time used in success congrats view when the elapsedTime has been reset
 //    var oldElapsedTime: TimeInterval?
@@ -114,9 +111,14 @@ struct OfflineState {
     // This is the duration that the user was overtime for
     // Set when the overtime ends
     var overtimeElapsedTime: Duration? {
-        
+        // Time between going overtime & now
         // Account for pause time too
-        nil
+        
+        guard let overtimeStartDate else { return nil }
+        let interval = overtimeStartDate.distance(to: Date())
+        let pauseSecs = Double(totalPauseDuration.components.seconds)
+        
+        return .seconds( interval - pauseSecs )
     }
     
     // Used in pausing the offline time

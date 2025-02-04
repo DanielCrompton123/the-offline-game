@@ -130,11 +130,11 @@ class OfflineViewModel {
         // If we HAVE BEEN overtime, make sure this ends by setting the overtime duration (distance between overtime start and now)
         // have been been overtime = (overtime start != nil)
         
-        if let overtimeStartDate = state.overtimeStartDate {
-            state.overtimeDuration = .seconds( overtimeStartDate.distance(to: Date()) )
-            
-            // Also reset the overtime start date?
-        }
+//        if let overtimeStartDate = state.overtimeStartDate {
+//            state.overtimeDuration = .seconds( overtimeStartDate.distance(to: Date()) )
+//            
+//            // Also reset the overtime start date?
+//        }
         
     }
     
@@ -144,11 +144,11 @@ class OfflineViewModel {
         // Set the overtime duration
         guard let secs = state.overtimeStartDate?.distance(to: Date()) else { return }
         
-        state.overtimeDuration = .seconds(secs)
+//        state.overtimeElapsedTime = .seconds(secs)
         
         // Now reset the overtime start date AND the overtime duration
         state.overtimeStartDate = nil
-        state.overtimeDuration = nil
+//        state.overtimeElapsedTime = nil
         
         // decrease the count
 //        offlineCountViewModel?.decrease()
