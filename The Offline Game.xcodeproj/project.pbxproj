@@ -16,6 +16,8 @@
 		651094662D03954A00F0853C /* OfflineWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		651BB9122D2C7199005BE4E9 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 651BB9112D2C7199005BE4E9 /* FirebaseDatabase */; };
 		651BB9142D2C7268005BE4E9 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 651BB9132D2C7268005BE4E9 /* FirebaseDatabase */; };
+		651F19912D3AD63300A433C4 /* SwiftUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */; };
+		651F19922D3AD63300A433C4 /* SwiftUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */; };
 		65AFF78E2D31AB0A00EE4508 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 65AFF78D2D31AB0A00EE4508 /* Lottie */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,7 @@
 		651094562D03954700F0853C /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		651094582D03954700F0853C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		6510945A2D03954700F0853C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIViewController.swift; sourceTree = "<group>"; };
 		65BD0C362CFBBB35004031F5 /* The Offline Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Offline Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -136,6 +139,7 @@
 				650682E42D22CF11006EC566 /* Constants (K).swift */,
 				650682ED2D231943006EC566 /* Helper */,
 				650682F42D231948006EC566 /* Model */,
+				651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -290,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				651F19912D3AD63300A433C4 /* SwiftUIViewController.swift in Sources */,
 				6506829A2D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
 				650682E62D22CF11006EC566 /* Constants (K).swift in Sources */,
 			);
@@ -300,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				650682E52D22CF11006EC566 /* Constants (K).swift in Sources */,
+				651F19922D3AD63300A433C4 /* SwiftUIViewController.swift in Sources */,
 				650682932D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
