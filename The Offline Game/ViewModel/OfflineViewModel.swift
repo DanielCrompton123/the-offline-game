@@ -93,15 +93,11 @@ class OfflineViewModel {
     }
     
     
-    
-<<<<<<< Updated upstream
-    func endOfflineTime(successfully: Bool) {
-=======
     var overtimeStartTimer: Timer?
     var overtimeStartTimerBGTaskId: UIBackgroundTaskIdentifier?
     
-    func offlineTimeFinished(successfully: Bool) {
->>>>>>> Stashed changes
+    func endOfflineTime(successfully: Bool) {
+    
         print("offline time finished successfully=\(successfully)")
         
         endOfflineTimer?.invalidate()
@@ -131,29 +127,17 @@ class OfflineViewModel {
         // Now handle achievements by delegating responsibility to the offline achievements view model
         #warning("Notifications not being posted")
         if successfully {
-<<<<<<< Updated upstream
-            gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(state.durationSeconds))
-=======
             //gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(durationSeconds))
->>>>>>> Stashed changes
         }
         
         // If we HAVE BEEN overtime, make sure this ends by setting the overtime duration (distance between overtime start and now)
         // have been overtime = (overtime start != nil)
         
-<<<<<<< Updated upstream
 //        if let overtimeStartDate = state.overtimeStartDate {
 //            state.overtimeDuration = .seconds( overtimeStartDate.distance(to: Date()) )
 //            
 //            // Also reset the overtime start date?
 //        }
-=======
-        if let overtimeStartDate {
-            overtimeDuration = .seconds( overtimeStartDate.distance(to: Date()) )
-            
-            // Also reset the overtime start date
-            self.overtimeStartDate = nil
-        }
         
         // When the offline time ends successfully, wait 10 seconds and then automatically go overtime, accounting for the 10 seconds.
         
@@ -170,7 +154,7 @@ class OfflineViewModel {
             // Now schedule a task for 10 seconds
             overtimeStartTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
                 
-                print("overtimeStartTimer triggered, start date!=nil?\(self?.startDate != nil)")
+                print("overtimeStartTimer triggered, start date!=nil?\(self?.state.startDate != nil)")
                 
                 // After 10 seconds, and we have not CONFIRMED going online, then automatically start overtime
 //                if self?.startDate != nil {
@@ -189,7 +173,6 @@ class OfflineViewModel {
             }
             
         }
->>>>>>> Stashed changes
         
     }
     
@@ -204,18 +187,11 @@ class OfflineViewModel {
 //        state.overtimeElapsedTime = .seconds(secs)
         
         // Now reset the overtime start date AND the overtime duration
-<<<<<<< Updated upstream
         state.overtimeStartDate = nil
 //        state.overtimeElapsedTime = nil
-=======
-        overtimeStartDate = nil
-        overtimeDuration = nil
-        startDate = nil
-        
-        print("overtimeDuration = \(overtimeDuration)")
-        
-        isOffline = false
->>>>>>> Stashed changes
+        //startDate = nil
+                
+        state.isOffline = false
         
         // decrease the count
 //        offlineCountViewModel?.decrease()
@@ -228,7 +204,7 @@ class OfflineViewModel {
         // Cancel the timer
         overtimeStartTimer?.invalidate()
         overtimeStartTimer = nil
-        #warning("the overtime period keeps starting after 10 seconds repeatedly")
+//        #warning("the overtime period keeps starting after 10 seconds repeatedly")
         
         // End the overtimeStartTimerBGTaskId
         if let overtimeStartTimerBGTaskId {
@@ -248,12 +224,7 @@ class OfflineViewModel {
         userShouldBeCongratulated = false
         liveActivityViewModel?.startActivity(overtime: true)
         
-<<<<<<< Updated upstream
-        OfflineOvertimeHelper.startOvertime(state: &state)
-=======
-        // Also set the overtime start date
-        overtimeStartDate = Date().addingTimeInterval(offset)
->>>>>>> Stashed changes
+        OfflineOvertimeHelper.startOvertime(state: &state, offset: offset)
     }
     
     

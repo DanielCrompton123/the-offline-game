@@ -132,8 +132,8 @@ struct CongratulatoryView: View {
         
         // If this view dismisses WITHOUT overtime, confirm the end offline time (by setting startDate to nil)
         .onDisappear {
-            print("Congrats view disappeared, in overtime?\(offlineViewModel.isInOvertime)")
-            if !offlineViewModel.isInOvertime {
+            print("Congrats view disappeared, in overtime?\(offlineViewModel.state.isInOvertime)")
+            if !offlineViewModel.state.isInOvertime {
                 #warning("!offlineViewModel.isInOvertime")
                 print("Not in overtime so confirming offline time finished...")
                 offlineViewModel.confirmOfflineTimeFinished()

@@ -114,11 +114,11 @@ struct OfflineView: View {
                 role: .destructive
             ) {
                 
-                if offlineViewModel.isInOvertime {
-                    offlineViewModel.offlineTimeFinished(successfully: true)
+                if offlineViewModel.state.isInOvertime {
+//                    offlineViewModel.endOfflineTime(successfully: true)
                     offlineViewModel.confirmOfflineTimeFinished()
                 } else {
-                    offlineViewModel.offlineTimeFinished(successfully: true)
+                    offlineViewModel.endOfflineTime(successfully: true)
                 }
             }
             

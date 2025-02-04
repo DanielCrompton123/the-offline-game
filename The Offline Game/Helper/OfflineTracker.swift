@@ -41,7 +41,7 @@ class OfflineTracker {
             
             // if it was NOT succcessful, just end the offline time
             else {
-                self?.offlineViewModel?.offlineTimeFinished(successfully: false)
+                self?.offlineViewModel?.endOfflineTime(successfully: false)
             }
             
         }
@@ -115,7 +115,7 @@ class OfflineTracker {
         guard offlineViewModel?.state.isOffline == true else { return }
         
         // When the app terminates, tell the user that their offline time has ended
-        offlineViewModel?.offlineTimeFinished(successfully: false)
+        offlineViewModel?.endOfflineTime(successfully: false)
         
         #warning("`OfflineNotification.appTerminated.post()` -- notification never posted")
         OfflineNotification.appTerminated.post()
