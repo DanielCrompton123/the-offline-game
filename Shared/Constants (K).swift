@@ -34,7 +34,7 @@ struct K {
     
     static let maximumOfflineSecs: TimeInterval = 24 * 60 * 60 // 24 hours
 #if DEBUG
-    static let minimumOfflineSecs: TimeInterval = 10
+    static let minimumOfflineSecs: TimeInterval = 5
 #else
     static let minimumOfflineSecs: TimeInterval = 10 * 60
 #endif

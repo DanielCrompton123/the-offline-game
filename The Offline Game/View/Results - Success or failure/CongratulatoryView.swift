@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Lottie
 
 struct CongratulatoryView: View {
     
@@ -36,11 +35,14 @@ struct CongratulatoryView: View {
             // CONTENT
             content
         }
+        // If this view dismisses WITHOUT overtime, confirm the end offline time (by setting startDate to nil)
+
     }
     
     
     @ViewBuilder
     private var content: some View {
+        
         VStack {
             Spacer(minLength: 0)
             
@@ -52,8 +54,6 @@ struct CongratulatoryView: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.6)
             
-            // We can not just rely on the oldElapsedTime, because it is still nil when we present this sheet asking the user to do overtime.
-            //            if let elapsedTime = offlineViewModel.oldElapsedTime ?? offlineViewModel.elapsedTime {
             if let elapsedTime = offlineViewModel.state.elapsedTime {
                 
                 let formattedDur = elapsedTime.offlineDisplayFormat()
@@ -103,9 +103,10 @@ struct CongratulatoryView: View {
         .foregroundStyle(.white)
         .multilineTextAlignment(.center)
         
+        // NOTE: Doing onDisappear(resetOfflineState) would not work properly.
+        // RULE: With sheets, use their onDismiss instead of view onDisappear!
+        // dunno why
         
-        // If this view dismisses WITHOUT overtime, confirm the end offline time (by setting startDate to nil)
-        .onDisappear(perform: disappeared)
     }
     
 
@@ -149,17 +150,6 @@ struct CongratulatoryView: View {
         }
         .buttonStyle(RedButtonStyle())
         .tint(.white)
-    }
-    
-    
-    private func disappeared() {
-        print("Congrats view disappeared, in overtime?\(offlineViewModel.state.isInOvertime)")
-        
-        #warning("Possible race condition with offlineViewModel.state.isInOvertime")
-        
-        if !offlineViewModel.state.isInOvertime {
-            offlineViewModel.resetOfflineTime()
-        }
     }
     
     

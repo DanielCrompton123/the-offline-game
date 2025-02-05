@@ -77,7 +77,8 @@ struct HomeView: View {
             }
             
             // CONGRATS VIEW
-            .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated) {
+            .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated,
+                   onDismiss: resetIfNotInOvertime){
                 CongratulatoryView()
             }
             
@@ -147,6 +148,13 @@ struct HomeView: View {
             }
 
         }
+    }
+    
+    
+    private func resetIfNotInOvertime() {
+        if !offlineViewModel.state.isInOvertime {
+            offlineViewModel.resetOfflineTime()
+        }        
     }
 
 }

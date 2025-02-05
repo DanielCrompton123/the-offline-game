@@ -32,7 +32,6 @@ class OfflineViewModel {
     var gameKitViewModel: GameKitViewModel?
     
     
-    
     func goOffline() {
         print("Going offline")
         isPickingDuration = false
@@ -115,6 +114,7 @@ class OfflineViewModel {
         
         // Manage presentation of sheets
         state.isOffline = false
+        
         userShouldBeCongratulated = successfully
         userDidFail = !successfully
         
@@ -174,6 +174,8 @@ class OfflineViewModel {
     
     func resetOfflineTime() {
         
+        #warning("Called as soon as congrats view appears")
+        
         print("🔁 Resetting offline state")
         
         // Reset the state
@@ -197,6 +199,7 @@ class OfflineViewModel {
     
     
     func beginOfflineOvertime(offset: TimeInterval) {
+        print("Beginning overtime")
         // Offset positive for in the future, and negative for in the past
 
         // Set isOffline, and update the counter and the live activity
@@ -225,11 +228,10 @@ class OfflineViewModel {
     
     
     func resumeOfflineTime() {
+        print("Resuming offline time")
         
         OfflinePauseHelper.resume(state: &state)
-        
         scheduleOfflineTimer()
-        
     }
     
 }
