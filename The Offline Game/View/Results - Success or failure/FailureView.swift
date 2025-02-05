@@ -115,7 +115,7 @@ struct FailureView: View {
             }
             .padding()
         }
-        .onDisappear(perform: offlineViewModel.confirmOfflineTimeFinished)
+        .onDisappear(perform: offlineViewModel.resetOfflineTime)
     }
 }
 

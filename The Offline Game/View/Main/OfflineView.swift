@@ -107,6 +107,7 @@ struct OfflineView: View {
         
         .confirmationDialog("You will loose your offline progress!", isPresented: $goOnlineConfirmationShows, titleVisibility: .visible) {
             
+            // OK BUTTON
             Button(
                 offlineViewModel.state.isInOvertime ?
                 "I'm finished with my overtime now." :
@@ -114,15 +115,17 @@ struct OfflineView: View {
                 role: .destructive
             ) {
                 
-                if offlineViewModel.state.isInOvertime {
-//                    offlineViewModel.endOfflineTime(successfully: true)
-                    offlineViewModel.confirmOfflineTimeFinished()
-                } else {
-                    offlineViewModel.endOfflineTime(successfully: true)
-                }
+//                if offlineViewModel.state.isInOvertime {
+////                    offlineViewModel.endOfflineTime(successfully: true)
+//                    offlineViewModel.resetOfflineTime()
+//                } else {
+//                    offlineViewModel.endNormalOfflineTime(successfully: true)
+//                }
+                
+                offlineViewModel.endOfflineTime(successfully: true)
             }
             
-            
+            // CANCEL BUTTON
             Button(
                 offlineViewModel.state.isInOvertime ?
                 "Actually, I want to continue!" :

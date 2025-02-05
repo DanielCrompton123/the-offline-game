@@ -29,7 +29,7 @@ struct NotificationsHelper {
             do {
                 // Post request
                 try await UNUserNotificationCenter.current().add(request)
-                print("Posted notification'\(title.prefix(30))...'")
+                print("Posted notification '\(title)'")
             } catch {
                 print("Error posting notification \(error)")
             }

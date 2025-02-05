@@ -24,6 +24,7 @@ class OfflineViewModel {
     
     var isPickingDuration = false // Makes the OfflinetimeView appear to pick duration
     var userShouldBeCongratulated = false // Makes the congratulatory view appear in the main view
+    
     var userDidFail = false // Presents the failure view
     
     var liveActivityViewModel: LiveActivityViewModel?
@@ -96,20 +97,19 @@ class OfflineViewModel {
     var overtimeStartTimer: Timer?
     var overtimeStartTimerBGTaskId: UIBackgroundTaskIdentifier?
     
+    
+    // Ends the NORMAL AND OVERTIME offline periods
     func endOfflineTime(successfully: Bool) {
     
-        print("offline time finished successfully=\(successfully)")
+        print("Ending normal offline time, successfully=\(successfully)")
         
+        // Cancel the offline end timer
         endOfflineTimer?.invalidate()
         endOfflineTimer = nil
         
-        // DON'T set it to nil straight away because the user may want to stay offline, if they succeeded with this one and take their overtime
-        // Instead do it in another func and call this if the user dismisses the congrats view without pressing "stay offline"
-        
-        // If the offline time ended in failure, the view won't give them the choice of staying offline so we should just set it to nil
-        if !successfully {
-            state.startDate = nil
-        }
+        // Only reset the start date to nil when we are resetting offline state.
+        // When the user failed (violating grace period) the offline time will be ended, and the state will be cleared.
+//        state.startDate = nil
         
         count(increasing: false)
         
@@ -124,87 +124,69 @@ class OfflineViewModel {
         // Now revoke any success notifications if we need to
         OfflineNotification.congratulatoryNotification(endDate: .now, formattedDuration: "").revoke()
         
+        if state.isInOvertime {
+            OfflineOvertimeHelper.endOvertime(state: &state)
+        }
+        
         // Now handle achievements by delegating responsibility to the offline achievements view model
-        #warning("Notifications not being posted")
-        if successfully {
+//        if successfully {
             //gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(durationSeconds))
-        }
-        
-        // If we HAVE BEEN overtime, make sure this ends by setting the overtime duration (distance between overtime start and now)
-        // have been overtime = (overtime start != nil)
-        
-//        if let overtimeStartDate = state.overtimeStartDate {
-//            state.overtimeDuration = .seconds( overtimeStartDate.distance(to: Date()) )
-//            
-//            // Also reset the overtime start date?
 //        }
-        
+                
         // When the offline time ends successfully, wait 10 seconds and then automatically go overtime, accounting for the 10 seconds.
+        // DO THIS IN THE HELPER
         
-        if successfully {
-            
-            // Schedule a timer to time 10 seconds (and use a background task is the device is in the background)
-            if UIApplication.shared.applicationState == .background {
-                overtimeStartTimerBGTaskId = UIApplication.shared.beginBackgroundTask()
-                
-                // Ended BG task when app goes into foreground
-                print("Begun background task \(overtimeStartTimerBGTaskId!.rawValue) to allow overtimeStartTimer to run")
-            }
-            
-            // Now schedule a task for 10 seconds
-            overtimeStartTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
-                
-                print("overtimeStartTimer triggered, start date!=nil?\(self?.state.startDate != nil)")
-                
-                // After 10 seconds, and we have not CONFIRMED going online, then automatically start overtime
-//                if self?.startDate != nil {
-                if self?.userShouldBeCongratulated == true {
-                    self?.beginOfflineOvertime(offset: -10) // 10 seconds in the past
-                    print("Begun overtime (10 secs ago)")
-                }
-                // BUT account for the 10 seconds delay
-                
-                // Also END BG task
-                if let overtimeStartTimerBGTaskId = self?.overtimeStartTimerBGTaskId {
-                    UIApplication.shared.endBackgroundTask(overtimeStartTimerBGTaskId)
-                    print("Ended overtimeStartTimerBGTask")
-                }
-                
-            }
-            
-        }
+//        if successfully {
+//            
+//            // Schedule a timer to time 10 seconds (and use a background task is the device is in the background)
+//            if UIApplication.shared.applicationState == .background {
+//                overtimeStartTimerBGTaskId = UIApplication.shared.beginBackgroundTask()
+//                
+//                // Ended BG task when app goes into foreground
+//                print("Begun background task \(overtimeStartTimerBGTaskId!.rawValue) to allow overtimeStartTimer to run")
+//            }
+//            
+//            // Now schedule a task for 10 seconds
+//            overtimeStartTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
+//                
+//                print("overtimeStartTimer triggered, start date!=nil?\(self?.state.startDate != nil)")
+//                
+//                // After 10 seconds, and we have not CONFIRMED going online, then automatically start overtime
+////                if self?.startDate != nil {
+//                if self?.userShouldBeCongratulated == true {
+//                    self?.beginOfflineOvertime(offset: -10) // 10 seconds in the past
+//                    print("Begun overtime (10 secs ago)")
+//                }
+//                // BUT account for the 10 seconds delay
+//                
+//                // Also END BG task
+//                if let overtimeStartTimerBGTaskId = self?.overtimeStartTimerBGTaskId {
+//                    UIApplication.shared.endBackgroundTask(overtimeStartTimerBGTaskId)
+//                    print("Ended overtimeStartTimerBGTask")
+//                }
+//                
+//            }
+//            
+//        }
         
     }
     
     
-    func confirmOfflineTimeFinished() {
+    func resetOfflineTime() {
         
-        print("confirming offline finish")
+        print("🔁 Resetting offline state")
         
-        // Set the overtime duration
-        guard let secs = state.overtimeStartDate?.distance(to: Date()) else { return }
-        
-//        state.overtimeElapsedTime = .seconds(secs)
-        
-        // Now reset the overtime start date AND the overtime duration
-        state.overtimeStartDate = nil
-//        state.overtimeElapsedTime = nil
-        //startDate = nil
-                
-        state.isOffline = false
-        
-        // decrease the count
-//        offlineCountViewModel?.decrease()
-        // Done in the offlineTimeFinished
-        
-        
-        // reset the pause time
-        totalPauseDuration = .seconds(0)
+        // Reset the state
+        state.reset()
         
         // Cancel the timer
-        overtimeStartTimer?.invalidate()
-        overtimeStartTimer = nil
+        self.overtimeStartTimer?.invalidate()
+        self.overtimeStartTimer = nil
 //        #warning("the overtime period keeps starting after 10 seconds repeatedly")
+    
+        // Make sure sheets are presented
+        userDidFail = false
+        userShouldBeCongratulated = false
         
         // End the overtimeStartTimerBGTaskId
         if let overtimeStartTimerBGTaskId {
@@ -213,24 +195,21 @@ class OfflineViewModel {
     }
     
     
+    
     func beginOfflineOvertime(offset: TimeInterval) {
         // Offset positive for in the future, and negative for in the past
 
-        // When the user wants OVERTIME this is called.
         // Set isOffline, and update the counter and the live activity
                 
         count(increasing: true)
         
+        OfflineOvertimeHelper.startOvertime(state: &state, offset: offset)
+        
         userShouldBeCongratulated = false
         liveActivityViewModel?.startActivity(overtime: true)
-        
-        OfflineOvertimeHelper.startOvertime(state: &state, offset: offset)
     }
     
     
-    
-    var pauseDate: Date?
-    var totalPauseDuration = Duration.seconds(0)
 
     func pauseOfflineTime() {
         print("Pausing offline time")
