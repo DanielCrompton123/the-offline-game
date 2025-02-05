@@ -17,7 +17,6 @@ struct OfflineOvertimeHelper {
     static func startOvertime(state: inout OfflineState, offset: TimeInterval) {
         state.state = .offline
         state.overtimeStartDate = Date().addingTimeInterval(offset)
-        state.isInOvertime = true
     }
     
     
@@ -32,7 +31,7 @@ struct OfflineOvertimeHelper {
     
     
     static func endOvertime(state: inout OfflineState) {
-        state.isInOvertime = false
+        state.isOffline = false
     }
 }
 

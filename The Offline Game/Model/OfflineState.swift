@@ -27,7 +27,7 @@ struct OfflineState {
     //MARK: - Offline state
     
     enum State: Int {
-        case none, offline, paused, overtime
+        case none, offline, paused
     }
     
     var state = State.none
@@ -44,11 +44,10 @@ struct OfflineState {
     // Check if the user is in overtime offline
     var isInOvertime: Bool {
         // Does the elapsed time have a value > 0
-//        overtimeElapsedTime != nil && isOffline
-        // That was not reliable
+        overtimeElapsedTime != nil && isOffline
         
-        get { state == .overtime }
-        set { state = newValue ? .overtime : .none }
+//        get { state == .overtime }
+//        set { state = newValue ? .overtime : .none }
     }
     
     
@@ -140,7 +139,6 @@ struct OfflineState {
         overtimeStartDate = nil
         previousPauseDate = nil
         totalPauseDuration = .seconds(0)
-        isInOvertime = false
     }
     
 }
