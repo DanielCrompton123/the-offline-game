@@ -22,7 +22,7 @@ class OfflineTracker {
     var appDelegate: AppDelegate?
     
     
-    func startGracePeriod() {
+    func startGracePeriod(forOvertime: Bool) {
         
         GracePeriodHelper.shared.startGracePeriod { [weak self] in
             
@@ -33,6 +33,7 @@ class OfflineTracker {
             self?.offlineViewModel?.pauseOfflineTime()
             
         } onEnd: { [weak self] successfully in
+            print("Grace period ended successfully=\(successfully)")
             
             // If it ended successfully, continue the offline time
             if successfully {
@@ -41,7 +42,7 @@ class OfflineTracker {
             
             // if it was NOT succcessful, just end the offline time
             else {
-                self?.offlineViewModel?.offlineTimeFinished(successfully: false)
+                self?.offlineViewModel?.endOfflineTime(successfully: false)
             }
             
         }
@@ -61,11 +62,6 @@ class OfflineTracker {
             return
         }
         
-        guard let appDelegate else {
-            print("OfflineTracker -- appDelegate is nil")
-            return
-        }
-        
         // Only do this if we are offline
         guard offlineViewModel.state.isOffline else { return }
         
@@ -79,7 +75,7 @@ class OfflineTracker {
             backgroundTimerTaskId = UIApplication.shared.beginBackgroundTask()
             
             backgroundTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { [weak self] _ in
-                print("1.5 seconds passed. Protected data will become unavailable = \(self?.appDelegate?.protectedDataWillBecomeUnavailable ?? false)")
+                print("1.5 seconds since background. Protected data will become unavailable = \(self?.appDelegate?.protectedDataWillBecomeUnavailable ?? false)")
                 
                 // End BG task
                 if let backgroundTimerTaskId = self?.backgroundTimerTaskId {
@@ -90,12 +86,19 @@ class OfflineTracker {
                 // Otherwise, the app will have been put into background because the user closed it.
                 // So we should start a grace period
                 if self?.appDelegate?.protectedDataWillBecomeUnavailable == false {
-                    OfflineTracker.shared.startGracePeriod()
+                    // If we are currently OVERTIME, then we don't want to start a grace period. Just wait 10 seconds for the user to go offline again, then if they still haven't gone back onto the app in 10 seconds, then end their overtime.
+                    
+                    // If we ARE OFFLINE NORMALLY then start a grace period
+                    
+                    if let offlineViewModel = self?.offlineViewModel {
+                        self?.startGracePeriod(forOvertime: offlineViewModel.state.isInOvertime)
+                    }
+                    
                 }
             }
                         
         } else {
-            print("App went into foreground/inactive")
+            print("App foreground/inactive")
             backgroundTimer?.invalidate()
             backgroundTimer = nil
             
@@ -115,7 +118,7 @@ class OfflineTracker {
         guard offlineViewModel?.state.isOffline == true else { return }
         
         // When the app terminates, tell the user that their offline time has ended
-        offlineViewModel?.offlineTimeFinished(successfully: false)
+        offlineViewModel?.endOfflineTime(successfully: false)
         
         #warning("`OfflineNotification.appTerminated.post()` -- notification never posted")
         OfflineNotification.appTerminated.post()
@@ -127,14 +130,14 @@ class OfflineTracker {
         guard offlineViewModel?.state.isOffline == true else { return }
         
         // When the phone turns on, we need to ensure our app is in the foreground, but give the user 5 seconds to open the app before starting their grace period
-        #warning("Do we need to convert it to Timer?")
+        // Do we need to convert it to Timer? NO because we check this state is correct with if statement
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
             
             print("Waited 5s for the user to open the app and protectedDataWillBecomeUnavailable = \(self?.appDelegate?.protectedDataWillBecomeUnavailable ?? false) and applicationState = \(UIApplication.shared.applicationState)")
             
             if UIApplication.shared.applicationState != .active,
                self?.appDelegate?.protectedDataWillBecomeUnavailable == false {
-                OfflineTracker.shared.startGracePeriod()
+                OfflineTracker.shared.startGracePeriod(forOvertime: false)
             }
         }
         

@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseCore
 import Combine
+import WishKit
 
 
 @main
@@ -38,6 +39,8 @@ fileprivate struct ENTRY: View {
     @State private var liveActivityViewModel = LiveActivityViewModel()
     @State private var activityViewModel = ActivityViewModel()
     @State private var offlineCountViewModel = OfflineCountViewModel()
+    @State private var gameKitViewModel = GameKitViewModel()
+    @State private var gameKitAchievementsViewModel = GameKitAchievementsViewModel()
     
     // Store a unique user ID
     @AppStorage(K.userDefaultsUserIdKey) private var userId = UUID().uuidString
@@ -51,10 +54,18 @@ fileprivate struct ENTRY: View {
         // ONBOARDING
             .fullScreenCover(isPresented: $shouldShowOnboarding) {
                 OnboardingView()
+                    .onDisappear(perform: setupGameCenter)
             }
         
-            .onAppear(perform: makeConnections)
+        // CONNECTIONS AND GAME CENTER
+            .onAppear {
+                makeConnections()
+                setupGameCenter()
+                setupWishKit()
+            }
             .onAppear(perform: setupFirebase)
+        
+        // SCENE PHASE CHANGED
             .onChange(of: scenePhase) { _, new in
                 OfflineTracker.shared.scenePhaseChanged(to: new)
             }
@@ -65,6 +76,7 @@ fileprivate struct ENTRY: View {
             .environment(liveActivityViewModel)
             .environment(activityViewModel)
             .environment(offlineCountViewModel)
+            .environment(gameKitViewModel)
         
     }
     
@@ -75,18 +87,41 @@ fileprivate struct ENTRY: View {
         offlineViewModel.liveActivityViewModel = liveActivityViewModel
         offlineViewModel.offlineCountViewModel = offlineCountViewModel
         appDelegate.offlineViewModel = offlineViewModel
+        gameKitViewModel.offlineViewModel = offlineViewModel
+        gameKitViewModel.achievementsViewModel = gameKitAchievementsViewModel
+        offlineViewModel.gameKitViewModel = gameKitViewModel
+        
         OfflineTracker.shared.offlineViewModel = offlineViewModel
         OfflineTracker.shared.appDelegate = appDelegate
     }
     
     
     private func setupFirebase() {
+        
         FirebaseApp.configure()
         
         offlineCountViewModel.loadDatabase()
         offlineCountViewModel.setupDatabaseObserver()
+
     }
     
+    
+    private func setupGameCenter()  {
+        // Only open the access point if we should not present the onboarding screen straight away
+        if !shouldShowOnboarding {
+            gameKitViewModel.authenticatePlayer()
+            gameKitViewModel.openAccessPoint()
+            
+            // Now also load the achievements
+            gameKitViewModel.achievementsViewModel?.loadAchievements()
+        }
+        
+    }
+    
+    
+    private func setupWishKit() {
+        WishKit.configure(with: K.wishKitAPIKey)
+    }
 }
 
 

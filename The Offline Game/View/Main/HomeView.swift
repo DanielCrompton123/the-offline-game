@@ -16,7 +16,8 @@ struct HomeView: View {
     @Environment(PermissionsViewModel.self) private var permissionsViewModel
     @Environment(LiveActivityViewModel.self) private var liveActivityViewModel
     @Environment(OfflineCountViewModel.self) private var offlineCountViewModel
-        
+    @Environment(GameKitViewModel.self) private var gameKitViewModel
+    
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
     
@@ -29,6 +30,9 @@ struct HomeView: View {
         @Bindable var offlineCountViewModel = offlineCountViewModel
         
         NavigationStack {
+            
+            // CONTENT
+            
             VStack {
                 
                 Spacer()
@@ -57,29 +61,68 @@ struct HomeView: View {
                             .resizable()
                             .scaledToFit()
                     }
-
+                    
                 }
                 .buttonStyle(FilledRedButtonStyle())
-                                
+                
             }
+            
+            // DURATION PICKER (and tips)
             .sheet(isPresented: $offlineViewModel.isPickingDuration) {
+                
+                // On dismiss, (of either the duration picker or tips) if we are NOT going online then make the access point appear
+                if !offlineViewModel.state.isOffline {
+                    gameKitViewModel.openAccessPoint()
+                }
+                
+            } content: {
                 OfflineDurationPickerView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
-            .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated) {
+            
+            // CONGRATS VIEW
+            .sheet(
+                isPresented: $offlineViewModel.userShouldBeCongratulated,
+                onDismiss: resetIfNotInOvertime
+            ) {
                 CongratulatoryView()
             }
+            
+            // FAILURE VIEW
             .sheet(isPresented: $offlineViewModel.userDidFail) {
+                // on dismiss
+                gameKitViewModel.openAccessPoint()
+                offlineViewModel.resetOfflineTime()
+            } content: {
                 FailureView()
             }
+            
+            // SETTINGS VIEW
             .sheet(isPresented: $settingsIsOpen) {
                 SettingsView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
+                    .onDisappear(perform: gameKitViewModel.openAccessPoint)
             }
-            .fullScreenCover(isPresented: $shouldShowNotificationWarning) {
+            
+            // NOTIFICATION WARNING
+            .fullScreenCover(
+                isPresented: $shouldShowNotificationWarning,
+                onDismiss: gameKitViewModel.openAccessPoint
+            ) {
                 NotificationPermissionView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
-            .fullScreenCover(isPresented: $offlineViewModel.state.isOffline) {
+            
+            // OFFLINE
+            .fullScreenCover(
+                isPresented: $offlineViewModel.state.isOffline,
+                onDismiss: gameKitViewModel.openAccessPoint
+            ) {
                 OfflineView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
+            
+            // LOAD NOTIFICATION STATUS
             .task(priority: .high) {
                 await permissionsViewModel.loadNotificationStatus()
                 await MainActor.run {
@@ -87,7 +130,7 @@ struct HomeView: View {
                 }
             }
             
-            // Add the settings button to top leading
+            // SETTINGS BUTTON
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -98,7 +141,7 @@ struct HomeView: View {
                             Text("Settings")
                         }
                     }
-                    .font(.main16)
+                    .font(.main14)
                     .tint(.smog)
                 }
             }
@@ -114,10 +157,17 @@ struct HomeView: View {
             } message: {
                 Text(offlineViewModel.error ?? "No message...")
             }
-
+            
         }
     }
-
+    
+    
+    private func resetIfNotInOvertime() {
+        if !offlineViewModel.state.isInOvertime {
+            offlineViewModel.resetOfflineTime()
+        }
+    }
+    
 }
 
 #Preview {

@@ -22,9 +22,6 @@ extension Font {
     static let main26 = Font.custom("RobotoCondensed-Bold", size: 26)
     static let main20 = Font.custom("RobotoCondensed-Bold", size: 20)
     static let main30 = Font.custom("RobotoCondensed-Bold", size: 30)
+    static let main14 = Font.custom("RobotoCondensed-Bold", size: 14)
     static let main54 = Font.custom("RobotoCondensed-Bold", size: 54)
-    static let main16 = Font.custom("RobotoCondensed-Bold", size: 16)
-    
-    static let caption14 = Font.custom("Roboto-Light", size: 14)
-    static let caption12 = Font.custom("Roboto-Light", size: 12)
 }

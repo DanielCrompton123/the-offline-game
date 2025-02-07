@@ -60,7 +60,7 @@ struct AttributionsView: View {
             
             ForEach(attribution.attributions, id: \.self) { attribution in
                 Text(attribution)
-                    .font(.caption14)
+                    .font(.main14)
                     .padding(.vertical, 8)
             }
             

@@ -12,6 +12,7 @@ import UserNotifications
 struct NotificationPermissionView: View {
     @Environment(PermissionsViewModel.self) private var permissionsViewModel
     @AppStorage(K.userDefaultsShouldShowOnboardingKey) private var shouldShowOnboarding = false
+    @Environment(\.colorScheme) private var colorScheme
     
     @Environment(\.dismiss) private var dismiss
     
@@ -27,7 +28,7 @@ struct NotificationPermissionView: View {
                     .frame(maxWidth: 300)
                     .scaleEffect(1.3)
                     .foregroundStyle(.smog)
-                    .opacity(0.1)
+                    .opacity(colorScheme == .light ? 0.1 : 0.4) // it's too hard to see the symbol in dark mode at 0.1
                     .rotationEffect(.degrees(7))
                 
                 Text("NOTIFICATIONS")

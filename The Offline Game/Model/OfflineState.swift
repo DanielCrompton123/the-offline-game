@@ -23,10 +23,6 @@ struct OfflineState {
         }
     }
     
-    func formattedDuration(width: Duration.UnitsFormatStyle.UnitWidth = .wide) -> String {
-        durationSeconds.offlineDisplayFormat(width: width)
-    }
-    
     
     //MARK: - Offline state
     
@@ -34,10 +30,7 @@ struct OfflineState {
         case none, offline, paused
     }
     
-    var state = State.none {
-        // When we set the state value, store in user defaults
-        didSet { UserDefaults.standard.set(state.rawValue, forKey: K.userDefaultsOfflineStateKey) }
-    }
+    var state = State.none
     
     // Is the user offline?
     // Used to trigger presentation of the offline view
@@ -48,18 +41,26 @@ struct OfflineState {
     
     var isPaused: Bool { state == .paused }
     
+    // Check if the user is in overtime offline
+    var isInOvertime: Bool {
+        // Does the elapsed time have a value > 0
+        overtimeElapsedTime != nil && isOffline
+        
+//        get { state == .overtime }
+//        set { state = newValue ? .overtime : .none }
+    }
     
     
     //MARK: - Dates & durations
     
     // When did the user go offline?
     var startDate: Date? {
-        willSet {
-            // BEFORE updating the start date, set the old elapsed time.
-            // because if setting the startDate to nil, in didSet the elapsed time would be nil too
-            // Only update it if we are resetting the start date back to nil again
-            if newValue == nil { oldElapsedTime = elapsedTime }
-        }
+//        willSet {
+//            // BEFORE updating the start date, set the old elapsed time.
+//            // because if setting the startDate to nil, in didSet the elapsed time would be nil too
+//            // Only update it if we are resetting the start date back to nil again
+//            if newValue == nil { oldElapsedTime = elapsedTime }
+//        }
         didSet {
             UserDefaults.standard.set(startDate, forKey: K.userDefaultsStartDateKey)
             
@@ -88,14 +89,59 @@ struct OfflineState {
     }
     
     // Elapsed time used in the live activity and the offline progress calculation
-    var elapsedTime: TimeInterval? {
+    var elapsedTime: Duration? {
+        // It is the time between going offline and (either now, or when the user paused offline time due to going on the home screen)
+        // It is the lower value of either that or now.
+        // Because we may be accessing the elapsed time after going overtime.
+        // This WOULD be a sum of offline time + delay on congrats view + overtime.
+        // Also make sure pause time is deducted
+        
         guard let startDate else { return nil }
-        return Date().timeIntervalSince(startDate)
+        
+        let interval = startDate.distance(to: Date())
+        let pauseSecs = Double(totalPauseDuration.components.seconds)
+        
+        return .seconds( min(interval - pauseSecs,durationSeconds.seconds) )
     }
-    // Old elapsed time used in success congrats view when the elaopsedTime has been reset
-    var oldElapsedTime: TimeInterval?
+    // Old elapsed time used in success congrats view when the elapsedTime has been reset
+//    var oldElapsedTime: TimeInterval?
+    
+    // The start date for overtime
+    // This is NOT the same as the end date because the user may spend some time on the congrats screen or in the game center access point.
+    var overtimeStartDate: Date?
+    
+    // This is the duration that the user was overtime for
+    // Set when the overtime ends
+    var overtimeElapsedTime: Duration? {
+        // Time between going overtime & now
+        // Account for pause time too
+        
+        guard let overtimeStartDate else { return nil }
+        let interval = overtimeStartDate.distance(to: Date())
+        let pauseSecs = Double(totalOvertimePauseDuration.components.seconds)
+        
+        return .seconds( interval - pauseSecs )
+    }
     
     // Used in pausing the offline time
-    var pauseDate: Date?
+    var previousPauseDate: Date?
+    
+    // Accumulate the pause time (i.e. if pausing multiple times)
+    var totalPauseDuration = Duration.seconds(0)
+    
+    // Accumulate pause duration while overtime
+    var totalOvertimePauseDuration = Duration.seconds(0)
+    
+    
+    //MARK: - Methods
+    
+    mutating func reset() {
+        state = .none
+        startDate = nil
+        oldStartDate = nil
+        overtimeStartDate = nil
+        previousPauseDate = nil
+        totalPauseDuration = .seconds(0)
+    }
     
 }

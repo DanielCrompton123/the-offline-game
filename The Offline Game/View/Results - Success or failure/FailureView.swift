@@ -54,8 +54,10 @@ struct FailureView: View {
                     .font(.main20)
             }
             
-            if let timeElapsed = offlineViewModel.state.oldElapsedTime {
-                let formattedDur = Duration.seconds(timeElapsed).offlineDisplayFormat()
+            if let elapsedTime = offlineViewModel.state.elapsedTime {
+                
+                let formattedDur = elapsedTime.offlineDisplayFormat()
+                
                 Text("You only spent \(formattedDur) offline!")
                     .opacity(0.75)
                     .font(.display40)
@@ -109,10 +111,14 @@ struct FailureView: View {
                 }
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.capsule)
-                .font(.main16)
+                .font(.main14)
             }
             .padding()
         }
+        
+        // Don't call here on sheet. Use onDismiss when sheet disappears
+//        .onDisappear(perform: offlineViewModel.resetOfflineTime)
+        
     }
 }
 
