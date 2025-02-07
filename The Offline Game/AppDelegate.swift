@@ -23,7 +23,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     
     func applicationProtectedDataDidBecomeAvailable(_ application: UIApplication) {
-        print("Protected data available")
+        print("🔓 Protected data available")
     
         protectedDataWillBecomeUnavailable = false
         
@@ -32,7 +32,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func applicationProtectedDataWillBecomeUnavailable(_ application: UIApplication) {
         // When the phone turns off, that's great, because we are definitely offline!
-        print("Protected data unavailable")
+        print("🔐 Protected data unavailable")
         protectedDataWillBecomeUnavailable = true
     }
 }

@@ -55,7 +55,7 @@ class OfflineViewModel {
     }
     
     
-    private func count(increasing: Bool) {
+    func count(increasing: Bool) {
         Task {
             // Add one to the offline count
             do {
@@ -98,6 +98,8 @@ class OfflineViewModel {
     
     
     // Ends the NORMAL AND OVERTIME offline periods
+    #warning("Look at what happens when the app is put into BG when the offline time finishes, but beofre grace period can start.")
+    #warning("If grace period was violated, the failure view does not open when the app re-opens.")
     func endOfflineTime(successfully: Bool) {
     
         print("Ending normal offline time, successfully=\(successfully)")
@@ -112,104 +114,57 @@ class OfflineViewModel {
         
         count(increasing: false)
         
-        // Manage presentation of sheets
-        state.isOffline = false
-        
-        userShouldBeCongratulated = successfully
-        userDidFail = !successfully
-        
-        // stop the live activity
         liveActivityViewModel?.stopActivity()
         
         // Now revoke any success notifications if we need to
         OfflineNotification.congratulatoryNotification(endDate: .now, formattedDuration: "").revoke()
         
+        var shouldStartAutomatically = true
+        
+        // If we were in overtime, end this
         if state.isInOvertime {
-            OfflineOvertimeHelper.endOvertime(state: &state)
+            OfflineOvertimeHelper.shared.endOvertime(viewModel: self)
+            
+            // We should also NOT automatically start the overtime
+            shouldStartAutomatically = false
         }
         
-        // Now handle achievements by delegating responsibility to the offline achievements view model
-//        if successfully {
-            //gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(durationSeconds))
-//        }
-                
-        // When the offline time ends successfully, wait 10 seconds and then automatically go overtime, accounting for the 10 seconds.
-        // DO THIS IN THE HELPER
+        // If we were NOT in overtime, and we finished successfully, start the overtime automatically (after 10 seconds)
+        else if successfully && shouldStartAutomatically {
+            
+            state.isOffline = false
+            OfflineOvertimeHelper.shared.startAutomatically(viewModel: self)
+        }
         
-//        if successfully {
-//            
-//            // Schedule a timer to time 10 seconds (and use a background task is the device is in the background)
-//            if UIApplication.shared.applicationState == .background {
-//                overtimeStartTimerBGTaskId = UIApplication.shared.beginBackgroundTask()
-//                
-//                // Ended BG task when app goes into foreground
-//                print("Begun background task \(overtimeStartTimerBGTaskId!.rawValue) to allow overtimeStartTimer to run")
-//            }
-//            
-//            // Now schedule a task for 10 seconds
-//            overtimeStartTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
-//                
-//                print("overtimeStartTimer triggered, start date!=nil?\(self?.state.startDate != nil)")
-//                
-//                // After 10 seconds, and we have not CONFIRMED going online, then automatically start overtime
-////                if self?.startDate != nil {
-//                if self?.userShouldBeCongratulated == true {
-//                    self?.beginOfflineOvertime(offset: -10) // 10 seconds in the past
-//                    print("Begun overtime (10 secs ago)")
-//                }
-//                // BUT account for the 10 seconds delay
-//                
-//                // Also END BG task
-//                if let overtimeStartTimerBGTaskId = self?.overtimeStartTimerBGTaskId {
-//                    UIApplication.shared.endBackgroundTask(overtimeStartTimerBGTaskId)
-//                    print("Ended overtimeStartTimerBGTask")
-//                }
-//                
-//            }
-//            
-//        }
+        // Manage presentation of sheets
+        userShouldBeCongratulated = successfully
+        userDidFail = !successfully
+        // ^^^ DO this AFTER setting isOffline (either to false, or in endOvertime) to avoid "only presenting a single sheet is supported" error.
+        // Make sure it's dismissed before presenting these sheets
+
         
+//         Now handle achievements by delegating responsibility to the offline achievements view model
+//        if successfully {
+//            gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(durationSeconds))
+//        }
+
     }
     
     
     func resetOfflineTime() {
-        
-        #warning("Called as soon as congrats view appears")
-        
         print("🔁 Resetting offline state")
         
         // Reset the state
         state.reset()
         
         // Cancel the timer
-        self.overtimeStartTimer?.invalidate()
-        self.overtimeStartTimer = nil
-//        #warning("the overtime period keeps starting after 10 seconds repeatedly")
-    
+
         // Make sure sheets are presented
         userDidFail = false
         userShouldBeCongratulated = false
         
-        // End the overtimeStartTimerBGTaskId
-        if let overtimeStartTimerBGTaskId {
-            UIApplication.shared.endBackgroundTask(overtimeStartTimerBGTaskId)
-        }
-    }
-    
-    
-    
-    func beginOfflineOvertime(offset: TimeInterval) {
-        print("Beginning overtime")
-        // Offset positive for in the future, and negative for in the past
-
-        // Set isOffline, and update the counter and the live activity
-                
-        count(increasing: true)
-        
-        OfflineOvertimeHelper.startOvertime(state: &state, offset: offset)
-        
-        userShouldBeCongratulated = false
-        liveActivityViewModel?.startActivity(overtime: true)
+        // Cancel the automatic offline time
+        OfflineOvertimeHelper.shared.cancelAutomaticOvertime()
     }
     
     
@@ -231,8 +186,11 @@ class OfflineViewModel {
         print("Resuming offline time")
         
         OfflinePauseHelper.resume(state: &state)
-        scheduleOfflineTimer()
+        
+        // We don't want to schedule this timer is we have paused overtime -- for overtime there's no end timer.
+        if !state.isInOvertime {
+            scheduleOfflineTimer()
+        }
     }
     
 }
-

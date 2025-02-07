@@ -17,7 +17,7 @@ struct HomeView: View {
     @Environment(LiveActivityViewModel.self) private var liveActivityViewModel
     @Environment(OfflineCountViewModel.self) private var offlineCountViewModel
     @Environment(GameKitViewModel.self) private var gameKitViewModel
-        
+    
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
     
@@ -30,6 +30,8 @@ struct HomeView: View {
         @Bindable var offlineCountViewModel = offlineCountViewModel
         
         NavigationStack {
+            
+            // CONTENT
             
             VStack {
                 
@@ -59,32 +61,39 @@ struct HomeView: View {
                             .resizable()
                             .scaledToFit()
                     }
-
+                    
                 }
                 .buttonStyle(FilledRedButtonStyle())
-                                
+                
             }
             
             // DURATION PICKER (and tips)
             .sheet(isPresented: $offlineViewModel.isPickingDuration) {
-                // On dismiss, (of either the duration picker or tips) is we are NOT going online then make the access point appear
+                
+                // On dismiss, (of either the duration picker or tips) if we are NOT going online then make the access point appear
                 if !offlineViewModel.state.isOffline {
                     gameKitViewModel.openAccessPoint()
                 }
+                
             } content: {
                 OfflineDurationPickerView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
             
             // CONGRATS VIEW
-            .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated,
-                   onDismiss: resetIfNotInOvertime){
+            .sheet(
+                isPresented: $offlineViewModel.userShouldBeCongratulated,
+                onDismiss: resetIfNotInOvertime
+            ) {
                 CongratulatoryView()
             }
             
             // FAILURE VIEW
-            .sheet(isPresented: $offlineViewModel.userDidFail,
-                   onDismiss: gameKitViewModel.openAccessPoint) {
+            .sheet(isPresented: $offlineViewModel.userDidFail) {
+                // on dismiss
+                gameKitViewModel.openAccessPoint()
+                offlineViewModel.resetOfflineTime()
+            } content: {
                 FailureView()
             }
             
@@ -96,8 +105,10 @@ struct HomeView: View {
             }
             
             // NOTIFICATION WARNING
-            .fullScreenCover(isPresented: $shouldShowNotificationWarning,
-                             onDismiss: gameKitViewModel.openAccessPoint) {
+            .fullScreenCover(
+                isPresented: $shouldShowNotificationWarning,
+                onDismiss: gameKitViewModel.openAccessPoint
+            ) {
                 NotificationPermissionView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
@@ -146,7 +157,7 @@ struct HomeView: View {
             } message: {
                 Text(offlineViewModel.error ?? "No message...")
             }
-
+            
         }
     }
     
@@ -154,9 +165,9 @@ struct HomeView: View {
     private func resetIfNotInOvertime() {
         if !offlineViewModel.state.isInOvertime {
             offlineViewModel.resetOfflineTime()
-        }        
+        }
     }
-
+    
 }
 
 #Preview {

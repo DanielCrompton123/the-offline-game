@@ -73,7 +73,9 @@ struct OfflineView: View {
                     // Now display the text for the overtime duration
                     // count UP
                     // If the date is > current date, Text will count up from it
-                    Text(overtimeStartDate, style: .timer)
+                    
+                    // Don't forget to deduct the pause duration off it
+                    Text(overtimeStartDate.addingTimeInterval(offlineViewModel.state.totalOvertimePauseDuration.seconds), style: .timer)
                         .font(.display128)
                         .foregroundStyle(.green.gradient)
                     
@@ -114,7 +116,6 @@ struct OfflineView: View {
                 "I really need my phone :(",
                 role: .destructive
             ) {
-                
                 offlineViewModel.endOfflineTime(successfully: true)
             }
             

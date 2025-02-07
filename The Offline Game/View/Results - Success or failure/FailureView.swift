@@ -115,7 +115,10 @@ struct FailureView: View {
             }
             .padding()
         }
-        .onDisappear(perform: offlineViewModel.resetOfflineTime)
+        
+        // Don't call here on sheet. Use onDismiss when sheet disappears
+//        .onDisappear(perform: offlineViewModel.resetOfflineTime)
+        
     }
 }
 

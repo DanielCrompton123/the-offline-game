@@ -27,7 +27,7 @@ struct OfflinePauseHelper {
     
     
     static func resume(state: inout OfflineState) {
-        
+        #warning("Executes when we resume overtime. When overtime however, the offline time ends.")
         // We can only resume if we have been paused
         guard state.isPaused,
               let previousPauseDate = state.previousPauseDate else {
@@ -44,11 +44,19 @@ struct OfflinePauseHelper {
         state.previousPauseDate = nil
         
         // - modify the end date. To do this we need to change the offline duration
+        // DON't do this if we are overtime. Overtime doesn't have an end date
         #warning("This updates it in user defaults")
-        state.durationSeconds += pauseDuration
+        if !state.isInOvertime {
+            state.durationSeconds += pauseDuration
+        }
         
         // Also add to the total pause duration
-        state.totalPauseDuration += pauseDuration
+        // Accumulate to the overtime pause duration IF we are overtime
+        if state.isInOvertime {
+            state.totalOvertimePauseDuration += pauseDuration
+        } else {
+            state.totalPauseDuration += pauseDuration
+        }
         
         // Now re-schedule the notification to congratulate
         // abbreviated because we're in a notification

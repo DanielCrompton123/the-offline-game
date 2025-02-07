@@ -85,7 +85,8 @@ struct CongratulatoryView: View {
                     
                     // START OVERTIME BUTTON
                     Button {
-                        offlineViewModel.beginOfflineOvertime(offset: 0)
+//                        offlineViewModel.beginOfflineOvertime(offset: 0)
+                        OfflineOvertimeHelper.shared.startOvertime(viewModel: offlineViewModel)
                     } label: {
                         overtimeButtonLabel()
                     }

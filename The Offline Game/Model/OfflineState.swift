@@ -118,7 +118,7 @@ struct OfflineState {
         
         guard let overtimeStartDate else { return nil }
         let interval = overtimeStartDate.distance(to: Date())
-        let pauseSecs = Double(totalPauseDuration.components.seconds)
+        let pauseSecs = Double(totalOvertimePauseDuration.components.seconds)
         
         return .seconds( interval - pauseSecs )
     }
@@ -128,6 +128,9 @@ struct OfflineState {
     
     // Accumulate the pause time (i.e. if pausing multiple times)
     var totalPauseDuration = Duration.seconds(0)
+    
+    // Accumulate pause duration while overtime
+    var totalOvertimePauseDuration = Duration.seconds(0)
     
     
     //MARK: - Methods
