@@ -19,8 +19,8 @@ struct The_Offline_GameApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ENTRY()
-//            DEBUG()
+//            ENTRY()
+            DEBUG()
         }
     }
 }
@@ -127,10 +127,24 @@ fileprivate struct ENTRY: View {
 
 
 fileprivate struct DEBUG: View {
+    
+    @State var value: Double = 1
+    
+    
     var body: some View {
-        Text("Hello")
-            .delay(time: .now() + 2) {
-                print("Delay")
-            }
+        VStack {
+            Text("Ruler slider SwiftUI")
+            
+            Spacer()
+            
+            Text(value, format: .number)
+            
+            HorizontalRulerSlider(value: $value, range: 0...200)
+    //            .accentColor(.)
+                .frame(maxHeight: 56)
+            
+            Spacer()
+        }
+        .environment(\.layoutDirection, .rightToLeft)
     }
 }
