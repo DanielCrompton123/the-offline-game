@@ -2,12 +2,13 @@
 
 
 ## Current release
-- Complete logic fo5 the achievements.
+- Create a better offline duration slider
+
+- Complete logic for the achievements.
 - Add leaderboard progress for points and offline elapsed time
 - Make failure more friendly
 - **Add an offline leaderboard, and game center objectives**
 - Create a better offline time gauge
-- Create a better offline duration slider
 - *Fix the lock screen live activity*
 - Add offline reminder notifications to configure in settings
 - Add a widget to the home screen to go offline: Offline slider, common offline times, and your next achievement")
