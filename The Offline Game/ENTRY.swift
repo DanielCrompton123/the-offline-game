@@ -123,28 +123,3 @@ fileprivate struct ENTRY: View {
         WishKit.configure(with: K.wishKitAPIKey)
     }
 }
-
-
-
-fileprivate struct DEBUG: View {
-    
-    @State var value: Double = 1
-    
-    
-    var body: some View {
-        VStack {
-            Text("Ruler slider SwiftUI")
-            
-            Spacer()
-            
-            Text(value, format: .number)
-            
-            HorizontalRulerSlider(value: $value, range: 0...200)
-    //            .accentColor(.)
-                .frame(maxHeight: 56)
-            
-            Spacer()
-        }
-        .environment(\.layoutDirection, .rightToLeft)
-    }
-}

@@ -146,10 +146,16 @@ fileprivate struct DisablesBouncesModifier: ViewModifier {
         Text(value, format: .number)
         
         HorizontalRulerSlider(value: $value, range: 0...200)
-//            .accentColor(.)
             .frame(maxHeight: 56)
         
         Spacer()
+        
+        Button("1") {
+            value = 1
+        }
+        Button("10") {
+            value = 10
+        }
     }
     .environment(\.layoutDirection, .rightToLeft)
 }

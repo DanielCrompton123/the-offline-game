@@ -8,38 +8,26 @@
 import SwiftUI
 
 
-fileprivate struct DEBUG: View {
-    
-    class TextViewController: UIViewController {
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            
-            view.backgroundColor = .green
-            
-            let text = UILabel(frame: CGRect(x: 50, y: 50, width: 200, height: 50))
-            text.text = "Hello, World!"
-            text.backgroundColor = .red
-            view.addSubview(text)
-        }
-    }
-    
-    var rootViewController: UIViewController? {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return nil
-        }
-        return windowScene.windows.first?.rootViewController
-    }
-    
-    
-    @State private var p = false
+struct DEBUG: View {
+
+    @State private var value = 1.0
     var body: some View {
-        Button("Present") {
-//            p = true
-            rootViewController?.present(TextViewController(), animated: true)
+        
+        VStack(spacing: 30) {
+            
+            Circle()
+                .frame(width: 20, height: 20)
+            
+            
+            
+            SteppedSlider(value: $value, properties: [
+                .init(range: 0.0...25.0, spacing: 20, step: 1, color: .red),
+                .init(range: 25.0...50.0, spacing: 30, step: 5, color: .blue),
+                .init(range: 50.0...100.0, spacing: 50, step: 10, color: .pink)
+            ])
+            .frame(height: 50)
         }
-//        .sheet(isPresented: $p) {
-//            SwiftUIViewController(controller: TextViewController())
-//        }
+
     }
 }
 
