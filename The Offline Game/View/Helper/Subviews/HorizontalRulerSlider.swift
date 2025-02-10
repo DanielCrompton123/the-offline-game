@@ -45,27 +45,43 @@ extension ScrollTargetBehavior where Self == SnapScrollTargetBehaviour {
 
 struct HorizontalRulerSlider: View {
     
-    @Binding var value: Double
+    @Binding private var value: Double
     
-    var range: ClosedRange<Double>
-    var step: Double
-    var spacing: Double = 20
-    @ViewBuilder var marker: (Double) -> AnyView
+    private var range: ClosedRange<Double>
+    private var step: Double
+    private var spacing: Double
+    private var alignment: VerticalAlignment
+    @ViewBuilder private var marker: (Double) -> AnyView
     
-    init<Marker: View>(value: Binding<Double>, range: ClosedRange<Double>, step: Double, spacing: Double = 20, @ViewBuilder marker: @escaping (Double) -> Marker) {
+    init<Marker: View>(
+        value: Binding<Double>,
+        range: ClosedRange<Double>,
+        step: Double,
+        spacing: Double = 20,
+        alignment: VerticalAlignment = .top,
+        @ViewBuilder marker: @escaping (Double) -> Marker
+    ) {
         self._value = value
         self.range = range
         self.step = step
         self.spacing = spacing
+        self.alignment = alignment
         
         self.marker = { AnyView(marker( $0 )) }
     }
     
-    init(value: Binding<Double>, range: ClosedRange<Double>, step: Double, spacing: Double = 20) {
+    init(
+        value: Binding<Double>,
+        range: ClosedRange<Double>,
+        step: Double,
+        spacing: Double = 20,
+        alignment: VerticalAlignment = .top
+    ) {
         self._value = value
         self.range = range
         self.step = step
         self.spacing = spacing
+        self.alignment = alignment
         
         self.marker = { value in
             AnyView(
@@ -74,8 +90,6 @@ struct HorizontalRulerSlider: View {
                         .frame(width: 1)
                     
                     Text(value.formatted())
-                        .fixedSize()
-                        .frame(width: 0)
                 }
             )
         }
@@ -89,7 +103,7 @@ struct HorizontalRulerSlider: View {
                     
                 valuesList()
                     .safeAreaPadding(.horizontal, geomProxy.size.width / 2)
-                    .scrollTargetBehavior(.snap(step: spacing + 1))
+                    .scrollTargetBehavior(.snap(step: spacing))
                     .scrollPosition(id: Binding(get: {
                         value
                     }, set: { value in
@@ -111,12 +125,14 @@ struct HorizontalRulerSlider: View {
     
     @ViewBuilder private func valuesList() -> some View {
         ScrollView(.horizontal) {
-            LazyHStack(spacing: spacing) {
+            HStack(alignment: alignment, spacing: spacing) {
                 
                 let values = Array(stride(from: range.lowerBound, through: range.upperBound, by: step))
                 
                 ForEach(values, id: \.self) { value in
                     marker(value)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .frame(width: 0)
                 }
             }
             .scrollTargetLayout()
@@ -139,7 +155,22 @@ struct HorizontalRulerSlider: View {
         
         Text(value, format: .number)
         
-        HorizontalRulerSlider(value: $value, range: 0...10, step: 1)
+        HorizontalRulerSlider(value: $value, range: 0...100, step: 1, spacing: 40) { value in
+            VStack(spacing: 20) {
+                Image(.shortLine)
+                    .resizable()
+                    .scaledToFit()
+                    .rotationEffect(.degrees(90))
+                    .foregroundStyle(.ruby)
+                    .frame(height: 5)
+                
+                // For the value in the text for the marker, then display the formatted value
+                Text(value.formatted())
+                    .font(.caption)
+                    .frame(width: 30)
+                    .foregroundStyle(.smog)
+            }
+        }
             .frame(height: 100)
         
         Spacer()

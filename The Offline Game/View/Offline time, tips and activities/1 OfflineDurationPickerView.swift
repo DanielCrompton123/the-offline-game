@@ -54,13 +54,9 @@ struct OfflineDurationPickerView: View {
                 
                 durationDisplay()
                 
-                Slider(value: $sliderSecsValue,
-                       in: K.offlineDurationSecsRange,
-                       step: K.secsStep) {
-                    Text(offlineViewModel.state.durationSeconds.offlineDisplayFormat(width: .abbreviated))
-                    // for screen readers
-                }
-                .labelsHidden()
+                Spacer()
+                
+                OfflineDurationSelector()
                 
                 Spacer()
                 
