@@ -15,7 +15,6 @@ struct OfflineDurationPickerView: View {
     @State private var tipsViewPresented = false
     @State private var activitiesViewPresented = false
     @State private var wifiAnimate = true
-    @State private var sliderSecsValue: TimeInterval = 0.0
     
     private let wifiLogoRotation: Double = 15
     
@@ -30,6 +29,7 @@ struct OfflineDurationPickerView: View {
                 
                 Spacer()
                 
+                // HEADER
                 ZStack(alignment: .bottom) {
                     Image(.wifiBrushstrokeSlash)
                         .resizable()
@@ -63,13 +63,9 @@ struct OfflineDurationPickerView: View {
                 Button("CONTINUE", systemImage: K.systemArrowIcon, action: nextStage)
                 .buttonStyle(FilledRedButtonStyle())
             }
-            .font(.main30)
             .textCase(.uppercase)
+            .font(.main30)
             .multilineTextAlignment(.center)
-            .onAppear {
-                // Make sure the offline view model slider value is synchronised to here
-                sliderSecsValue = offlineViewModel.state.durationSeconds.seconds
-            }
             .navigationDestination(isPresented: $tipsViewPresented) {
                 TipView()
             }
@@ -89,7 +85,7 @@ struct OfflineDurationPickerView: View {
     
     
     @ViewBuilder private func durationDisplay() -> some View {
-        let timeComponents = Duration.seconds(sliderSecsValue).offlineDisplayFormatComponents(width: .abbreviated)
+        let timeComponents = offlineViewModel.state.durationSeconds.offlineDisplayFormatComponents(width: .abbreviated)
         
         if let firstComponent = timeComponents.first {
             Text("\(firstComponent.0)") // E.g. 9
@@ -116,9 +112,7 @@ struct OfflineDurationPickerView: View {
     
     
     private func nextStage() {
-        // 1. Make sure the slider value is synchronised to the view model
-        offlineViewModel.state.durationSeconds = .seconds(sliderSecsValue)
-        
+
         // If the wifi is turned on (use network monitor for this) then present the tips view sheet telling them to turn it off
         if NetworkMonitor.shared.isConnected {
             tipsViewPresented = true

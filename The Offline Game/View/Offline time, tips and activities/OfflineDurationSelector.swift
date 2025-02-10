@@ -25,60 +25,79 @@ struct OfflineDurationSelector: View {
             if let selectedRange {
                 // If we have selected a range then display the ruler for it.
                 
-                VStack {
-                    
-                    // the arrow pointing down to the current value
-                    Image(.arrow)
-                        .resizable()
-                        .scaledToFit()
-                        .rotationEffect(.degrees(90))
-                        .frame(height: 40)
-                        .foregroundStyle(.accent)
-                        .frame(maxWidth: .infinity)
-                        .overlay(alignment: .leading) {
-                            Button("Back", systemImage: "arrow.backward") {
-                                self.selectedRange = nil
-                            }
-                            .font(.main14)
-                            .padding(.leading)
-                            .tint(.smog)
-                        }
-                    
-                    HorizontalRulerSlider(
-                        value: $secs,
-                        range: selectedRange.rangeInSecs,
-                        step: selectedRange.step,
-                        spacing: selectedRange.spacing,
-                        alignment: .top
-                    ) { value in
-                        
-                        VStack(spacing: 20) {
-                            Image(.shortLine)
-                                .resizable()
-                                .scaledToFit()
-                                .rotationEffect(.degrees(90))
-                                .foregroundStyle(.ruby)
-                                .frame(height: 5)
-                            
-                            // For the value in the text for the marker, then display the formatted value
-                            Text( Duration.seconds(value).offlineDisplayFormat(width: .abbreviated) )
-                                .font(.caption)
-                                .frame(width: 30)
-                                .foregroundStyle(.smog)
-                        }
-                        
-                    }
-                    
-                }
+                durationSlider(selectedRange: selectedRange)
+                    .transition(.blurReplace)
                 
             } else {
                 // If we have not selected a range, then display the selector
                 DurationRangeSelector(range: $selectedRange)
+                    .transition(.blurReplace)
+                
                     .padding(.horizontal)
                     .padding(.horizontal)
             }
             
         }
+        .animation(.easeInOut, value: selectedRange)
+        .onChange(of: secs) { oldValue, newValue in
+            offlineViewModel.state.durationSeconds = .seconds(secs)
+            print("secs changed")
+        }
+        .onAppear {
+            // Make sure the offline view model slider value is synchronised to here
+            secs = offlineViewModel.state.durationSeconds.seconds
+        }
+    }
+    
+    
+    @ViewBuilder private func durationSlider(selectedRange: DurationRange) -> some View {
+        
+        VStack {
+            
+            // the arrow pointing down to the current value
+            Image(.arrow)
+                .resizable()
+                .scaledToFit()
+                .rotationEffect(.degrees(90))
+                .frame(height: 40)
+                .foregroundStyle(.accent)
+                .frame(maxWidth: .infinity)
+                .overlay(alignment: .leading) {
+                    Button("Back", systemImage: "arrow.backward") {
+                        self.selectedRange = nil
+                    }
+                    .font(.main14)
+                    .padding(.leading)
+                    .tint(.smog)
+                }
+            
+            HorizontalRulerSlider(
+                value: $secs,
+                range: selectedRange.rangeInSecs,
+                step: selectedRange.step,
+                spacing: selectedRange.spacing,
+                alignment: .top
+            ) { value in
+                
+                VStack(spacing: 20) {
+                    Image(.shortLine)
+                        .resizable()
+                        .scaledToFit()
+                        .rotationEffect(.degrees(90))
+                        .foregroundStyle(.ruby)
+                        .frame(height: 5)
+                    
+                    // For the value in the text for the marker, then display the formatted value
+                    Text( Duration.seconds(value).offlineDisplayFormat(width: .abbreviated) )
+                        .font(.caption)
+                        .frame(width: 30)
+                        .foregroundStyle(.smog)
+                }
+                
+            }
+            
+        }
+        
     }
     
     
