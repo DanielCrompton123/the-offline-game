@@ -114,31 +114,22 @@ struct OfflineDurationKeypadInput: View {
     
     private func loadStrings() {
         // Turn the duration into string values for the text fields to edit
-        let totalSeconds = offlineViewModel.state.durationSeconds.components.seconds
+        let strings = offlineViewModel.state.durationSeconds.strings()
         
-        let hours = totalSeconds / 3600
-        hrsText = String(hours)
-        
-        let minutes = (totalSeconds % 3600) / 60
-        minsText = String(minutes)
-        
-        let seconds = totalSeconds % 60
-        secsText = String(seconds)
+        hrsText = strings.hour
+        minsText = strings.minute
+        secsText = strings.second
     }
     
     
     private func setDuration() {
         
-        guard let hour = Double(hrsText),
-              let minute = Double(minsText),
-              let second = Double(secsText) else {
-            print("Could not create integer from duration value")
-            return
+        if let totalSeconds = Duration.fromStrings(hour: hrsText, minute: minsText, second: secsText) {
+            
+            offlineViewModel.state.durationSeconds = totalSeconds
+        } else {
+            print("Could not create text from hrs/mins/secsText")
         }
-
-        let totalSeconds = (hour * 3600) + (minute * 60) + second
-        
-        offlineViewModel.state.durationSeconds = .seconds(totalSeconds)
     }
 }
 
