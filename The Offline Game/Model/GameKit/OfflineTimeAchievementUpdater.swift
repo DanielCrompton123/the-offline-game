@@ -28,32 +28,20 @@ class OfflineTimeAchievementUpdater: AchievementUpdater {
         var achievements = [OfflineAchievement]()
         
         switch event {
-        case .offlineTimeFinished(let successful, let duration):
+        case .offlineTimeFinished(let successful, _):
             
             // Your first 10 / 30 minutes IF they went offline for this
+
+            // Here, we DO NOT need to refine the achievements to those within the duration
+            // e.g. filtering first10Mins/30Mins to higher values than the duration is UNNECESSARY because the progress(for) will just get progress as 0 if the user didn't achieve it.
+            achievements.append(.firstMins(mins: 10))
+            achievements.append(.firstMins(mins: 30))
             
-            let first10MinsThreshold = 60 * 10
-            let first30MinsThreshold = 60 * 30
-            
-            if duration.components.seconds >= first10MinsThreshold { // 600 secs = 10 mins
-                achievements.append(.firstMins(mins: 10))
-            }
-            
-            if duration.components.seconds >= first30MinsThreshold { // (600.0 * 3.0) = 30 min
-                achievements.append(.firstMins(mins: 30))
-            }
-            
-        case .overtimeFinished(let duration):
+        case .overtimeFinished:
             
             // ^^^^^ SAME AS WHEN NORMAL OFFLINE TIEM FINISHED ^^^^^
-            // Your first 10 / 30 minutes IF they went offline for this
-            if Double(duration.seconds) > 600.0 { // 600 secs = 10 mins
-                achievements.append(.firstMins(mins: 10))
-            }
-            
-            if Double(duration.seconds) > (600.0 * 3.0) { // (600.0 * 3.0) = 30 min
-                achievements.append(.firstMins(mins: 30))
-            }
+            achievements.append(.firstMins(mins: 10))
+            achievements.append(.firstMins(mins: 30))
             
             // ALSO EVENTS FOR OVERTIME...
             
@@ -70,15 +58,13 @@ class OfflineTimeAchievementUpdater: AchievementUpdater {
         switch event {
         case .offlineTimeFinished(let successful, let duration):
             
-            // Update the total offline mins IF it was successful
-            if successful {
-                totalOfflineMins += Int(duration.components.seconds / 60)
-            }
+            // Update the total offline mins even if it was not successful
+            totalOfflineMins += Int(duration.components.seconds / 60)
             
         case .overtimeFinished(let duration):
             
-            // Update the offline
             totalOfflineMins += Int(duration.components.seconds / 60)
+            
         case .appOpened:
             break
         }

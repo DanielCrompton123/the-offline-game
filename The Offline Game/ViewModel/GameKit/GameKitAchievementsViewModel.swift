@@ -50,9 +50,7 @@ class GameKitAchievementsViewModel {
     
     
     private func reportProgress(_ progress: Double, for achievement: OfflineAchievement) {
-        
-        print("reportProgress(_:for:) called")
-        
+                
         // First, check if the achievement is in progress by user (in the inProgressAchievements array).
         // IF SO, set the new progress for it and report the change
         // IF NOT, create a new achievement with the achievement ID and report that
@@ -66,7 +64,7 @@ class GameKitAchievementsViewModel {
         
         else {
             gkAchievement = GKAchievement(identifier: achievement.id)
-            print("No in progress achievement for \(achievement.id), so we created one!")
+            print("No achievement for \(achievement.id), so we created one!")
             
             // Now add it to the array
             inProgressAchievements.append(gkAchievement)

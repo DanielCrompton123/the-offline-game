@@ -22,7 +22,7 @@ enum OfflineAchievement {
     var id: String {
         switch self {
         case .firstMins(let mins):
-            "first\(mins)Min"
+            "First\(mins)Min"
         case .total(let hrs):
             "\(hrs)HrTot"
         case .block(let hrs):

@@ -7,10 +7,14 @@
 
 import SwiftUI
 import ActivityKit
+import StoreKit
 
 
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.requestReview) private var requestReview
+    
+    @AppStorage("numOffPds") private var numOffPds: Int = 0
     
     @Environment(OfflineViewModel.self) private var offlineViewModel
     @Environment(PermissionsViewModel.self) private var permissionsViewModel
@@ -156,6 +160,13 @@ struct HomeView: View {
                 
             } message: {
                 Text(offlineViewModel.error ?? "No message...")
+            }
+            
+            // ASK FOR A REVIEW AFTER THE 5TH OFFLINE PERIOD
+            .onAppear {
+                if numOffPds == 5 {
+                    requestReview()
+                }
             }
             
         }

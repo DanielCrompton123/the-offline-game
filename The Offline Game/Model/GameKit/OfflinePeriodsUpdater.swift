@@ -30,19 +30,24 @@ class OfflinePeriodsUpdater: AchievementUpdater {
         
         
         switch event {
-        case .offlineTimeFinished(let successful, let duration):
+        case .offlineTimeFinished(_, let duration):
             
             // Here, only give the relevant achievements if the offline duration is in the correct range:
             // Only add progress towards achievemnts if they spent at least 10 minutes offline.
-
-            #if DEBUG
-            achievements.append(contentsOf: [.periods(num: 5), .periods(num: 10), .periods(num: 50)])
-            #else
-            if duration.components.seconds > 600 { // 600 = 10 mins
-                achievements.append(contentsOf: [.periods(num: 5), .periods(num: 10), .periods(num: 50)])
-            }
-            #endif
             
+            // EDIT:
+            
+            // That is done in the progress(for:) -- progress is returned as 0 if they shouldn't get the achievement.
+            // Therefore here, we can just retrieve ALL of them
+
+//            #if DEBUG
+            achievements.append(contentsOf: [.periods(num: 5), .periods(num: 10), .periods(num: 50)])
+//            #else
+//            if duration.components.seconds > 600 { // 600 = 10 mins
+//                achievements.append(contentsOf: [.periods(num: 5), .periods(num: 10), .periods(num: 50)])
+//            }
+//            #endif
+//            
             
         default: break
         }
