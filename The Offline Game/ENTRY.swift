@@ -19,8 +19,7 @@ struct The_Offline_GameApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            ENTRY()
-            DEBUG()
+            IS_DEBUG ? AnyView(DEBUG()) : AnyView(ENTRY())
         }
     }
 }

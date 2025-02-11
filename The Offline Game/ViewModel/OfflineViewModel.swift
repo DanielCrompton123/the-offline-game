@@ -93,13 +93,7 @@ class OfflineViewModel {
     }
     
     
-    var overtimeStartTimer: Timer?
-    var overtimeStartTimerBGTaskId: UIBackgroundTaskIdentifier?
-    
-    
     // Ends the NORMAL AND OVERTIME offline periods
-    #warning("Look at what happens when the app is put into BG when the offline time finishes, but beofre grace period can start.")
-    #warning("If grace period was violated, the failure view does not open when the app re-opens.")
     func endOfflineTime(successfully: Bool) {
     
         print("Ending normal offline time, successfully=\(successfully)")

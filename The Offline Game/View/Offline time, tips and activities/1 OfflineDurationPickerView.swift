@@ -16,9 +16,7 @@ struct OfflineDurationPickerView: View {
     @State private var activitiesViewPresented = false
     @State private var wifiAnimate = true
     @State private var keypadInputViewShows = false
-    
-    @State private var endDate = Date()
-    
+        
     private let wifiLogoRotation: Double = 15
     
             
@@ -80,16 +78,16 @@ struct OfflineDurationPickerView: View {
             // Display the "End date" picker button
             .toolbar {
                 
-                ToolbarItem(placement: .topBarTrailing) {
-                    DatePicker(selection: $endDate, displayedComponents: .hourAndMinute) {
-                        Label("End date", systemImage: "calendar")
-                    }
-                }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Edit duration", systemImage: "timer") {
+                ToolbarItem(placement: .principal) {
+                    Button {
                         keypadInputViewShows = true
+                    } label: {
+                        Label("Edit duration", systemImage: "timer")
+                            .labelStyle(.titleAndIcon)
+                            .font(.main20)
+                            .textCase(.uppercase)
                     }
+                    .buttonStyle(.bordered)
                 }
                 
             }

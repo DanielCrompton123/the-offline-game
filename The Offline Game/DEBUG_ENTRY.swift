@@ -8,15 +8,57 @@
 import SwiftUI
 
 
+let IS_DEBUG = false
+
+
 struct DEBUG: View {
 
-    @State private var value = 1.0
+    @State private var t = ""
+    @State private var t2 = ""
+    
+    @FocusState private var t1Focused: Bool
+    @FocusState private var t2Focused: Bool
+    
+    
     var body: some View {
         
-        VStack(spacing: 30) {
+        NavigationStack {
             
-            Circle()
-                .frame(width: 20, height: 20)
+            VStack {
+                TextField("Hello", text: $t)
+                    .textFieldStyle(.roundedBorder)
+                    .keyboardType(.numberPad)
+                    .onSubmit {
+                        print("Submitted T1")
+                    }
+                    .focused($t1Focused)
+                
+                TextField("Hello", text: $t2)
+                    .textFieldStyle(.roundedBorder)
+                    .keyboardType(.numberPad)
+                    .onSubmit {
+                        print("Submitted T2")
+                    }
+                    .focused($t2Focused)
+                
+             }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Click!") {
+                        
+                    }
+                }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done", systemImage: "checkmark") {
+                        print("DONE PRESSED")
+                        t1Focused = false
+                        t2Focused = false
+                    }
+                }
+            }
+            
         }
 
     }
