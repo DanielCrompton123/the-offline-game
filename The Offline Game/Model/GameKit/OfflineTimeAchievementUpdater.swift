@@ -15,62 +15,90 @@ class OfflineTimeAchievementUpdater: AchievementUpdater {
     static let shared = OfflineTimeAchievementUpdater()
     
     
-    @AppStorage("totalOvertime") private var totalOvertime: Double = 0.0
+    //MARK: - Store values
+    
+    // Total offline time in minutes (We don't need to have as much accuracy as double)
+    @AppStorage("totalOfflineMins") private var totalOfflineMins: Int = 0
     
     
-    
-    // STORE values here
-    
-    // Store the highest offline period reached by the user
-    @AppStorage("highestOfflineSecs") private var highestOfflineSecs: TimeInterval = 0
-    
-    // Store the total offline time done by the user
-    @AppStorage("totalOfflineSecs") private var totalOfflineSecs: TimeInterval = 0
-    
-    
+    //MARK: - Achievement Updater
     
     func achievements(for event: GameEvent) -> [OfflineAchievement] {
+        
+        var achievements = [OfflineAchievement]()
+        
         switch event {
+        case .offlineTimeFinished(let successful, let duration):
             
-        case .offlineTimeFinishedSuccessfully:
-            [
-//                .first10Min, .first30Min,
-//                
-//                .oneHrTot, .twoHrTot, .fiveHrTot, .tenHrTot, .fifteenHrTot, .twentyHrTot, .fiftyHrTot, .oneHundredHrTot,
-//                
-//                .oneHrBlk, .twoHrBlk, .fiveHrBlk, .tenHrBlk, .fifteenHrBlk, .twentyHrBlk, .twentyFourHrBlk, .thirtySixHrBlk,
-//                
-//                .thirtyMinOvt, .twoHrOvt, .fiveHrOvt,
-//                
-//                .twoDaysRunning, .sevenDaysRunning,
-//                
-//                .fiveOffPds, .tenOffPds, .fiftyOffPds
-            ]
+            // Your first 10 / 30 minutes IF they went offline for this
             
+            let first10MinsThreshold = 60 * 10
+            let first30MinsThreshold = 60 * 30
+            
+            if duration.components.seconds >= first10MinsThreshold { // 600 secs = 10 mins
+                achievements.append(.firstMins(mins: 10))
+            }
+            
+            if duration.components.seconds >= first30MinsThreshold { // (600.0 * 3.0) = 30 min
+                achievements.append(.firstMins(mins: 30))
+            }
+            
+        case .overtimeFinished(let duration):
+            
+            // ^^^^^ SAME AS WHEN NORMAL OFFLINE TIEM FINISHED ^^^^^
+            // Your first 10 / 30 minutes IF they went offline for this
+            if Double(duration.seconds) > 600.0 { // 600 secs = 10 mins
+                achievements.append(.firstMins(mins: 10))
+            }
+            
+            if Double(duration.seconds) > (600.0 * 3.0) { // (600.0 * 3.0) = 30 min
+                achievements.append(.firstMins(mins: 30))
+            }
+            
+            // ALSO EVENTS FOR OVERTIME...
             
         case .appOpened:
-            []
+            break
         }
+        
+        
+        return achievements
     }
-    
-    
-    func progress(for achievement: OfflineAchievement) -> Double? {
-        nil
-    }
-    
     
     func updateProgress(for event: GameEvent) {
         
-    }
-    
-    
-    
-    func resetProgress(for achievement: OfflineAchievement) {
+        switch event {
+        case .offlineTimeFinished(let successful, let duration):
+            
+            // Update the total offline mins IF it was successful
+            if successful {
+                totalOfflineMins += Int(duration.components.seconds / 60)
+            }
+            
+        case .overtimeFinished(let duration):
+            
+            // Update the offline
+            totalOfflineMins += Int(duration.components.seconds / 60)
+        case .appOpened:
+            break
+        }
         
     }
     
+    func progress(for achievement: OfflineAchievement) -> Double? {
+        switch achievement {
+        case .firstMins(let mins):
+            
+            // e.g. totalOfflineMins = 5, mins = 10 (as in, your first 10 mins offline)
+            // progress = 5 / 10 = half
+            Double(totalOfflineMins) / Double(mins)
+            
+        default: nil
+        }
+    }
     
     func resetAllProgress() {
-        
+        totalOfflineMins = 0
     }
+
 }
