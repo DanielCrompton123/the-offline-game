@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import WishKit
 
 struct SettingsView: View {
     
     @State private var navigateToAccountCreationAgeView = false
     @State private var clearAchievementsConfirmation = false
+
     @Environment(GameKitViewModel.self) private var gameKitViewModel
     
     @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
@@ -22,6 +24,8 @@ struct SettingsView: View {
         NavigationStack {
             
             List {
+                
+                // MAIN CONTENT
                 Section {
                     Group {
                         NavigationLink {
@@ -38,10 +42,18 @@ struct SettingsView: View {
                         ) {
                             Label("Change age", systemImage: "figure.and.child.holdinghands")
                         }
+                        
+                        NavigationLink {
+                            WishKit.FeedbackListView().withNavigation()
+                        } label: {
+                            Label("Request a feature", systemImage: "bubbles.and.sparkles")
+                        }
                     }
                     .frame(height: 50)
                 }
                 
+                
+                // GAME CENTER
                 Section {
                     
                     if !gameKitViewModel.gameCenterEnabled {

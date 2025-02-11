@@ -34,7 +34,7 @@ struct K {
     
     static let maximumOfflineSecs: TimeInterval = 24 * 60 * 60 // 24 hours
 #if DEBUG
-    static let minimumOfflineSecs: TimeInterval = 10
+    static let minimumOfflineSecs: TimeInterval = 5
 #else
     static let minimumOfflineSecs: TimeInterval = 10 * 60
 #endif
@@ -56,8 +56,10 @@ struct K {
     static let systemArrowIcon = "chevron.forward.dotted.chevron.forward"
 
 
-    //MARK: - APIs
+    //MARK: - APIs & keys
     
     static let boredAPIEndpoint = "https://bored-api.appbrewery.com/random"
+    
+    static let wishKitAPIKey = "3658F214-2D36-4FA9-AA4D-70ADC458842F"
     
 }

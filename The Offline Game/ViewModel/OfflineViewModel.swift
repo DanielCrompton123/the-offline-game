@@ -11,148 +11,36 @@ import SwiftUI
 @Observable
 class OfflineViewModel {
     
-    
-    //MARK: - Initialization
-        
-    init() {
-        // Restore the things from user defaults
-        
-        // The `UserDefaults.standard.double` defaults to 0.0 if the value doesn't exist but we want it to default to 20 minutes.
-        let durationSeconds = UserDefaults.standard.double(forKey: K.userDefaultsDurationSecondsKey)
-        self.durationSeconds = durationSeconds == 0.0 ? .seconds(20*60) : .seconds(durationSeconds)
-        
-//        let stateRawValue = UserDefaults.standard.integer(forKey: K.userDefaultsOfflineStateKey)
-//        state = State(rawValue: stateRawValue) ?? .none
-//        
-//        startDate = UserDefaults.standard.object(forKey: K.userDefaultsStartDateKey) as? Date // default to nil
-//        
-//        if isOffline {
-//            scheduleOfflineTimer()
-//        }
-    }
-    
-    
-    
-    //MARK: - Offline duration
-    
-    // store the number of offline minutes selected by the user
-    var durationSeconds: Duration = .seconds(20 * 60) { // 20 minutes
-        didSet {
-            // When set, persist it in user defaults
-            UserDefaults.standard.set(durationSeconds.components.seconds, forKey: K.userDefaultsDurationSecondsKey)
-        }
-    }
-    
-    
-    
-    //MARK: - Offline state
-    
-    enum State: Int {
-        case none, offline, paused
-    }
-    
-    var state = State.none {
-        // When we set the state value, store in user defaults
-        didSet {
-            UserDefaults.standard.set(state.rawValue, forKey: K.userDefaultsOfflineStateKey)
-        }
-    }
-
-    // Is the user offline?
-    // Used to trigger presentation of the offline view
-    var isOffline: Bool {
-        get { state != .none } // We are offline if the state is either paused or actually offline
-        set { state = newValue ? .offline : .none }
-    }
-    
-    var isPaused: Bool { state == .paused }
-    
-    // Check if the user is in overtime offline
-    var isInOvertime: Bool {
-        // Is end date BEFORE now?
-        guard let endDate else { return false }
-        return isOffline && ( Date().distance(to: endDate) < 0 )
-    }
-    
-    // When did the user go offline?
-    var startDate: Date? {
-        willSet {
-            // BEFORE updating the start date, set the old elapsed time.
-            // because if setting the startDate to nil, in didSet the elapsed time would be nil too
-            // Only update it if we are resetting the start date back to nil again
-//            if newValue == nil { oldElapsedTime = elapsedTime }
-        }
-        didSet {
-            UserDefaults.standard.set(startDate, forKey: K.userDefaultsStartDateKey)
-            
-            // Now update oldDtartDate & oldElapsedTime
-            if oldValue != nil {
-                oldStartDate = oldValue
-            }
-        }
-    }
-    
-    // Used to access the previous start date even when it's reset
-    var oldStartDate: Date?
-    
-    // When can they do online?
-    // Diaplayed in the UI with Text(Date, style: .timer)
-    // Also add on any paused time
-    var endDate: Date? {
-        guard let startDate else { return nil }
-        return startDate.addingTimeInterval(durationSeconds.seconds).addingTimeInterval(totalPauseDuration.seconds)
-    }
-    
-    // Used in the offline progress bar gauges
-    var offlineProgress: CGFloat? {
-        // The start date's distance to the current date
-        guard let endDate else { return nil }
-        return startDate?.completionTo(endDate)
-    }
-    
-    // Elapsed time used in the live activity and the offline progress calculation
-    var elapsedTime: TimeInterval? {
-        // It is the time between going offline and (either now, or when the user paused offline time due to going on the home screen)
-        // It is the lower value of either that or now.
-        // Because we may be accessing the elapsed time after going overtime.
-        // This WOULD be a sum of offline time + delay on congrats view + overtime.
-        // Also make sure pause time is deducted
-        
-        guard let startDate else { return nil }
-        
-//        #error("Time interval incorrectly calculated")
-        return min(
-            Date().timeIntervalSince(startDate) - totalPauseDuration.seconds,
-            durationSeconds.seconds
-        )
-    }
-    // Old elapsed time used in success congrats view when the elapsedTime has been reset
-//    var oldElapsedTime: TimeInterval?
-    
-    // The start date for overtime
-    // This is NOT the same as the end date because the user may spend some time on the congrats screen or in the game center access point.
-    var overtimeStartDate: Date?
-    
-    // This is the duration that the user was overtime for
-    // Set when the overtime ends
-    var overtimeDuration: Duration?
-    
     // Used to call the function to end the offline period (e.g. bringing up the congrats view and dismissing the OfflineView)
     var endOfflineTimer: Timer? // ONLY TRIGGERS at the `endDate`
+
+    var state = OfflineState()
     
-    // The notification posted when offline time completes
-    var congratulatoryNotification: OfflineNotification?
+    var error: String?
+    
+    
+    
+    //MARK: - Other
+    
+    var isPickingDuration = false // Makes the OfflinetimeView appear to pick duration
+    var userShouldBeCongratulated = false // Makes the congratulatory view appear in the main view
+    
+    var userDidFail = false // Presents the failure view
+    
+    var liveActivityViewModel: LiveActivityViewModel?
+    var offlineCountViewModel: OfflineCountViewModel?
+    var gameKitViewModel: GameKitViewModel?
+    
     
     
     
     func goOffline() {
         print("Going offline")
         isPickingDuration = false
-        isOffline = true
-        startDate = Date()
+        state.isOffline = true
+        state.startDate = Date()
         
-        // Add one to the offline count
-        offlineCountViewModel?.increase()
+        count(increasing: true)
         
         // Now add the live activity
         liveActivityViewModel?.startActivity(overtime: false)
@@ -160,20 +48,34 @@ class OfflineViewModel {
         scheduleOfflineTimer()
         
         // Now schedule a notification to be posted to the user when their offline time ends
-        let formattedDuration = durationSeconds.offlineDisplayFormat(width: .abbreviated)
+        let formattedDuration = state.durationSeconds.offlineDisplayFormat(width: .abbreviated)
         
-        congratulatoryNotification = OfflineNotification.congratulatoryNotification(
-            endDate: endDate!, // unwrapped- just set startDate and endDate depends on it
+        OfflineNotification.congratulatoryNotification(
+            endDate: state.endDate!, // unwrapped- just set startDate and endDate depends on it
             formattedDuration: formattedDuration
-        )
-        
-        congratulatoryNotification?.post()
+        ).post()
     }
     
     
+    func count(increasing: Bool) {
+        Task {
+            // Add one to the offline count
+            do {
+                if increasing {
+                    try await offlineCountViewModel?.increase()
+                } else {
+                    try await offlineCountViewModel?.decrease()
+                }
+            } catch {
+                self.error = error.localizedDescription
+                print("🔢 Error \(increasing ? "increasing" : "increasing") offline count: \(error.localizedDescription)")
+            }
+        }
+    }
     
+        
     private func scheduleOfflineTimer() {
-        guard let endDate else {
+        guard let endDate = state.endDate else {
             print("Don't call scheduleOfflineTimer is endDate is nil")
             return
         }
@@ -186,158 +88,104 @@ class OfflineViewModel {
             // may execute on a background thread
             DispatchQueue.main.async {
                 print("Offline end timer triggered!")
-                self?.offlineTimeFinished(successfully: true)
+                self?.endOfflineTime(successfully: true)
             }
         }
     }
     
     
+    // Ends the NORMAL AND OVERTIME offline periods
+    func endOfflineTime(successfully: Bool) {
     
-    func offlineTimeFinished(successfully: Bool) {
-        print("offline time finished successfully=\(successfully)")
+        print("Ending normal offline time, successfully=\(successfully)")
         
+        // Cancel the offline end timer
         endOfflineTimer?.invalidate()
         endOfflineTimer = nil
         
-        // DON'T set it to nil straight away because the user may want to stay offline, if they succeeded with this one and take their overtime
-        // Instead do it in another func and call this if the user dismisses the congrats view without pressing "stay offline"
+        // Only reset the start date to nil when we are resetting offline state.
+        // When the user failed (violating grace period) the offline time will be ended, and the state will be cleared.
+//        state.startDate = nil
         
-        // If the offline time ended in failure, the view won't give them the choice of staying offline so we should just set it to nil
-        if !successfully {
-            startDate = nil
-        }
+        count(increasing: false)
         
-        // Now subtract 1 from the offline count
-        offlineCountViewModel?.decrease()
-        
-        // Manage presentation of sheets
-        isOffline = false
-        userShouldBeCongratulated = successfully
-        userDidFail = !successfully
-        
-        // stop the live activity
         liveActivityViewModel?.stopActivity()
         
         // Now revoke any success notifications if we need to
-        congratulatoryNotification?.revoke()
+        OfflineNotification.congratulatoryNotification(endDate: .now, formattedDuration: "").revoke()
         
-        // Now handle achievements by delegating responsibility to the offline achievements view model
-        if successfully {
-            gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(durationSeconds))
-        }
+        var shouldStartAutomatically = true
         
-        // If we HAVE BEEN overtime, make sure this ends by setting the overtime duration (distance between overtime start and now)
-        // have been been overtime = (overtime start != nil)
-        
-        if let overtimeStartDate {
-            overtimeDuration = .seconds( overtimeStartDate.distance(to: Date()) )
+        // If we were in overtime, end this
+        if state.isInOvertime {
+            OfflineOvertimeHelper.shared.endOvertime(viewModel: self)
             
-            // Also reset the overtime start date
+            // We should also NOT automatically start the overtime
+            shouldStartAutomatically = false
         }
         
+        // If we were NOT in overtime, and we finished successfully, start the overtime automatically (after 10 seconds)
+        else if successfully && shouldStartAutomatically {
+            
+            state.isOffline = false
+            OfflineOvertimeHelper.shared.startAutomatically(viewModel: self)
+        }
+        
+        // Manage presentation of sheets
+        userShouldBeCongratulated = successfully
+        userDidFail = !successfully
+        // ^^^ DO this AFTER setting isOffline (either to false, or in endOvertime) to avoid "only presenting a single sheet is supported" error.
+        // Make sure it's dismissed before presenting these sheets
+
+        
+//         Now handle achievements by delegating responsibility to the offline achievements view model
+        if successfully {
+            gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(state.durationSeconds))
+        }
+
     }
     
     
-    func confirmOfflineTimeFinished() {
+    func resetOfflineTime() {
+        print("🔁 Resetting offline state")
         
-        // Set the overtime duration
-        guard let secs = overtimeStartDate?.distance(to: Date()) else { return }
+        // Reset the state
+        state.reset()
         
-        overtimeDuration = .seconds(secs)
-        
-        // Now reset the overtime start date AND the overtime duration
-        overtimeStartDate = nil
-        overtimeDuration = nil
-        
-        // decrease the count
-//        offlineCountViewModel?.decrease()
-        // Done in the offlineTimeFinished
-        
-        
-        // reset the pause time
-        totalPauseDuration = .seconds(0)
-    }
-    
-    
-    func beginOfflineOvertime() {
-        // When the user wants OVERTIME this is called.
-        // Set isOffline, and update the counter and the live activity
-        
-        isOffline = true
-        offlineCountViewModel?.increase()
+        // Cancel the timer
+
+        // Make sure sheets are presented
+        userDidFail = false
         userShouldBeCongratulated = false
-        liveActivityViewModel?.startActivity(overtime: true)
         
-        // Also set the overtime start date
-        overtimeStartDate = Date()
+        // Cancel the automatic offline time
+        OfflineOvertimeHelper.shared.cancelAutomaticOvertime()
     }
     
-        
-    var pauseDate: Date?
-    var totalPauseDuration = Duration.seconds(0)
     
+
     func pauseOfflineTime() {
         print("Pausing offline time")
-        // - Record the time we pause at and set state
-        pauseDate = Date()
-        state = .paused
         
         // - Cancel notifications and timers
         endOfflineTimer?.invalidate()
         endOfflineTimer = nil
-        congratulatoryNotification?.revoke()
-        congratulatoryNotification = nil
+        
+        // Now actually pause it
+        OfflinePauseHelper.pause(state: &state)
     }
     
     
     
     func resumeOfflineTime() {
-        // We can only resume if we have been paused
-        guard isPaused, let pauseDate else {
-            print("Only resume offline time when paused")
-            return
+        print("Resuming offline time")
+        
+        OfflinePauseHelper.resume(state: &state)
+        
+        // We don't want to schedule this timer is we have paused overtime -- for overtime there's no end timer.
+        if !state.isInOvertime {
+            scheduleOfflineTimer()
         }
-        
-        print("Resuming offline time...")
-        
-        // - Calculate the duration we were paused for
-        let pauseDuration = Date().timeIntervalSince(pauseDate)
-        
-        // - Reset pauseDate
-        self.pauseDate = nil
-        
-        // - modify the end date. To do this we need to change the offline duration
-//        durationSeconds += .seconds(pauseDuration)
-//        #warning("This saves new value to user defaults")
-        
-        // - also add onto the total pause time
-        // this will be affecting the elapsed time
-        totalPauseDuration += .seconds(pauseDuration)
-        
-        // We can also do this by subtracting the pause duration from the start date.
-        // This method will also ensure the elapsedTime value is correct
-//        startDate = startDate?.addingTimeInterval(pauseDuration)
-        
-        // - reschedule the notification and end timer
-        scheduleOfflineTimer()
-        
-        // abbreviated because we're in a notification
-        let formattedDuration = durationSeconds.offlineDisplayFormat(width: .abbreviated)
-        congratulatoryNotification = OfflineNotification.congratulatoryNotification(
-            endDate: endDate!, // unwrapped- just set startDate and endDate depends on it
-            formattedDuration: formattedDuration
-        )
-        congratulatoryNotification?.post()
     }
     
-    
-    //MARK: - Other
-    
-    var isPickingDuration = false // Makes the OfflinetimeView appear to pick duration
-    var userShouldBeCongratulated = false // Makes the congratulatory view appear in the main view
-    var userDidFail = false // Presents the failure view
-    
-    var liveActivityViewModel: LiveActivityViewModel?
-    var offlineCountViewModel: OfflineCountViewModel?
-    var gameKitViewModel: GameKitViewModel?
 }

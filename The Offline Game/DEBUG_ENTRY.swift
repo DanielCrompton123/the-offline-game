@@ -8,38 +8,59 @@
 import SwiftUI
 
 
-fileprivate struct DEBUG: View {
+let IS_DEBUG = false
+
+
+struct DEBUG: View {
+
+    @State private var t = ""
+    @State private var t2 = ""
     
-    class TextViewController: UIViewController {
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            
-            view.backgroundColor = .green
-            
-            let text = UILabel(frame: CGRect(x: 50, y: 50, width: 200, height: 50))
-            text.text = "Hello, World!"
-            text.backgroundColor = .red
-            view.addSubview(text)
-        }
-    }
-    
-    var rootViewController: UIViewController? {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return nil
-        }
-        return windowScene.windows.first?.rootViewController
-    }
+    @FocusState private var t1Focused: Bool
+    @FocusState private var t2Focused: Bool
     
     
-    @State private var p = false
     var body: some View {
-        Button("Present") {
-//            p = true
-            rootViewController?.present(TextViewController(), animated: true)
+        
+        NavigationStack {
+            
+            VStack {
+                TextField("Hello", text: $t)
+                    .textFieldStyle(.roundedBorder)
+                    .keyboardType(.numberPad)
+                    .onSubmit {
+                        print("Submitted T1")
+                    }
+                    .focused($t1Focused)
+                
+                TextField("Hello", text: $t2)
+                    .textFieldStyle(.roundedBorder)
+                    .keyboardType(.numberPad)
+                    .onSubmit {
+                        print("Submitted T2")
+                    }
+                    .focused($t2Focused)
+                
+             }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Click!") {
+                        
+                    }
+                }
+                
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done", systemImage: "checkmark") {
+                        print("DONE PRESSED")
+                        t1Focused = false
+                        t2Focused = false
+                    }
+                }
+            }
+            
         }
-//        .sheet(isPresented: $p) {
-//            SwiftUIViewController(controller: TextViewController())
-//        }
+
     }
 }
 

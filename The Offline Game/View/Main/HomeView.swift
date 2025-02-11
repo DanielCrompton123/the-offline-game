@@ -17,7 +17,7 @@ struct HomeView: View {
     @Environment(LiveActivityViewModel.self) private var liveActivityViewModel
     @Environment(OfflineCountViewModel.self) private var offlineCountViewModel
     @Environment(GameKitViewModel.self) private var gameKitViewModel
-        
+
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
     
@@ -27,8 +27,11 @@ struct HomeView: View {
     var body: some View {
         
         @Bindable var offlineViewModel = offlineViewModel
+        @Bindable var offlineCountViewModel = offlineCountViewModel
         
         NavigationStack {
+            
+            // CONTENT
             
             VStack {
                 
@@ -58,31 +61,39 @@ struct HomeView: View {
                             .resizable()
                             .scaledToFit()
                     }
-
+                    
                 }
                 .buttonStyle(FilledRedButtonStyle())
-                                
+                
             }
             
             // DURATION PICKER (and tips)
             .sheet(isPresented: $offlineViewModel.isPickingDuration) {
-                // On dismiss, (of either the duration picker or tips) is we are NOT going online then make the access point appear
-                if !offlineViewModel.isOffline {
+                
+                // On dismiss, (of either the duration picker or tips) if we are NOT going online then make the access point appear
+                if !offlineViewModel.state.isOffline {
                     gameKitViewModel.openAccessPoint()
                 }
+                
             } content: {
                 OfflineDurationPickerView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
             
             // CONGRATS VIEW
-            .sheet(isPresented: $offlineViewModel.userShouldBeCongratulated) {
+            .sheet(
+                isPresented: $offlineViewModel.userShouldBeCongratulated,
+                onDismiss: resetIfNotInOvertime
+            ) {
                 CongratulatoryView()
             }
             
             // FAILURE VIEW
-            .sheet(isPresented: $offlineViewModel.userDidFail,
-                   onDismiss: gameKitViewModel.openAccessPoint) {
+            .sheet(isPresented: $offlineViewModel.userDidFail) {
+                // on dismiss
+                gameKitViewModel.openAccessPoint()
+                offlineViewModel.resetOfflineTime()
+            } content: {
                 FailureView()
             }
             
@@ -94,15 +105,19 @@ struct HomeView: View {
             }
             
             // NOTIFICATION WARNING
-            .fullScreenCover(isPresented: $shouldShowNotificationWarning,
-                             onDismiss: gameKitViewModel.openAccessPoint) {
+            .fullScreenCover(
+                isPresented: $shouldShowNotificationWarning,
+                onDismiss: gameKitViewModel.openAccessPoint
+            ) {
                 NotificationPermissionView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
             
             // OFFLINE
-            .fullScreenCover(isPresented: $offlineViewModel.isOffline,
-                             onDismiss: gameKitViewModel.openAccessPoint) {
+            .fullScreenCover(
+                isPresented: $offlineViewModel.state.isOffline,
+                onDismiss: gameKitViewModel.openAccessPoint
+            ) {
                 OfflineView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
@@ -131,9 +146,28 @@ struct HomeView: View {
                 }
             }
             
+            // add an alert for errors with the offline count
+            .alert("Error recording offline count",
+                   isPresented: $offlineViewModel.error.condition { $0 != nil }) {
+                
+                Button("OK", role: .cancel) {
+                    offlineViewModel.error = nil
+                }
+                
+            } message: {
+                Text(offlineViewModel.error ?? "No message...")
+            }
+            
         }
     }
-
+    
+    
+    private func resetIfNotInOvertime() {
+        if !offlineViewModel.state.isInOvertime {
+            offlineViewModel.resetOfflineTime()
+        }
+    }
+    
 }
 
 #Preview {

@@ -51,7 +51,7 @@ struct OfflineView: View {
                 Spacer()
                 
                 // don't display the progress view if we're not in overtime
-                if !offlineViewModel.isInOvertime {
+                if !offlineViewModel.state.isInOvertime {
                     
                     OfflineProgressView()
                         .padding(.horizontal)
@@ -63,8 +63,8 @@ struct OfflineView: View {
                     .minimumScaleFactor(0.6)
                     .foregroundStyle(.black)
                 
-                if offlineViewModel.isInOvertime,
-                   let overtimeStartDate = offlineViewModel.overtimeStartDate {
+                if offlineViewModel.state.isInOvertime,
+                   let overtimeStartDate = offlineViewModel.state.overtimeStartDate {
                     
                     Text("Overtime!")
                         .font(.display40)
@@ -73,7 +73,9 @@ struct OfflineView: View {
                     // Now display the text for the overtime duration
                     // count UP
                     // If the date is > current date, Text will count up from it
-                    Text(overtimeStartDate, style: .timer)
+                    
+                    // Don't forget to deduct the pause duration off it
+                    Text(overtimeStartDate.addingTimeInterval(offlineViewModel.state.totalOvertimePauseDuration.seconds), style: .timer)
                         .font(.display128)
                         .foregroundStyle(.green.gradient)
                     
@@ -107,19 +109,19 @@ struct OfflineView: View {
         
         .confirmationDialog("You will loose your offline progress!", isPresented: $goOnlineConfirmationShows, titleVisibility: .visible) {
             
+            // OK BUTTON
             Button(
-                offlineViewModel.isInOvertime ?
+                offlineViewModel.state.isInOvertime ?
                 "I'm finished with my overtime now." :
                 "I really need my phone :(",
-                role: .destructive) {
-                    
-                offlineViewModel.offlineTimeFinished(successfully: true)
-//                offlineViewModel.confirmOfflineTimeFinished()
+                role: .destructive
+            ) {
+                offlineViewModel.endOfflineTime(successfully: true)
             }
             
-            
+            // CANCEL BUTTON
             Button(
-                offlineViewModel.isInOvertime ?
+                offlineViewModel.state.isInOvertime ?
                 "Actually, I want to continue!" :
                 "I refuse to be defeated!",
                 role: .cancel) {

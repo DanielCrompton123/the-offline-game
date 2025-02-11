@@ -67,4 +67,36 @@ extension Duration {
     }
     
     
+    
+    static func fromStrings(hour: String, minute: String, second: String) -> Duration? {
+        
+        guard let hour = Double(hour),
+              let minute = Double(minute),
+              let second = Double(second) else {
+            return nil
+        }
+
+        let totalSeconds = (hour * 3600) + (minute * 60) + second
+        
+        return .seconds(totalSeconds)
+    }
+    
+    
+    func strings() -> (hour: String, minute: String, second: String) {
+        
+        let totalSeconds = components.seconds
+        
+        let hours = totalSeconds / 3600
+        let hrsText = String(hours)
+        
+        let minutes = (totalSeconds % 3600) / 60
+        let minsText = String(minutes)
+        
+        let seconds = totalSeconds % 60
+        let secsText = String(seconds)
+        
+        return (hour: hrsText, minute: minsText, second: secsText)
+    }
+    
+    
 }

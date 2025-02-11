@@ -11,7 +11,6 @@ import Lottie
 struct FailureView: View {
     
     @Environment(OfflineViewModel.self) private var offlineViewModel
-    @Environment(OfflineTracker.self) private var offlineTracker
     
     @State private var notificationToastShows = false
     @State private var userWillBeReminded = false
@@ -55,9 +54,9 @@ struct FailureView: View {
                     .font(.main20)
             }
             
-            if let elapsedTime = offlineViewModel.elapsedTime {
+            if let elapsedTime = offlineViewModel.state.elapsedTime {
                 
-                let formattedDur = Duration.seconds(elapsedTime).offlineDisplayFormat()
+                let formattedDur = elapsedTime.offlineDisplayFormat()
                 
                 Text("You only spent \(formattedDur) offline!")
                     .opacity(0.75)
@@ -67,8 +66,14 @@ struct FailureView: View {
             Spacer()
             
             Button {
-                offlineTracker.scheduleOfflineReminder()
-                notificationToastShows = true
+                if let oldStartDate = offlineViewModel.state.oldStartDate {
+                    OfflineReminderHelper.scheduleReminderForTomorrow(today: oldStartDate)
+                }
+                
+                withAnimation {
+                    notificationToastShows = true
+                }
+                
                 userWillBeReminded = true
             } label: {
                 Label {
@@ -98,8 +103,11 @@ struct FailureView: View {
                 
                 Button("Actually, don't remind me",
                        systemImage: "bell.badge.slash") {
-                    offlineTracker.revokeOfflineReminder()
-                    notificationToastShows = false
+                    
+                    OfflineReminderHelper.revokeOfflineReminder()
+                    withAnimation {
+                        notificationToastShows = false
+                    }
                 }
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.capsule)
@@ -107,12 +115,14 @@ struct FailureView: View {
             }
             .padding()
         }
-        .onDisappear(perform: offlineViewModel.confirmOfflineTimeFinished)
+        
+        // Don't call here on sheet. Use onDismiss when sheet disappears
+//        .onDisappear(perform: offlineViewModel.resetOfflineTime)
+        
     }
 }
 
 #Preview {
     FailureView()
         .environment(OfflineViewModel())
-        .environment(OfflineTracker())
 }

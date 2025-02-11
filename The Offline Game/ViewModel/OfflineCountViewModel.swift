@@ -19,6 +19,8 @@ class OfflineCountViewModel {
         realtimeDB = Database.database().reference()
     }
     
+    
+    
     func setupDatabaseObserver() {
         let countRef = realtimeDB.child(K.firebaseOfflineCountKey)
         
@@ -34,35 +36,30 @@ class OfflineCountViewModel {
         }
     }
     
-    func increase() {
+    
+    
+    func increase() async throws {
         let countRef = realtimeDB.child("offlineCount")
         
         // The transactions are good for concurrency
-        countRef.runTransactionBlock { data in
+        try await countRef.runTransactionBlock { data in
             data.value = max((data.value as? Int ?? 0) + 1, 0)
+            
             return .success(withValue: data)
         }
         
-//        countRef.runTransactionBlock { data in
-//            data.value = max((data.value as? Int ?? 0) + 1, 0)
-//            return .success(withValue: data)
-//        } andCompletionBlock: { error, _, _ in
-//            if let error {
-//                print("ERROR WITH FIREBASE: \(error.localizedDescription)")
-//            }
-//        }
-//
     }
     
-    func decrease() {
+    
+    
+    func decrease() async throws {
         // Concurrency handled properly?
         
         let countRef = realtimeDB.child("offlineCount")
         
         // The transactions are good for concurrency
-        countRef.runTransactionBlock { data in
+        try await countRef.runTransactionBlock { data in
             data.value = max((data.value as? Int ?? 0) - 1, 0)
-            print("Decreased")
             
             return .success(withValue: data)
         }

@@ -15,8 +15,8 @@ struct OfflineDurationPickerView: View {
     @State private var tipsViewPresented = false
     @State private var activitiesViewPresented = false
     @State private var wifiAnimate = true
-    @State private var sliderSecsValue: TimeInterval = 0.0
-    
+    @State private var keypadInputViewShows = false
+        
     private let wifiLogoRotation: Double = 15
     
             
@@ -30,6 +30,7 @@ struct OfflineDurationPickerView: View {
                 
                 Spacer()
                 
+                // HEADER
                 ZStack(alignment: .bottom) {
                     Image(.wifiBrushstrokeSlash)
                         .resizable()
@@ -54,31 +55,49 @@ struct OfflineDurationPickerView: View {
                 
                 durationDisplay()
                 
-                Slider(value: $sliderSecsValue,
-                       in: K.offlineDurationSecsRange,
-                       step: K.secsStep) {
-                    Text(offlineViewModel.durationSeconds.offlineDisplayFormat())
-                    // for screen readers
-                }
-                .labelsHidden()
+                Spacer()
+                
+                OfflineDurationSelector()
                 
                 Spacer()
                 
                 Button("CONTINUE", systemImage: K.systemArrowIcon, action: nextStage)
                 .buttonStyle(FilledRedButtonStyle())
             }
-            .font(.main30)
             .textCase(.uppercase)
+            .font(.main30)
             .multilineTextAlignment(.center)
-            .onAppear {
-                // Make sure the offline view model slider value is synchronised to here
-                sliderSecsValue = offlineViewModel.durationSeconds.seconds
-            }
             .navigationDestination(isPresented: $tipsViewPresented) {
                 TipView()
             }
             .navigationDestination(isPresented: $activitiesViewPresented) {
                 ActivitiesView()
+            }
+            
+            // TOOLBAR
+            // Display the "End date" picker button
+            .toolbar {
+                
+                ToolbarItem(placement: .principal) {
+                    Button {
+                        keypadInputViewShows = true
+                    } label: {
+                        Label("Edit duration", systemImage: "timer")
+                            .labelStyle(.titleAndIcon)
+                            .font(.main20)
+                            .textCase(.uppercase)
+                    }
+                    .buttonStyle(.bordered)
+                }
+                
+            }
+            
+            // SHEET FOR INPUTTING TEXT FOR THE OFFLINE TIME
+            .sheet(isPresented: $keypadInputViewShows) {
+                OfflineDurationKeypadInput()
+                    .presentationDetents([.medium])
+                    .presentationCornerRadius(35)
+                    .presentationDragIndicator(.visible)
             }
 
         }
@@ -86,14 +105,14 @@ struct OfflineDurationPickerView: View {
         // When the offline duration picker shows, start listening for network connectivity changes.
         
         // This allows us to check if wifi is on or off
-        // That is used to determine if we should present the tips view or not, since we don't ned to tell them to turn off wifi if they did already.
+        // That is used to determine if we should present the tips view or not, since we don't need to tell them to turn off wifi if they did already.
         .onAppear(perform: NetworkMonitor.shared.startListening)
         .onDisappear(perform: NetworkMonitor.shared.stopListening)
     }
     
     
     @ViewBuilder private func durationDisplay() -> some View {
-        let timeComponents = Duration.seconds(sliderSecsValue).offlineDisplayFormatComponents(width: .abbreviated)
+        let timeComponents = offlineViewModel.state.durationSeconds.offlineDisplayFormatComponents(width: .abbreviated)
         
         if let firstComponent = timeComponents.first {
             Text("\(firstComponent.0)") // E.g. 9
@@ -120,9 +139,7 @@ struct OfflineDurationPickerView: View {
     
     
     private func nextStage() {
-        // 1. Make sure the slider value is synchronised to the view model
-        offlineViewModel.durationSeconds = .seconds(sliderSecsValue)
-        
+
         // If the wifi is turned on (use network monitor for this) then present the tips view sheet telling them to turn it off
         if NetworkMonitor.shared.isConnected {
             tipsViewPresented = true
