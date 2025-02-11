@@ -116,6 +116,16 @@ class OfflineViewModel {
         
         var shouldStartAutomatically = true
         
+        // Before ending the overtime, report the event
+        // Now handle achievements by delegating responsibility to the offline achievements view model
+        gameKitViewModel?.achievementsViewModel?.event(
+            
+            state.isInOvertime ?
+                .overtimeFinished(state.overtimeElapsedTime ?? .seconds(0)) :
+                .offlineTimeFinished(successful: successfully, state.durationSeconds)
+            
+        )
+        
         // If we were in overtime, end this
         if state.isInOvertime {
             OfflineOvertimeHelper.shared.endOvertime(viewModel: self)
@@ -136,12 +146,6 @@ class OfflineViewModel {
         userDidFail = !successfully
         // ^^^ DO this AFTER setting isOffline (either to false, or in endOvertime) to avoid "only presenting a single sheet is supported" error.
         // Make sure it's dismissed before presenting these sheets
-
-        
-//         Now handle achievements by delegating responsibility to the offline achievements view model
-        if successfully {
-            gameKitViewModel?.achievementsViewModel?.event(.offlineTimeFinishedSuccessfully(state.durationSeconds))
-        }
 
     }
     

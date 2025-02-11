@@ -1,7 +1,6 @@
 # Todos
 
 ## Current release
-- Create a better offline duration slider
 
 - Complete logic for the achievements.
 - Add leaderboard progress for points and offline elapsed time
@@ -40,3 +39,5 @@
 - Add roboto light font for small text
 - Add attributions for fonts and lottie animations
 - Start overtime period automatically after offline time ends + 1 min when the phone was left off. Account for this minute
+- Create a better offline duration slider
+- Add WishKit

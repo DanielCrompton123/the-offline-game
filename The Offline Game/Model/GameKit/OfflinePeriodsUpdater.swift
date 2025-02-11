@@ -9,6 +9,9 @@ import Foundation
 import SwiftUI
 
 
+// Responsible for reporting progress for achievements related to the NUMBER OF OFFLINE PERIODS the user has done, not necessarilly the actual offline time.
+
+
 class OfflinePeriodsUpdater: AchievementUpdater {
     
     private init() { }
@@ -22,26 +25,30 @@ class OfflinePeriodsUpdater: AchievementUpdater {
     
     
     func achievements(for event: GameEvent) -> [OfflineAchievement] {
+        
+        var achievements = [OfflineAchievement]()
+        
+        
         switch event {
-        case .offlineTimeFinishedSuccessfully(let duration):
+        case .offlineTimeFinished(let successful, let duration):
             
             // Here, only give the relevant achievements if the offline duration is in the correct range:
-            
-            // Only add progress towards achievemnts if they spent at least to minutes offline.
+            // Only add progress towards achievemnts if they spent at least 10 minutes offline.
+
             #if DEBUG
-            return [.periods(num: 5), .periods(num: 10), .periods(num: 50)]
+            achievements.append(contentsOf: [.periods(num: 5), .periods(num: 10), .periods(num: 50)])
             #else
-            if duration.components.seconds > 600 {
-                return [.periods(num: 5), .periods(num: 10), .periods(num: 50)]
-            } else {
-                return []
+            if duration.components.seconds > 600 { // 600 = 10 mins
+                achievements.append(contentsOf: [.periods(num: 5), .periods(num: 10), .periods(num: 50)])
             }
             #endif
             
             
-        case .appOpened:
-            return []
+        default: break
         }
+        
+        
+        return achievements
     }
     
 
@@ -65,6 +72,5 @@ class OfflinePeriodsUpdater: AchievementUpdater {
     func resetAllProgress() {
         // Reset the numOfflinePeriods variable to 0, in user defaults
         numOfflinePeriods = 0
-        print("resetAllProgress for periods updater: numOfflinePeriods = \(numOfflinePeriods)")
     }
 }

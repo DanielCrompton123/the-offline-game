@@ -52,7 +52,6 @@
 		651094562D03954700F0853C /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		651094582D03954700F0853C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		6510945A2D03954700F0853C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIViewController.swift; sourceTree = "<group>"; };
 		65BD0C362CFBBB35004031F5 /* The Offline Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Offline Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -140,7 +139,6 @@
 				650682E42D22CF11006EC566 /* Constants (K).swift */,
 				650682ED2D231943006EC566 /* Helper */,
 				650682F42D231948006EC566 /* Model */,
-				651F19902D3AD63300A433C4 /* SwiftUIViewController.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";

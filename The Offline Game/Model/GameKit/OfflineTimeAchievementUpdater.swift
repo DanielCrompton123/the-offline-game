@@ -15,6 +15,9 @@ class OfflineTimeAchievementUpdater: AchievementUpdater {
     static let shared = OfflineTimeAchievementUpdater()
     
     
+    @AppStorage("totalOvertime") private var totalOvertime: Double = 0.0
+    
+    
     
     // STORE values here
     
