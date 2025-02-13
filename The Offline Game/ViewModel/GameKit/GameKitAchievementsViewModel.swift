@@ -83,48 +83,6 @@ class GameKitAchievementsViewModel {
         
     }
     
-    /*
-    func event(_ event: GameEvent) {
-        
-        // When a game event happens, we need to update the progress for the releavt achievements.
-        // this is delegated to the game event's updaters.
-        
-        event.updaters.forEach { updater in
-            
-            var processedAchievementTypes: Set<OfflineAchievement.AchievementType> = []
-            
-            for achievement in updater.achievements(for: event) {
-                
-                // Now update the progress
-                // But only **update** the FIRST achievement of its type
-                // For example, if the achievements were [.period(5), .period(10), .period(50)] progress would be added for all of them.
-                if !processedAchievementTypes.contains(achievement.type) {
-                    updater.updateProgress(for: event)
-                    processedAchievementTypes.insert(achievement.type)
-                    //#error("achievements = [.periods(5), 10, 50] -- Progress is updated for all of these!")
-                }
-                
-                // progress is nil because invalid achievement may be passed to updater.progress. Returning nil would not make sense.
-                if let progress = updater.progress(for: achievement, event: event) {
-                    
-                    print("Retrieved progress \(progress) from updater for \(achievement.id)")
-                    // For each updater, we should report the progress for each of its achievements
-                    reportProgress(progress * 100, for: achievement)
-                }
-            }
-            
-        }
-    }
-    */
-    
-    
-    func event(_ event: GameEvent) {
-        
-        // NEW version -- get events from the manager
-        OfflineAchievementsProgressManager.shared.handle(event: event, achievementViewModel: self)
-        
-    }
-    
     func clearAchievements() {
         // https://developer.apple.com/documentation/gamekit/gkachievement/resetachievements(completionhandler:)
         

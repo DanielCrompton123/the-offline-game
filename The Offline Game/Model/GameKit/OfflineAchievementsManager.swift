@@ -20,7 +20,7 @@ class OfflineAchievementsProgressManager {
     
     @AppStorage("numOffPds") private var numOfflinePeriods: Int = 0
 //    @AppStorage("firstOfflineTimeSecs") private var firstOfflineTimeSecs: Double = 0
-//    @AppStorage("totalOfflineTimeSecs") private var totalOfflineTimeSecs: Double = 0
+    @AppStorage("totalOfflineTimeSecs") private var totalOfflineTimeSecs: Double = 0
 //    @AppStorage("totalOvertimeSecs") private var totalOvertimeSecs: Double = 0
 //    @AppStorage("previousDaysRunning") private var previousDaysRunning: Int = 0
     
@@ -31,11 +31,15 @@ class OfflineAchievementsProgressManager {
         return switch event {
             
         case .offlineTimeFinished: [
-            .periods(num: 5), .periods(num: 10), .periods(num: 50)
+            .periods(num: 5), .periods(num: 10), .periods(num: 50),
+            
+            .total(hrs: 1), .total(hrs: 2), .total(hrs: 5), .total(hrs: 10), .total(hrs: 15), .total(hrs: 20), .total(hrs: 50), .total(hrs: 100)
         ]
             
         case .overtimeFinished: [
-//            .overtime(mins: 30), .overtime(mins: 2 * 60), .overtime(mins: 5 * 60)
+//            .overtime(mins: 30), .overtime(mins: 2 * 60), .overtime(mins: 5 * 60),
+            
+            .total(hrs: 1), .total(hrs: 2), .total(hrs: 5), .total(hrs: 10), .total(hrs: 15), .total(hrs: 20), .total(hrs: 50), .total(hrs: 100)
         ]
             
         case .appOpened: [
@@ -48,22 +52,18 @@ class OfflineAchievementsProgressManager {
     
     // Updates stored data used to calculate the progress for an achievemnt
     func updateProperties(for achievement: OfflineAchievement, event: GameEvent) {
-        
-//        switch event {
-//        case .offlineTimeFinished(let successful, let duration):
-//            if successful {
-//                numOfflinePeriods += 1
-//            }
-//            
-//        case .overtimeFinished(let duration):
-//            break
-//        case .appOpened:
-//            break
-//        }
-        
+                
         switch achievement {
         case .periods:
             numOfflinePeriods += 1
+            
+        case .total:
+            switch event {
+            case .offlineTimeFinished(_, let secs),
+                    .overtimeFinished(let secs):
+                totalOfflineTimeSecs += Double(secs.components.seconds)
+            default: break
+            }
             
         default: break
         }
@@ -78,7 +78,15 @@ class OfflineAchievementsProgressManager {
         case .periods(let num):
             Double(numOfflinePeriods) / Double(num)
             
-        default: 0.0
+        case .total(hrs: let hours):
+            {
+                let secs = hours * 60 * 60
+                return totalOfflineTimeSecs / Double(secs)
+                // E.g. 10 / (1 * 60 * 60)
+            }()
+            
+        default:
+            0.0
         }
         
     }
@@ -118,5 +126,6 @@ class OfflineAchievementsProgressManager {
     func resetAchievementProgress() {
         // Reset the state properties
         numOfflinePeriods = 0
+        totalOfflineTimeSecs = 0
     }
 }
