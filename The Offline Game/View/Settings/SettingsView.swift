@@ -110,9 +110,10 @@ struct SettingsView: View {
         gameKitViewModel.achievementsViewModel?.clearAchievements()
         
         // Clear data that the achievement updaters have
-        OfflineTimeAchievementUpdater.shared.resetAllProgress()
-        OfflinePeriodsUpdater.shared.resetAllProgress()
-        LeaderboardUpdater.shared.resetAllProgress()
+//        OfflineTimeAchievementUpdater.shared.resetAllProgress()
+//        OfflinePeriodsUpdater.shared.resetAllProgress()
+//        LeaderboardUpdater.shared.resetAllProgress()
+        OfflineAchievementsProgressManager.shared.resetAchievementProgress()
     }
 }
 

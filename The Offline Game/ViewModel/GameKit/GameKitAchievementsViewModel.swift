@@ -49,7 +49,7 @@ class GameKitAchievementsViewModel {
     }
     
     
-    private func reportProgress(_ progress: Double, for achievement: OfflineAchievement) {
+    func reportProgress(_ progress: Double, for achievement: OfflineAchievement) {
                 
         // First, check if the achievement is in progress by user (in the inProgressAchievements array).
         // IF SO, set the new progress for it and report the change
@@ -83,7 +83,7 @@ class GameKitAchievementsViewModel {
         
     }
     
-    
+    /*
     func event(_ event: GameEvent) {
         
         // When a game event happens, we need to update the progress for the releavt achievements.
@@ -105,7 +105,7 @@ class GameKitAchievementsViewModel {
                 }
                 
                 // progress is nil because invalid achievement may be passed to updater.progress. Returning nil would not make sense.
-                if let progress = updater.progress(for: achievement) {
+                if let progress = updater.progress(for: achievement, event: event) {
                     
                     print("Retrieved progress \(progress) from updater for \(achievement.id)")
                     // For each updater, we should report the progress for each of its achievements
@@ -115,7 +115,15 @@ class GameKitAchievementsViewModel {
             
         }
     }
+    */
     
+    
+    func event(_ event: GameEvent) {
+        
+        // NEW version -- get events from the manager
+        OfflineAchievementsProgressManager.shared.handle(event: event, achievementViewModel: self)
+        
+    }
     
     func clearAchievements() {
         // https://developer.apple.com/documentation/gamekit/gkachievement/resetachievements(completionhandler:)

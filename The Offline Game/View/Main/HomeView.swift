@@ -120,7 +120,13 @@ struct HomeView: View {
             // OFFLINE
             .fullScreenCover(
                 isPresented: $offlineViewModel.state.isOffline,
-                onDismiss: gameKitViewModel.openAccessPoint
+                onDismiss: {
+                    gameKitViewModel.openAccessPoint()
+                    // Also request a review IF this is the 5th offline time
+                    if numOffPds == 5 {
+                        requestReview()
+                    }
+                }
             ) {
                 OfflineView()
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
@@ -160,13 +166,6 @@ struct HomeView: View {
                 
             } message: {
                 Text(offlineViewModel.error ?? "No message...")
-            }
-            
-            // ASK FOR A REVIEW AFTER THE 5TH OFFLINE PERIOD
-            .onAppear {
-                if numOffPds == 5 {
-                    requestReview()
-                }
             }
             
         }

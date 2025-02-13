@@ -17,26 +17,4 @@ enum GameEvent {
     
     // triggers leaderboard update
     case appOpened
-    
-    
-    // Array of achievement updaters that manage updating achievements
-    var updaters: [any AchievementUpdater] {
-        switch self {
-            
-        case .offlineTimeFinished: [
-            OfflineTimeAchievementUpdater.shared,
-            OfflinePeriodsUpdater.shared
-        ]
-            
-            
-        case .appOpened: [
-            LeaderboardUpdater.shared
-        ]
-            
-        case .overtimeFinished: [
-            OfflineTimeAchievementUpdater.shared
-        ]
-            
-        }
-    }
 }
