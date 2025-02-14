@@ -21,7 +21,7 @@ class OfflineAchievementsProgressManager {
     @AppStorage("numOffPds") private var numOfflinePeriods: Int = 0
 //    @AppStorage("firstOfflineTimeSecs") private var firstOfflineTimeSecs: Double = 0
     @AppStorage("totalOfflineTimeSecs") private var totalOfflineTimeSecs: Double = 0
-//    @AppStorage("totalOvertimeSecs") private var totalOvertimeSecs: Double = 0
+    @AppStorage("totalOvertimeSecs") private var totalOvertimeSecs: Double = 0
 //    @AppStorage("previousDaysRunning") private var previousDaysRunning: Int = 0
     
     
@@ -37,7 +37,7 @@ class OfflineAchievementsProgressManager {
         ]
             
         case .overtimeFinished: [
-//            .overtime(mins: 30), .overtime(mins: 2 * 60), .overtime(mins: 5 * 60),
+            .overtime(mins: 30), .overtime(mins: 2 * 60), .overtime(mins: 5 * 60),
             
             .total(hrs: 1), .total(hrs: 2), .total(hrs: 5), .total(hrs: 10), .total(hrs: 15), .total(hrs: 20), .total(hrs: 50), .total(hrs: 100)
         ]
@@ -65,6 +65,13 @@ class OfflineAchievementsProgressManager {
             default: break
             }
             
+        case .overtime:
+            switch event {
+            case .overtimeFinished(let duration):
+                totalOvertimeSecs += Double(duration.components.seconds)
+            default: break
+            }
+            
         default: break
         }
         
@@ -80,9 +87,16 @@ class OfflineAchievementsProgressManager {
             
         case .total(hrs: let hours):
             {
-                let secs = hours * 60 * 60
-                return totalOfflineTimeSecs / Double(secs)
+                let secs = Double(hours * 60 * 60)
+                return totalOfflineTimeSecs / secs
                 // E.g. 10 / (1 * 60 * 60)
+            }()
+            
+        case .overtime(mins: let mins):
+            {
+                let secs = Double(mins * 60)
+                return totalOvertimeSecs / secs
+                // E.g. 1hr,10m / 30m = 70/30 = 2.33
             }()
             
         default:
@@ -112,20 +126,17 @@ class OfflineAchievementsProgressManager {
         
         // 3. Now we can take each of the achievements and get the progress towards it. then register with tha achievementVM
         achievements.forEach { ach in
-            // Max value is 100
-            let achProg = min(
-                getProgress(towards: ach, event: event) * 100,
-                100
-            )
+            let achProg = getProgress(towards: ach, event: event) * 100
             
             achievementViewModel.reportProgress(achProg, for: ach)
         }
     }
     
-    
+    #warning("ADD PROPERTIES IN resetAchievementProgress")
     func resetAchievementProgress() {
         // Reset the state properties
         numOfflinePeriods = 0
         totalOfflineTimeSecs = 0
+        totalOvertimeSecs = 0
     }
 }

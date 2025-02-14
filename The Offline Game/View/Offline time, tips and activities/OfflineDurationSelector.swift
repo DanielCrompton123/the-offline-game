@@ -41,7 +41,6 @@ struct OfflineDurationSelector: View {
         .animation(.easeInOut, value: selectedRange)
         .onChange(of: secs) { oldValue, newValue in
             offlineViewModel.state.durationSeconds = .seconds(secs)
-            print("secs changed")
         }
         .onAppear {
             // Make sure the offline view model slider value is synchronised to here
