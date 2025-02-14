@@ -23,19 +23,28 @@ enum OfflineAchievement {
         switch self {
         case .firstMins(let mins):
             "First\(mins)Min"
+            
         case .total(let hrs):
             "\(hrs)HrTot"
+        
         case .block(let hrs):
             "\(hrs)HrBlk"
+        
         case .leaderboard(let position, let weeks):
             "\( (1...3).contains(position) ? "12345" : "\(position)" )\( weeks == 0 ? "" : "\(weeks)Wk" )"
+        
         case .periods(let num):
             "\(num)OffPds"
+        
         case .overtime(let mins):
             {
                 let isHrs = mins > 60
-                return "\( isHrs ? "\(mins * 60)" : "\(mins)" )\( isHrs ? "Hr" : "Min" )Ovt"
+                let hrsTxt = isHrs ? String(mins / 60) : String(mins)
+                let unitTxt = isHrs ? "Hr" : "Min"
+//                return "\( isHrs ? "\(mins / 60)" : "\(mins)" )\( isHrs ? "Hr" : "Min" )Ovt"
+                return hrsTxt + unitTxt + "Ovt"
             }()
+        
         case .daysRunning(let num):
             "\(num)DaysRunning"
         }

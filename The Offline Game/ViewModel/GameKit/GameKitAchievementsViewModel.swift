@@ -66,6 +66,7 @@ class GameKitAchievementsViewModel {
         gkAchievement.percentComplete = progress
                 
         // Now report the change
+        print("Reporting \(gkAchievement.percentComplete)% for \(gkAchievement.identifier)")
         GKAchievement.report([gkAchievement]) { [weak self] error in
             print("Reported progress change with error:\n\(String(describing: error))")
             self?.error = error?.localizedDescription
