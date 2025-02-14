@@ -11,10 +11,7 @@ import StoreKit
 
 
 struct HomeView: View {
-    @State private var dummyProgress = 75
-    
-    
-    
+
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.requestReview) private var requestReview
     
@@ -60,16 +57,7 @@ struct HomeView: View {
                 Spacer()
                 
                 Button {
-                    // offlineViewModel.isPickingDuration = true
-                    
-                    
-                    
-                    offlineViewModel.gameKitViewModel?.achievementsViewModel?.reportProgress(Double(dummyProgress), for: .block(hrs: 1))
-                    
-                    dummyProgress += 75
-                    
-                    #warning("TEST")
-                    
+                     offlineViewModel.isPickingDuration = true
                 } label: {
                     Label {
                         Text("Go offline")
