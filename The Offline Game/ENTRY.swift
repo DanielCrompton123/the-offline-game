@@ -57,13 +57,31 @@ fileprivate struct ENTRY: View {
                     .onDisappear(perform: setupGameCenter)
             }
         
-        // CONNECTIONS AND GAME CENTER
+        // CONNECTIONS AND SETUP
             .onAppear {
                 makeConnections()
                 setupGameCenter()
                 setupWishKit()
                 setupFirebase()
             }
+        
+            // When the gameCenter enabled changes to true, this means the setupGameCenter() authentication handler will have worked.
+            // Now we know we are signed in we can load the achievements
+            .onChange(of: gameKitViewModel.gameCenterEnabled, { oldValue, newValue in
+                print("gameKitViewModel.gameCenterEnabled changed")
+                if newValue == true {
+                    Task {
+                        // Load the achievements
+                        await gameKitViewModel.achievementsViewModel?.loadAchievements()
+                        
+                        // Record progress for the 2/7DaysRunning achievements
+                        await OfflineAchievementsProgressManager.shared.handle(
+                            event: .appOpened,
+                            achievementViewModel: gameKitAchievementsViewModel
+                        )
+                    }
+                }
+            })
         
         // SCENE PHASE CHANGED
             .onChange(of: scenePhase) { _, new in
@@ -106,14 +124,11 @@ fileprivate struct ENTRY: View {
     }
     
     
-    private func setupGameCenter()  {
+    private func setupGameCenter() {
         // Only open the access point if we should not present the onboarding screen straight away
         if !shouldShowOnboarding {
             gameKitViewModel.authenticatePlayer()
             gameKitViewModel.openAccessPoint()
-            
-            // Now also load the achievements
-            gameKitViewModel.achievementsViewModel?.loadAchievements()
         }
         
     }

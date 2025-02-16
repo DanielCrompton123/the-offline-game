@@ -149,7 +149,7 @@ struct HomeView: View {
                     } label: {
                         HStack {
                             Image(systemName: "gear")
-                            Text("Settings")
+                            Text("SETTINGS")
                         }
                     }
                     .font(.main14)

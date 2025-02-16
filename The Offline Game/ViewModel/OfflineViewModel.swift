@@ -124,10 +124,12 @@ class OfflineViewModel {
                 .overtimeFinished(state.overtimeElapsedTime ?? .seconds(0)) :
                 .offlineTimeFinished(successful: successfully, state.durationSeconds)
 
-            OfflineAchievementsProgressManager.shared.handle(
-                event: event,
-                achievementViewModel: achievementsViewModel
-            )
+            Task {
+                await OfflineAchievementsProgressManager.shared.handle(
+                    event: event,
+                    achievementViewModel: achievementsViewModel
+                )
+            }
         }
         
         // If we were in overtime, end this

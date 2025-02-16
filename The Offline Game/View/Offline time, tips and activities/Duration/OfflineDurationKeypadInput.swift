@@ -97,7 +97,13 @@ struct OfflineDurationKeypadInput: View {
                 .foregroundStyle(.ruby)
                 .multilineTextAlignment(.center)
                 .keyboardType(.numberPad)
-                .onSubmit(setDuration)
+                .onSubmit {
+                    if text.wrappedValue.isEmpty {
+                        text.wrappedValue = "0"
+                    }
+                    
+                    setDuration()
+                }
                 .focused(isFocused)
             
             Line(start: .leading, end: .trailing)

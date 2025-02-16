@@ -19,33 +19,24 @@ class GameKitAchievementsViewModel {
     var error: String?
     
     
-    func loadAchievements() {
+    func loadAchievements() async {
         
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            // Load all the in-progress achievements
-            GKAchievement.loadAchievements { achievements, error in
-                
-                DispatchQueue.main.async {
-                                        
-                    // Handle the error
-                    if let error {
-                        print("Error loading achievements: \n\(error)")
-                        self?.error = error.localizedDescription
-                        return
-                    }
-                    
-                    // Now assign the variable
-                    print("\((achievements ?? []).count) achievements loaded")
-                    self?.inProgressAchievements = achievements ?? []
-                    
-                }
+        do {
+            let achievements = try await GKAchievement.loadAchievements()
+            print("\((achievements).count) achievements loaded")
+            
+            await MainActor.run {
+                self.inProgressAchievements = achievements
             }
+        } catch {
+            print("Error loading achievements:\n\(error)")
+            self.error = error.localizedDescription
         }
         
     }
     
     
-    func reportProgress(_ progress: Double, for achievement: OfflineAchievement) {
+    func reportProgress(_ progress: Double, for achievement: OfflineAchievement) async {
         
         // First, check if the achievement is in progress by user (in the inProgressAchievements array).
         // IF SO, set the new progress for it and report the change
@@ -67,28 +58,31 @@ class GameKitAchievementsViewModel {
                 
         // Now report the change
         print("Reporting \(gkAchievement.percentComplete)% for \(gkAchievement.identifier)")
-        GKAchievement.report([gkAchievement]) { [weak self] error in
-            print("Reported progress change with error:\n\(String(describing: error))")
-            self?.error = error?.localizedDescription
+        
+        do {
+            try await GKAchievement.report([gkAchievement])
+        } catch {
+            print("Error reporting achievement: \(error)")
+            self.error = error.localizedDescription
         }
         
     }
     
     
-    func clearAchievements() {
+    func clearAchievements() async {
         // https://developer.apple.com/documentation/gamekit/gkachievement/resetachievements(completionhandler:)
         
         inProgressAchievements = []
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            GKAchievement.resetAchievements { [weak self] error in
-                
-                DispatchQueue.main.async {
-                    print("Reset achievements with error\n \(String(describing: error))")
-                    self?.error = error?.localizedDescription
-                }
-            }
+
+        do {
+            try await GKAchievement.resetAchievements()
+        } catch {
+            print("Reset achievements with error\n \(String(describing: error))")
+            self.error = error.localizedDescription
         }
+        
+        // Clear data that the achievement updaters have
+        OfflineAchievementsProgressManager.shared.resetAchievementProgress()
     }
     
 }

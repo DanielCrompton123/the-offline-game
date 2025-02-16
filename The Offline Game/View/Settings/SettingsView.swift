@@ -106,11 +106,11 @@ struct SettingsView: View {
     
     
     private func clearAchievementsAndStorage() {
-        // Clear achievements
-        gameKitViewModel.achievementsViewModel?.clearAchievements()
         
-        // Clear data that the achievement updaters have
-        OfflineAchievementsProgressManager.shared.resetAchievementProgress()
+        Task {
+            // Clear achievements
+            await gameKitViewModel.achievementsViewModel?.clearAchievements()
+        }
     }
 }
 
