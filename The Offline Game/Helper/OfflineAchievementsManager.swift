@@ -137,9 +137,17 @@ class OfflineAchievementsProgressManager {
                 let blockSecs = Double(hours * 60 * 60)
                 // The user has either FULLY ACHIEVED OR NOT ACHIEVED the block
                 
-                if case let .overtimeFinished(duration) = event,
-                   case let .offlineTimeFinished(_, duration) = event {
-                    
+                let duration: Duration? = {
+                    if case let .offlineTimeFinished(_, duration) = event {
+                        return duration
+                    } else if case let .overtimeFinished(duration) = event {
+                        return duration
+                    }
+                    return nil
+                }()
+                
+                
+                if let duration {
                     return duration.seconds >= blockSecs ? 1.0 : 0.0
                 } else {
                     return 0.0

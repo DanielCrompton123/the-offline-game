@@ -15,6 +15,7 @@ class GameKitViewModel: NSObject {
     var gameCenterEnabled = false
     var offlineViewModel: OfflineViewModel?
     var achievementsViewModel: GameKitAchievementsViewModel?
+    var leaderboardViewModel: GameKitLeaderboardViewModel?
     
     private var presentingGKViewController: GKGameCenterViewController?
     private var oldRootVCPresentationController: UIViewController?

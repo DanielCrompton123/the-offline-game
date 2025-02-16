@@ -41,6 +41,7 @@ fileprivate struct ENTRY: View {
 
     @State private var gameKitViewModel = GameKitViewModel()
     @State private var gameKitAchievementsViewModel = GameKitAchievementsViewModel()
+    @State private var gameKitLeaderboardViewModel = GameKitLeaderboardViewModel()
     
     // Store a unique user ID
     @AppStorage(K.userDefaultsUserIdKey) private var userId = UUID().uuidString
@@ -80,6 +81,11 @@ fileprivate struct ENTRY: View {
                             achievementViewModel: gameKitAchievementsViewModel
                         )
                     }
+                    
+                    // While the other task is running, do ANOTHER TASK at the same time, that loads the leaderboards
+                    Task {
+                        await gameKitLeaderboardViewModel.loadLeaderboards()
+                    }
                 }
             })
         
@@ -105,10 +111,15 @@ fileprivate struct ENTRY: View {
         offlineViewModel.liveActivityViewModel = liveActivityViewModel
         offlineViewModel.offlineCountViewModel = offlineCountViewModel
         appDelegate.offlineViewModel = offlineViewModel
+        
+        // GameKit VMs
         gameKitViewModel.offlineViewModel = offlineViewModel
         gameKitViewModel.achievementsViewModel = gameKitAchievementsViewModel
+        gameKitViewModel.leaderboardViewModel = gameKitLeaderboardViewModel
+        gameKitLeaderboardViewModel.gameKitViewModel = gameKitViewModel
         offlineViewModel.gameKitViewModel = gameKitViewModel
         
+        // Tracker
         OfflineTracker.shared.offlineViewModel = offlineViewModel
         OfflineTracker.shared.appDelegate = appDelegate
     }

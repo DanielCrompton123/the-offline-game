@@ -118,17 +118,25 @@ class OfflineViewModel {
         
         // Before ending the overtime, report the event
         // Now handle achievements by delegating responsibility to the offline achievements view model
+        
+        let event: GameEvent = state.isInOvertime ?
+            .overtimeFinished(state.overtimeElapsedTime ?? .seconds(0)) :
+            .offlineTimeFinished(successful: successfully, state.durationSeconds)
+        
         if let achievementsViewModel = gameKitViewModel?.achievementsViewModel {
-            
-            let event: GameEvent = state.isInOvertime ?
-                .overtimeFinished(state.overtimeElapsedTime ?? .seconds(0)) :
-                .offlineTimeFinished(successful: successfully, state.durationSeconds)
-
             Task {
                 await OfflineAchievementsProgressManager.shared.handle(
                     event: event,
                     achievementViewModel: achievementsViewModel
                 )
+            }
+        }
+        
+        // Now handle the event in thre leaderboard view model.
+        // This means adding their offline time to the leaderboard
+        if let leaderboardViewModel = gameKitViewModel?.leaderboardViewModel {
+            Task {
+                await leaderboardViewModel.handle(event)
             }
         }
         
