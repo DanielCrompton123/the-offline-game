@@ -42,14 +42,8 @@ class GameKitLeaderboardViewModel {
     
     func handle(_ event: GameEvent) async {
         
-        guard let duration = {
-            if case let .offlineTimeFinished(_, d) = event {
-                return d
-            } else if case let .overtimeFinished(d) = event {
-                return d
-            }
-            return nil
-        }() else {
+        guard let duration = event.duration else {
+            print("Nothing to report to leaderboard for \(event)")
             return
         }
         
@@ -61,6 +55,9 @@ class GameKitLeaderboardViewModel {
                 context: 0,
                 player: GKLocalPlayer.local
             )
+            
+            
+            #warning("Now get the number of points for the achievements and submit these for the achievementScores leaderboard")
             
         } catch {
             self.error = error.localizedDescription

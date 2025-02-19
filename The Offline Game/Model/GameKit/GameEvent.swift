@@ -17,4 +17,16 @@ enum GameEvent {
     
     // triggers leaderboard update
     case appOpened
+    
+    
+    // Store the duration
+    var duration: Duration? {
+        switch self {
+        case .offlineTimeFinished(let successful, let duration):
+            duration
+        case .overtimeFinished(let duration):
+            duration
+        default: nil
+        }
+    }
 }

@@ -29,17 +29,32 @@ class OfflineAchievementsProgressManager {
     // Returns a filtered list of achievements depending on an event that occurred
     func getAchievements(for event: GameEvent) -> [OfflineAchievement] {
         
-        return switch event {
+        switch event {
             
         case .offlineTimeFinished: [
             .periods(num: 5), .periods(num: 10), .periods(num: 50),
             
             .total(hrs: 1), .total(hrs: 2), .total(hrs: 5), .total(hrs: 10), .total(hrs: 15), .total(hrs: 20), .total(hrs: 50), .total(hrs: 100),
             
-            .block(hrs: 1), .block(hrs: 2), .block(hrs: 5), .block(hrs: 10), .block(hrs: 15), .block(hrs: 20), .block(hrs: 24), .block(hrs: 36),
+            // For the BLOCK ACHIEVEMENTS make sure they are filtered at this stage to ensure that only 1 achievement is given.
+            // for 10 hrs offline, they get 10 hrs achievement, not 1, 2, 5, and 10.
+            // for 19 hrs offline they only get 15 hrs achievement
+            {
+                if let duration = event.duration {
+                    let blockDurations: [Int] = [1, 2, 5, 10, 15, 20, 24, 36]
+                    
+                    let hrs = Int(duration.seconds / 60.0 / 60.0)
+                    if let blockDuration = blockDurations.largestBelowOrEqual(to: hrs) {
+                        
+                        return .block(hrs: blockDuration)
+                    }
+                }
+                
+                return nil
+            }(),
             
             .firstMins(mins: 10), .firstMins(mins: 30)
-        ]
+        ].compactMap { $0 }
             
         case .overtimeFinished: [
             .overtime(mins: 30), .overtime(mins: 2 * 60), .overtime(mins: 5 * 60),
@@ -137,17 +152,7 @@ class OfflineAchievementsProgressManager {
                 let blockSecs = Double(hours * 60 * 60)
                 // The user has either FULLY ACHIEVED OR NOT ACHIEVED the block
                 
-                let duration: Duration? = {
-                    if case let .offlineTimeFinished(_, duration) = event {
-                        return duration
-                    } else if case let .overtimeFinished(duration) = event {
-                        return duration
-                    }
-                    return nil
-                }()
-                
-                
-                if let duration {
+                if let duration = event.duration {
                     return duration.seconds >= blockSecs ? 1.0 : 0.0
                 } else {
                     return 0.0
