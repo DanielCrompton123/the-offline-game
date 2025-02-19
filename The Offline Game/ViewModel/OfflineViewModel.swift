@@ -132,7 +132,7 @@ class OfflineViewModel {
             }
         }
         
-        // Now handle the event in thre leaderboard view model.
+        // Now handle the event in the leaderboard view model.
         // This means adding their offline time to the leaderboard
         if let leaderboardViewModel = gameKitViewModel?.leaderboardViewModel {
             Task {
