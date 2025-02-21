@@ -61,6 +61,7 @@ fileprivate struct ENTRY: View {
         // CONNECTIONS AND SETUP
             .onAppear {
                 makeConnections()
+                
                 setupGameCenter()
                 setupWishKit()
                 setupFirebase()
@@ -69,7 +70,7 @@ fileprivate struct ENTRY: View {
             // When the gameCenter enabled changes to true, this means the setupGameCenter() authentication handler will have worked.
             // Now we know we are signed in we can load the achievements
             .onChange(of: gameKitViewModel.gameCenterEnabled, { oldValue, newValue in
-                print("gameKitViewModel.gameCenterEnabled changed")
+
                 if newValue == true {
                     Task {
                         // Load the achievements
@@ -85,6 +86,7 @@ fileprivate struct ENTRY: View {
                     // While the other task is running, do ANOTHER TASK at the same time, that loads the leaderboards
                     Task {
                         await gameKitLeaderboardViewModel.loadLeaderboards()
+                        // That also loads the scores
                     }
                 }
             })
@@ -126,12 +128,10 @@ fileprivate struct ENTRY: View {
     
     
     private func setupFirebase() {
-        
         FirebaseApp.configure()
         
         offlineCountViewModel.loadDatabase()
         offlineCountViewModel.setupDatabaseObserver()
-
     }
     
     

@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-let IS_DEBUG = true
+let IS_DEBUG = false
 
 
 struct DEBUG: View {
@@ -26,9 +26,9 @@ struct DEBUG: View {
                 Task {
                     score += 10
                     
-                    Task {
-                        await gkVM.leaderboardViewModel?.handle(.offlineTimeFinished(successful: true, .seconds(score)))
-                    }
+//                    Task {
+//                        await gkVM.leaderboardViewModel?.handle(.offlineTimeFinished(successful: true, .seconds(score)))
+//                    }
                     
                 }
             }

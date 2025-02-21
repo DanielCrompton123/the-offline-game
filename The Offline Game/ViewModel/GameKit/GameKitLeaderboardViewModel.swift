@@ -12,58 +12,94 @@ import GameKit
 class GameKitLeaderboardViewModel {
     weak var gameKitViewModel: GameKitViewModel?
     
-    static private let achievementScoreLeaderboardID = "achievementsScore"
     static private let offlineTimeLeaderboardID = "offlineTime"
+    private var offlineTimeLeaderboard: GKLeaderboard?
     
-    private var leaderboards: [GKLeaderboard] = []
-    private var achievementScoreLeaderboard: GKLeaderboard? {
-        leaderboards.first { $0.baseLeaderboardID == Self.achievementScoreLeaderboardID }
-    }
-    private var offlineTimeLeaderboard: GKLeaderboard? {
-        leaderboards.first { $0.baseLeaderboardID == Self.offlineTimeLeaderboardID }
-    }
-    
+    private var offlineTimeLeaderboardScore: Int?
     
     var error: String?
     
     
     func loadLeaderboards() async {
-        print("Loading leaderboards")
-        
         do {
-            self.leaderboards = try await GKLeaderboard.loadLeaderboards(IDs: [Self.achievementScoreLeaderboardID, Self.offlineTimeLeaderboardID])
+            let leaderboards = try await GKLeaderboard.loadLeaderboards(IDs: [Self.offlineTimeLeaderboardID])
+            
+            offlineTimeLeaderboard = leaderboards.first {
+                $0.baseLeaderboardID == Self.offlineTimeLeaderboardID
+            }
+            
+            await loadScores()
             
         } catch {
             self.error = error.localizedDescription
             print("Error loading leaderboards: \(error)")
         }
     }
-    
-    
-    func handle(_ event: GameEvent) async {
-        
-        guard let duration = event.duration else {
-            print("Nothing to report to leaderboard for \(event)")
-            return
-        }
-        
+
+    // Helper function to load the scores for all the loaded leaderboards
+    private func loadScores() async {
         do {
-        
-            // When the offline time/overtime finishes, we should submit their offline duration to the duration leaderboard:
-            try await offlineTimeLeaderboard?.submitScore(
-                Int(duration.components.seconds),
+            if let offlineTimeLeaderboard {
+                
+                let entry = try await offlineTimeLeaderboard.loadEntries(
+                    for: [GKLocalPlayer.local],
+                    timeScope: .week
+                )
+                // Entry: (GKLeaderboard.Entry?, [GKLeaderboard.Entry])
+                // 0 = Entry for local player
+                // 1 = Entries for other players
+                
+                self.offlineTimeLeaderboardScore = entry.0?.score
+                
+            } else {
+                print("Loading score for offlineTimeLeaderboard but it's nil")
+            }
+            
+        } catch {
+            print("Failed to loead score for \(Self.offlineTimeLeaderboardID): \(error)")
+            self.error = error.localizedDescription
+        }
+    }
+    
+    
+    // Update the offline-time leaderboard score
+    func updateOfflineTimeLeaderboardScore(event: GameEvent) async {
+        do {
+            
+            // Get the duration we went offline (which is either the offline OR overtime time)
+            guard let duration = event.duration else {
+                print("Event has no duration, so no score can be added to GK")
+                return
+            }
+            
+            // Make sure we have a score value
+            guard offlineTimeLeaderboardScore != nil else {
+                print("Could not update GK score -- has not yet been loaded")
+                return
+            }
+            
+            // Make sure we have a leaderboard
+            guard let offlineTimeLeaderboard else {
+                print("Trying to submit score to offlineTimeLeaderboard but the leaderboard was not loaded")
+                return
+            }
+            
+            // Add the score to the LOCAL score property AND submit to GK
+            
+            offlineTimeLeaderboardScore = offlineTimeLeaderboardScore! + Int(duration.components.seconds)
+            // FORCE UNWRAP -- we just made sure it's not nil
+            
+            try await offlineTimeLeaderboard.submitScore(
+                offlineTimeLeaderboardScore!,
+                // ^^^ FORCE UNWRAP -- we just made sure it's not nil
                 context: 0,
                 player: GKLocalPlayer.local
             )
             
-            
-            #warning("Now get the number of points for the achievements and submit these for the achievementScores leaderboard")
-            
         } catch {
+            print("Error updating GK score: \(error)")
             self.error = error.localizedDescription
-            print("Could not submit score to leaderboard: \(error)")
         }
-                
     }
     
     

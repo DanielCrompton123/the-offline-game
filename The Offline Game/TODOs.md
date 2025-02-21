@@ -2,10 +2,7 @@
 
 ## Current release
 
-- Complete logic for the achievements.
-- Add leaderboard progress for points and offline elapsed time
 - Make failure more friendly
-- **Add an offline leaderboard, and game center objectives**
 - Create a better offline time gauge
 - *Fix the lock screen live activity*
 - Add offline reminder notifications to configure in settings
@@ -14,6 +11,7 @@
 - Support landscape mode
 - Add offline rules screen
 - Encourage users to tell friends when they go offline
+- Fix issue with entering duration text -- empty string allowed
 
 
 ## Other releases
@@ -41,3 +39,6 @@
 - Start overtime period automatically after offline time ends + 1 min when the phone was left off. Account for this minute
 - Create a better offline duration slider
 - Add WishKit
+- Complete logic for the achievements.
+- Add an offline leaderboard, and game center objectives
+- Add leaderboard progress for points and offline elapsed time
