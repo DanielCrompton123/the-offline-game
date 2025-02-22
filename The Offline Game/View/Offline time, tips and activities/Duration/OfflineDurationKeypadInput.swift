@@ -67,17 +67,9 @@ struct OfflineDurationKeypadInput: View {
                 Spacer()
 
                 // DONE BUTTON
-                Button {
-                    setDuration()
-                    
-                    // Also dismiss the text fields (all of them)
-                    secsIsFocused = false
-                    minsIsFocused = false
-                    hrsIsFocused = false
-                } label: {
-                    Label("Done", systemImage: "checkmark.circle.fill")
-                        .labelStyle(.titleAndIcon)
-                }
+                Button("Done",
+                       systemImage: "checkmark.circle.fill",
+                       action: endEditing)
             }
 
         }
@@ -97,13 +89,7 @@ struct OfflineDurationKeypadInput: View {
                 .foregroundStyle(.ruby)
                 .multilineTextAlignment(.center)
                 .keyboardType(.numberPad)
-                .onSubmit {
-                    if text.wrappedValue.isEmpty {
-                        text.wrappedValue = "0"
-                    }
-                    
-                    setDuration()
-                }
+                .onSubmit(setDuration)
                 .focused(isFocused)
             
             Line(start: .leading, end: .trailing)
@@ -136,6 +122,21 @@ struct OfflineDurationKeypadInput: View {
         } else {
             print("Could not create text from hrs/mins/secsText")
         }
+    }
+    
+    
+    private func endEditing() {
+        setDuration()
+        
+        // Also dismiss the text fields (all of them)
+        secsIsFocused = false
+        minsIsFocused = false
+        hrsIsFocused = false
+        
+        // Now reset empty strings to "0"
+        if secsText.isEmpty { secsText = "0" }
+        if minsText.isEmpty { minsText = "0" }
+        if hrsText.isEmpty { hrsText = "0" }
     }
 }
 

@@ -2,16 +2,13 @@
 
 ## Current release
 
-- Make failure more friendly
-- Create a better offline time gauge
-- *Fix the lock screen live activity*
+- **Fix the lock screen live activity**
+- UI:
+    - Make failure more friendly
+    - Create a better offline time gauge
 - Add offline reminder notifications to configure in settings
 - Add a widget to the home screen to go offline: Offline slider, common offline times, and your next achievement")
-- After going offline twise ask user to rate the app -- StoreKit
-- Support landscape mode
-- Add offline rules screen
-- Encourage users to tell friends when they go offline
-- Fix issue with entering duration text -- empty string allowed
+- Encourage users to tell friends when they go offline -- Tips view?
 
 
 ## Other releases
@@ -30,15 +27,3 @@
 - Extend grace period for "valid" users (who have enough points)
 - Make congrsts strings and other UI strings random from a list.
 - Convert to using REDUX?
-
-# Done
-- Use the Duration API to format minutes/seconds
-- Fix notifications for Josh's phone
-- Add roboto light font for small text
-- Add attributions for fonts and lottie animations
-- Start overtime period automatically after offline time ends + 1 min when the phone was left off. Account for this minute
-- Create a better offline duration slider
-- Add WishKit
-- Complete logic for the achievements.
-- Add an offline leaderboard, and game center objectives
-- Add leaderboard progress for points and offline elapsed time
