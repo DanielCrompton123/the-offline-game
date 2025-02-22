@@ -48,6 +48,12 @@ struct SettingsView: View {
                         } label: {
                             Label("Request a feature", systemImage: "bubbles.and.sparkles")
                         }
+                        
+                        NavigationLink {
+                            OfflineRules()
+                        } label: {
+                            Label("See rules", systemImage: "list.bullet.rectangle")
+                        }
                     }
                     .frame(height: 50)
                 }

@@ -17,6 +17,7 @@ struct OfflineView: View {
     
     @State private var showActivitiesView = false
     @State private var goOnlineConfirmationShows = false
+    @State private var rulesScreenShows = false
     
     var body: some View {
         ZStack {
@@ -97,6 +98,12 @@ struct OfflineView: View {
                     goOnlineConfirmationShows = true
                 }
                 .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
+                
+                Button("SEE RULES", systemImage: "list.bullet.rectangle.fill") {
+                    rulesScreenShows = true
+                }
+                .tint(.white)
+                .buttonStyle(RedButtonStyle(horizontalContentMode: .fit))
 
             }
             
@@ -129,6 +136,10 @@ struct OfflineView: View {
                 goOnlineConfirmationShows = false
                     
             }
+        }
+        .sheet(isPresented: $rulesScreenShows) {
+            OfflineRules()
+                .presentationDragIndicator(.visible)
         }
     }
 
