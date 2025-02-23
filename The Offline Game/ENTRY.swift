@@ -128,10 +128,12 @@ fileprivate struct ENTRY: View {
     
     
     private func setupFirebase() {
+        
         FirebaseApp.configure()
         
         offlineCountViewModel.loadDatabase()
         offlineCountViewModel.setupDatabaseObserver()
+
     }
     
     
@@ -147,5 +149,6 @@ fileprivate struct ENTRY: View {
     
     private func setupWishKit() {
         WishKit.configure(with: K.wishKitAPIKey)
+        
     }
 }

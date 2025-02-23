@@ -34,9 +34,7 @@ class GameKitViewModel: NSObject {
             GKLocalPlayer.local.authenticateHandler = { viewController, error in
                 
                 DispatchQueue.main.async {
-                    
-                    print("authenticateHandler called")
-                    
+                                        
                     // Here, error and view controller are optionals.
                     // If the user needs to do something else we present the VC. Once they did it, this calls again.
                     // Otherwise check if an error exists.
