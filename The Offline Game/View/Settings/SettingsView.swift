@@ -118,17 +118,7 @@ struct SettingsView: View {
             await gameKitViewModel.achievementsViewModel?.clearAchievements()
         }
     }
-    
-    
-    private func clearAchievementsAndStorage() {
-        // Clear achievements
-        gameKitViewModel.achievementsViewModel?.clearAchievements()
-        
-        // Clear data that the achievement updaters have
-        OfflineTimeAchievementUpdater.shared.resetAllProgress()
-        OfflinePeriodsUpdater.shared.resetAllProgress()
-        LeaderboardUpdater.shared.resetAllProgress()
-    }
+
 }
 
 #Preview {

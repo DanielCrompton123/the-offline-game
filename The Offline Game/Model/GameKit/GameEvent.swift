@@ -22,7 +22,7 @@ enum GameEvent {
     // Store the duration
     var duration: Duration? {
         switch self {
-        case .offlineTimeFinished(let successful, let duration):
+        case .offlineTimeFinished(_, let duration):
             duration
         case .overtimeFinished(let duration):
             duration
