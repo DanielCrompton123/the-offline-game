@@ -35,7 +35,7 @@ class OfflineOvertimeHelper {
         cancelAutomaticOvertime()
         
         viewModel.userShouldBeCongratulated = false
-        viewModel.liveActivityViewModel?.startActivity(overtime: true)
+        viewModel.liveActivityViewModel?.startActivity()
         
     }
     

@@ -25,11 +25,6 @@ struct LiveActivityTimerAttributes: ActivityAttributes {
             return startDate.addingTimeInterval(duration.seconds)
         }
         
-        var offlineDurationProgress: Double? {
-            guard let endDate, let duration else { return nil }
-            return endDate.timeIntervalSinceNow / duration.seconds
-        }
-        
         // Other properties that can be accessed
         var peopleOffline: Int
         

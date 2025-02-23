@@ -56,6 +56,7 @@ struct OfflineDurationKeypadInput: View {
             
         }
         .onAppear(perform: loadStrings)
+        .onDisappear(perform: endEditing)
         .toolbar {
             
             // Put the DONE button for the text fields here instead of on the text field because on the text field makes it appear once for each text field
@@ -89,7 +90,10 @@ struct OfflineDurationKeypadInput: View {
                 .foregroundStyle(.ruby)
                 .multilineTextAlignment(.center)
                 .keyboardType(.numberPad)
-                .onSubmit(setDuration)
+                .onSubmit {
+                    validateText()
+                    setDuration()
+                }
                 .focused(isFocused)
             
             Line(start: .leading, end: .trailing)
@@ -115,8 +119,13 @@ struct OfflineDurationKeypadInput: View {
     
     
     private func setDuration() {
+        // Now reset empty strings to "0"
+        validateText()
         
-        if let totalSeconds = Duration.fromStrings(hour: hrsText, minute: minsText, second: secsText) {
+        if let totalSeconds = Duration.fromStrings(
+            hour: hrsText,
+            minute: minsText,
+            second: secsText) {
             
             offlineViewModel.state.durationSeconds = totalSeconds
         } else {
@@ -126,13 +135,18 @@ struct OfflineDurationKeypadInput: View {
     
     
     private func endEditing() {
+        // DOn't need to validate as this happens in the setDuration.
+        
         setDuration()
         
         // Also dismiss the text fields (all of them)
         secsIsFocused = false
         minsIsFocused = false
         hrsIsFocused = false
-        
+    }
+    
+    
+    private func validateText() {
         // Now reset empty strings to "0"
         if secsText.isEmpty { secsText = "0" }
         if minsText.isEmpty { minsText = "0" }

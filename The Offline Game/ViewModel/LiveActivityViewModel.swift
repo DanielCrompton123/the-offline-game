@@ -17,8 +17,17 @@ class LiveActivityViewModel {
     weak var offlineCountViewModel: OfflineCountViewModel?
     
 
-    func startActivity(overtime: Bool) {
-        guard let offlineViewModel, let startDate = offlineViewModel.state.startDate else { return }
+    func startActivity() {
+        
+        guard let offlineViewModel else {
+            print("LiveActivityViewModel.offlineViewModel is nil")
+            return
+        }
+        
+        guard let startDate = offlineViewModel.state.startDate else {
+            print("starting live activity... offline start date is nil")
+            return
+        }
         
         // Create attributes
         let attributes = LiveActivityTimerAttributes()
@@ -38,7 +47,7 @@ class LiveActivityViewModel {
                 attributes: attributes,
                 content: content,
                 pushType: nil // NEED to pass nil here. Defaut is to allow push notifications to update the live activity
-            )
+            ); print("Requested activity")
         } catch {
             print("Error requesting live activity: \(error)")
         }

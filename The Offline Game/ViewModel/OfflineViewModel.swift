@@ -43,7 +43,12 @@ class OfflineViewModel {
         count(increasing: true)
         
         // Now add the live activity
-        liveActivityViewModel?.startActivity(overtime: false)
+        if let liveActivityViewModel {
+            print("📣 Starting live activity")
+            liveActivityViewModel.startActivity()
+        } else {
+            print("📣 Live activity view model in offline view model was nil!")
+        }
         
         scheduleOfflineTimer()
         
@@ -91,6 +96,8 @@ class OfflineViewModel {
                 self?.endOfflineTime(successfully: true)
             }
         }
+        
+        print("Scheduled offline end timer")
     }
     
     
@@ -109,7 +116,12 @@ class OfflineViewModel {
         
         count(increasing: false)
         
-        liveActivityViewModel?.stopActivity()
+        if let liveActivityViewModel {
+            print("📣 Ending live activity")
+            liveActivityViewModel.stopActivity()
+        } else {
+            print("📣 Live activity view model in offline view model was nil!")
+        }
         
         // Now revoke any success notifications if we need to
         OfflineNotification.congratulatoryNotification(endDate: .now, formattedDuration: "").revoke()

@@ -19,6 +19,8 @@ struct SettingsView: View {
     
     @AppStorage("numOffPds") private var numOfflinePeriods: Int = 0
     
+    @State private var achievementsClearToastShows = false
+    
     
     var body: some View {
         NavigationStack {
@@ -101,11 +103,12 @@ struct SettingsView: View {
                     clearAchievementsAndStorage()
                 }
                 
-                #warning("Add toast view when the achievements were reset")
-                
                 Button("No, cancel", role: .cancel) {
                     clearAchievementsConfirmation = false
                 }
+            }
+            .toast(isPresented: $achievementsClearToastShows) {
+                Label("Achievements have been cleared", systemImage: "exclamationmark.shield.fill")
             }
         }
     }
@@ -116,6 +119,8 @@ struct SettingsView: View {
         Task {
             // Clear achievements
             await gameKitViewModel.achievementsViewModel?.clearAchievements()
+            
+            // Now show a toast
         }
     }
 
