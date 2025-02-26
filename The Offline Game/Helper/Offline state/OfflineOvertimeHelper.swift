@@ -54,6 +54,14 @@ class OfflineOvertimeHelper {
         // Automatically start the overtime
         // if the app is currently open in the foreground, and the success sheet is visible, after 5 seconds we should start the overtime automatically.
         // If the app is in the background (device turned off) then we start it right now.
+        // However if the app is in the background BUT the phone is turned ON then don't start the activity. Use the app delegate for this?
+        
+        #warning("If the app is in the background BUT the phone is turned ON then don't start the activity automatically.")
+        
+        guard !UIApplication.shared.isProtectedDataAvailable else {
+            print("Could not automatically start overtime as protected data is still available")
+            return
+        }
         
         // Schedule a timer to time 10 seconds (and use a background task is the device is in the background)
         if UIApplication.shared.applicationState == .background {

@@ -16,13 +16,20 @@ struct LockScreenLiveActivityView : View {
     
     var body: some View {
         ZStack {
-            LinearGradient(colors: [.ruby, .accent],
-                           startPoint: .topLeading,
-                           endPoint: .bottomTrailing)
+            LinearGradient(
+                colors: [
+                    .ruby,
+                    .accent
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
             .ignoresSafeArea()
             
             HStack {
                 Image(.offlineIcon)
+                    .resizable()
+                    .scaledToFit()
                     .padding()
                 
                 VStack {
@@ -32,8 +39,8 @@ struct LockScreenLiveActivityView : View {
                             .bold()
                         
                         let timeElapsed = context.state.startDate.distance(to: Date())
-                        let offlineTimeElapsedString = Duration.seconds(timeElapsed).offlineDisplayFormat()
-                        
+                        let offlineTimeElapsedString = Duration.seconds(timeElapsed).offlineDisplayFormat(width: .abbreviated)
+
                         Text("You've been offline for \(offlineTimeElapsedString), keep going!")
                             .bold()
                         
@@ -44,6 +51,8 @@ struct LockScreenLiveActivityView : View {
                                     Text("Offline...")
                                 } icon: {
                                     Image(.offlinePhone)
+                                        .resizable()
+                                        .scaledToFit()
                                 }
 
                             }
@@ -64,5 +73,12 @@ struct LockScreenLiveActivityView : View {
             .padding(.horizontal)
             
         }
+        .activityBackgroundTint(.accent)
     }
 }
+
+#Preview("Dynamic island extended", as: .content, using: LiveActivityTimerAttributes(), widget: {
+    OfflineWidget()
+}, contentStates: {
+    LiveActivityTimerAttributes.ContentState.preview
+})

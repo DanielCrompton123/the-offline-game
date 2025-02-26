@@ -47,7 +47,9 @@ class LiveActivityViewModel {
                 attributes: attributes,
                 content: content,
                 pushType: nil // NEED to pass nil here. Defaut is to allow push notifications to update the live activity
-            ); print("Requested activity")
+            )
+            
+            print("📣 Requested activity \(activity!.id)")
         } catch {
             print("Error requesting live activity: \(error)")
         }

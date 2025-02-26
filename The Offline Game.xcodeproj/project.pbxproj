@@ -7,283 +7,265 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		650682932D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */; };
-		6506829A2D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */; };
-		650682A92D21E4B4006EC566 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 650682A82D21E4B4006EC566 /* ActivityKit.framework */; };
-		650682E52D22CF11006EC566 /* Constants (K).swift in Sources */ = {isa = PBXBuildFile; fileRef = 650682E42D22CF11006EC566 /* Constants (K).swift */; };
-		650682E62D22CF11006EC566 /* Constants (K).swift in Sources */ = {isa = PBXBuildFile; fileRef = 650682E42D22CF11006EC566 /* Constants (K).swift */; };
-		6510945B2D03954700F0853C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6510945A2D03954700F0853C /* SwiftUI.framework */; };
-		651094662D03954A00F0853C /* OfflineWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		651BB9122D2C7199005BE4E9 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 651BB9112D2C7199005BE4E9 /* FirebaseDatabase */; };
-		651BB9142D2C7268005BE4E9 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 651BB9132D2C7268005BE4E9 /* FirebaseDatabase */; };
-		65368A852D52364E00E2B43C /* ConnectivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65368A842D52364E00E2B43C /* ConnectivityKit */; };
-		65AFF78E2D31AB0A00EE4508 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 65AFF78D2D31AB0A00EE4508 /* Lottie */; };
-		65C623502D56B16100C59856 /* WishKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65C6234F2D56B16100C59856 /* WishKit */; };
+		65C4D0CE2D6FBC5A00EC88D5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C4D0CD2D6FBC5A00EC88D5 /* WidgetKit.framework */; };
+		65C4D0D02D6FBC5A00EC88D5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C4D0CF2D6FBC5A00EC88D5 /* SwiftUI.framework */; };
+		65C4D0DB2D6FBC6300EC88D5 /* OfflineWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 65C4D0CB2D6FBC5A00EC88D5 /* OfflineWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		65C4D31C2D6FC06400EC88D5 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 65C4D31B2D6FC06400EC88D5 /* Lottie */; };
+		65C4D31F2D6FC06D00EC88D5 /* WishKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65C4D31E2D6FC06D00EC88D5 /* WishKit */; };
+		65C4D3222D6FC07800EC88D5 /* ConnectivityKit in Frameworks */ = {isa = PBXBuildFile; productRef = 65C4D3212D6FC07800EC88D5 /* ConnectivityKit */; };
+		65C4D3252D6FC0ED00EC88D5 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 65C4D3242D6FC0ED00EC88D5 /* FirebaseDatabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		651094642D03954A00F0853C /* PBXContainerItemProxy */ = {
+		65C4D0D92D6FBC6300EC88D5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 65BD0C2E2CFBBB35004031F5 /* Project object */;
+			containerPortal = 65C4D0AE2D6FBC2E00EC88D5 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 651094552D03954700F0853C;
+			remoteGlobalIDString = 65C4D0CA2D6FBC5A00EC88D5;
 			remoteInfo = OfflineWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		651094672D03954A00F0853C /* Embed Foundation Extensions */ = {
+		65C4D0E02D6FBC6300EC88D5 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				651094662D03954A00F0853C /* OfflineWidgetExtension.appex in Embed Foundation Extensions */,
+				65C4D0DB2D6FBC6300EC88D5 /* OfflineWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityTimerAttributes.swift; sourceTree = "<group>"; };
-		650682A82D21E4B4006EC566 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
-		650682E42D22CF11006EC566 /* Constants (K).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants (K).swift"; sourceTree = "<group>"; };
-		651094562D03954700F0853C /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		651094582D03954700F0853C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
-		6510945A2D03954700F0853C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		65BD0C362CFBBB35004031F5 /* The Offline Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Offline Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		65C4D0B62D6FBC2E00EC88D5 /* The Offline Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Offline Game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		65C4D0CB2D6FBC5A00EC88D5 /* OfflineWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OfflineWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		65C4D0CD2D6FBC5A00EC88D5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		65C4D0CF2D6FBC5A00EC88D5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		651C4E582D2C59160007CA0B /* Exceptions for "Helper" folder in "OfflineWidgetExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Extension/Duration extension.swift",
-			);
-			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
-		};
-		654CD5F82D29B90200530632 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */ = {
+		65C4D0EC2D6FBD1600EC88D5 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
+			target = 65C4D0CA2D6FBC5A00EC88D5 /* OfflineWidgetExtension */;
+		};
+		65C4D1092D6FBD5200EC88D5 /* Exceptions for "Shared" folder in "The Offline Game" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Constants (K).swift",
+				"Fonts/Font extension.swift",
+				Fonts/Maquire.ttf,
+				"Fonts/RobotoCondensed-Bold.ttf",
+				"Helper/Extension/Duration extension.swift",
+				LiveActivityTimerAttributes.swift,
+				Model/Age.swift,
+				Model/AttributionModel.swift,
+			);
+			target = 65C4D0B52D6FBC2E00EC88D5 /* The Offline Game */;
+		};
+		65C4D1A72D6FBEB200EC88D5 /* Exceptions for "The Offline Game" folder in "The Offline Game" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TODOs.md,
+			);
+			target = 65C4D0B52D6FBC2E00EC88D5 /* The Offline Game */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		650682ED2D231943006EC566 /* Helper */ = {
+		65C4D0B82D6FBC2E00EC88D5 /* The Offline Game */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				651C4E582D2C59160007CA0B /* Exceptions for "Helper" folder in "OfflineWidgetExtension" target */,
+				65C4D1A72D6FBEB200EC88D5 /* Exceptions for "The Offline Game" folder in "The Offline Game" target */,
 			);
-			path = Helper;
+			path = "The Offline Game";
 			sourceTree = "<group>";
 		};
-		650682F42D231948006EC566 /* Model */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Model;
-			sourceTree = "<group>";
-		};
-		6510945C2D03954700F0853C /* OfflineWidget */ = {
+		65C4D0D12D6FBC5A00EC88D5 /* OfflineWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				654CD5F82D29B90200530632 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */,
+				65C4D0EC2D6FBD1600EC88D5 /* Exceptions for "OfflineWidget" folder in "OfflineWidgetExtension" target */,
 			);
 			path = OfflineWidget;
 			sourceTree = "<group>";
 		};
-		65704A752D284B4900EC54DB /* Fonts */ = {
+		65C4D0E12D6FBC6E00EC88D5 /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Fonts;
-			sourceTree = "<group>";
-		};
-		65BD0C382CFBBB35004031F5 /* The Offline Game */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "The Offline Game";
+			exceptions = (
+				65C4D1092D6FBD5200EC88D5 /* Exceptions for "Shared" folder in "The Offline Game" target */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		651094532D03954700F0853C /* Frameworks */ = {
+		65C4D0B32D6FBC2E00EC88D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				651BB9142D2C7268005BE4E9 /* FirebaseDatabase in Frameworks */,
-				650682A92D21E4B4006EC566 /* ActivityKit.framework in Frameworks */,
-				6510945B2D03954700F0853C /* SwiftUI.framework in Frameworks */,
+				65C4D31F2D6FC06D00EC88D5 /* WishKit in Frameworks */,
+				65C4D3222D6FC07800EC88D5 /* ConnectivityKit in Frameworks */,
+				65C4D3252D6FC0ED00EC88D5 /* FirebaseDatabase in Frameworks */,
+				65C4D31C2D6FC06400EC88D5 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		65BD0C332CFBBB35004031F5 /* Frameworks */ = {
+		65C4D0C82D6FBC5A00EC88D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				651BB9122D2C7199005BE4E9 /* FirebaseDatabase in Frameworks */,
-				65368A852D52364E00E2B43C /* ConnectivityKit in Frameworks */,
-				65C623502D56B16100C59856 /* WishKit in Frameworks */,
-				65AFF78E2D31AB0A00EE4508 /* Lottie in Frameworks */,
+				65C4D0D02D6FBC5A00EC88D5 /* SwiftUI.framework in Frameworks */,
+				65C4D0CE2D6FBC5A00EC88D5 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		650682E12D21E6A0006EC566 /* Shared */ = {
+		65C4D0AD2D6FBC2E00EC88D5 = {
 			isa = PBXGroup;
 			children = (
-				65704A752D284B4900EC54DB /* Fonts */,
-				6506827E2D21E279006EC566 /* LiveActivityTimerAttributes.swift */,
-				650682E42D22CF11006EC566 /* Constants (K).swift */,
-				650682ED2D231943006EC566 /* Helper */,
-				650682F42D231948006EC566 /* Model */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
-		651094572D03954700F0853C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				650682A82D21E4B4006EC566 /* ActivityKit.framework */,
-				651094582D03954700F0853C /* WidgetKit.framework */,
-				6510945A2D03954700F0853C /* SwiftUI.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		65BD0C2D2CFBBB35004031F5 = {
-			isa = PBXGroup;
-			children = (
-				650682E12D21E6A0006EC566 /* Shared */,
-				65BD0C382CFBBB35004031F5 /* The Offline Game */,
-				6510945C2D03954700F0853C /* OfflineWidget */,
-				651094572D03954700F0853C /* Frameworks */,
-				65BD0C372CFBBB35004031F5 /* Products */,
+				65C4D0E12D6FBC6E00EC88D5 /* Shared */,
+				65C4D0B82D6FBC2E00EC88D5 /* The Offline Game */,
+				65C4D0D12D6FBC5A00EC88D5 /* OfflineWidget */,
+				65C4D0CC2D6FBC5A00EC88D5 /* Frameworks */,
+				65C4D0B72D6FBC2E00EC88D5 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		65BD0C372CFBBB35004031F5 /* Products */ = {
+		65C4D0B72D6FBC2E00EC88D5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65BD0C362CFBBB35004031F5 /* The Offline Game.app */,
-				651094562D03954700F0853C /* OfflineWidgetExtension.appex */,
+				65C4D0B62D6FBC2E00EC88D5 /* The Offline Game.app */,
+				65C4D0CB2D6FBC5A00EC88D5 /* OfflineWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		65C4D0CC2D6FBC5A00EC88D5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				65C4D0CD2D6FBC5A00EC88D5 /* WidgetKit.framework */,
+				65C4D0CF2D6FBC5A00EC88D5 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		651094552D03954700F0853C /* OfflineWidgetExtension */ = {
+		65C4D0B52D6FBC2E00EC88D5 /* The Offline Game */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6510946B2D03954A00F0853C /* Build configuration list for PBXNativeTarget "OfflineWidgetExtension" */;
+			buildConfigurationList = 65C4D0C42D6FBC3100EC88D5 /* Build configuration list for PBXNativeTarget "The Offline Game" */;
 			buildPhases = (
-				651094522D03954700F0853C /* Sources */,
-				651094532D03954700F0853C /* Frameworks */,
-				651094542D03954700F0853C /* Resources */,
+				65C4D0B22D6FBC2E00EC88D5 /* Sources */,
+				65C4D0B32D6FBC2E00EC88D5 /* Frameworks */,
+				65C4D0B42D6FBC2E00EC88D5 /* Resources */,
+				65C4D0E02D6FBC6300EC88D5 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				65C4D0DA2D6FBC6300EC88D5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				6510945C2D03954700F0853C /* OfflineWidget */,
-				65704A752D284B4900EC54DB /* Fonts */,
-			);
-			name = OfflineWidgetExtension;
-			packageProductDependencies = (
-				651BB9132D2C7268005BE4E9 /* FirebaseDatabase */,
-			);
-			productName = OfflineWidgetExtension;
-			productReference = 651094562D03954700F0853C /* OfflineWidgetExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
-		65BD0C352CFBBB35004031F5 /* The Offline Game */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 65BD0C442CFBBB38004031F5 /* Build configuration list for PBXNativeTarget "The Offline Game" */;
-			buildPhases = (
-				65BD0C322CFBBB35004031F5 /* Sources */,
-				65BD0C332CFBBB35004031F5 /* Frameworks */,
-				65BD0C342CFBBB35004031F5 /* Resources */,
-				651094672D03954A00F0853C /* Embed Foundation Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				651094652D03954A00F0853C /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				650682ED2D231943006EC566 /* Helper */,
-				650682F42D231948006EC566 /* Model */,
-				65704A752D284B4900EC54DB /* Fonts */,
-				65BD0C382CFBBB35004031F5 /* The Offline Game */,
+				65C4D0B82D6FBC2E00EC88D5 /* The Offline Game */,
 			);
 			name = "The Offline Game";
 			packageProductDependencies = (
-				651BB9112D2C7199005BE4E9 /* FirebaseDatabase */,
-				65AFF78D2D31AB0A00EE4508 /* Lottie */,
-				65368A842D52364E00E2B43C /* ConnectivityKit */,
-				65C6234F2D56B16100C59856 /* WishKit */,
+				65C4D31B2D6FC06400EC88D5 /* Lottie */,
+				65C4D31E2D6FC06D00EC88D5 /* WishKit */,
+				65C4D3212D6FC07800EC88D5 /* ConnectivityKit */,
+				65C4D3242D6FC0ED00EC88D5 /* FirebaseDatabase */,
 			);
 			productName = "The Offline Game";
-			productReference = 65BD0C362CFBBB35004031F5 /* The Offline Game.app */;
+			productReference = 65C4D0B62D6FBC2E00EC88D5 /* The Offline Game.app */;
 			productType = "com.apple.product-type.application";
+		};
+		65C4D0CA2D6FBC5A00EC88D5 /* OfflineWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65C4D0DD2D6FBC6300EC88D5 /* Build configuration list for PBXNativeTarget "OfflineWidgetExtension" */;
+			buildPhases = (
+				65C4D0C72D6FBC5A00EC88D5 /* Sources */,
+				65C4D0C82D6FBC5A00EC88D5 /* Frameworks */,
+				65C4D0C92D6FBC5A00EC88D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				65C4D0D12D6FBC5A00EC88D5 /* OfflineWidget */,
+				65C4D0E12D6FBC6E00EC88D5 /* Shared */,
+			);
+			name = OfflineWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = OfflineWidgetExtension;
+			productReference = 65C4D0CB2D6FBC5A00EC88D5 /* OfflineWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		65BD0C2E2CFBBB35004031F5 /* Project object */ = {
+		65C4D0AE2D6FBC2E00EC88D5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
-					651094552D03954700F0853C = {
+					65C4D0B52D6FBC2E00EC88D5 = {
 						CreatedOnToolsVersion = 16.2;
 					};
-					65BD0C352CFBBB35004031F5 = {
+					65C4D0CA2D6FBC5A00EC88D5 = {
 						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1620;
 					};
 				};
 			};
-			buildConfigurationList = 65BD0C312CFBBB35004031F5 /* Build configuration list for PBXProject "The Offline Game" */;
+			buildConfigurationList = 65C4D0B12D6FBC2E00EC88D5 /* Build configuration list for PBXProject "The Offline Game" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 65BD0C2D2CFBBB35004031F5;
+			mainGroup = 65C4D0AD2D6FBC2E00EC88D5;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				651BB9102D2C7199005BE4E9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				65AFF78C2D31AB0A00EE4508 /* XCRemoteSwiftPackageReference "lottie-ios" */,
-				65368A832D52364E00E2B43C /* XCRemoteSwiftPackageReference "ConnectivityKit" */,
-				65C6234E2D56B16100C59856 /* XCRemoteSwiftPackageReference "wishkit-ios" */,
+				65C4D31A2D6FC06400EC88D5 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				65C4D31D2D6FC06D00EC88D5 /* XCRemoteSwiftPackageReference "wishkit-ios" */,
+				65C4D3202D6FC07800EC88D5 /* XCRemoteSwiftPackageReference "ConnectivityKit" */,
+				65C4D3232D6FC0ED00EC88D5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 65BD0C372CFBBB35004031F5 /* Products */;
+			productRefGroup = 65C4D0B72D6FBC2E00EC88D5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				65BD0C352CFBBB35004031F5 /* The Offline Game */,
-				651094552D03954700F0853C /* OfflineWidgetExtension */,
+				65C4D0B52D6FBC2E00EC88D5 /* The Offline Game */,
+				65C4D0CA2D6FBC5A00EC88D5 /* OfflineWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		651094542D03954700F0853C /* Resources */ = {
+		65C4D0B42D6FBC2E00EC88D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		65BD0C342CFBBB35004031F5 /* Resources */ = {
+		65C4D0C92D6FBC5A00EC88D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -293,96 +275,32 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		651094522D03954700F0853C /* Sources */ = {
+		65C4D0B22D6FBC2E00EC88D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6506829A2D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
-				650682E62D22CF11006EC566 /* Constants (K).swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		65BD0C322CFBBB35004031F5 /* Sources */ = {
+		65C4D0C72D6FBC5A00EC88D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				650682E52D22CF11006EC566 /* Constants (K).swift in Sources */,
-				650682932D21E279006EC566 /* LiveActivityTimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		651094652D03954A00F0853C /* PBXTargetDependency */ = {
+		65C4D0DA2D6FBC6300EC88D5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 651094552D03954700F0853C /* OfflineWidgetExtension */;
-			targetProxy = 651094642D03954A00F0853C /* PBXContainerItemProxy */;
+			target = 65C4D0CA2D6FBC5A00EC88D5 /* OfflineWidgetExtension */;
+			targetProxy = 65C4D0D92D6FBC6300EC88D5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		651094682D03954A00F0853C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JGS842YL6F;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = OfflineWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OfflineWidget;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.antigrav.The-Offline-Game.OfflineWidget";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		651094692D03954A00F0853C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JGS842YL6F;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = OfflineWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = OfflineWidget;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.antigrav.The-Offline-Game.OfflineWidget";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		65BD0C422CFBBB38004031F5 /* Debug */ = {
+		65C4D0C22D6FBC3100EC88D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -434,7 +352,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -445,7 +363,7 @@
 			};
 			name = Debug;
 		};
-		65BD0C432CFBBB38004031F5 /* Release */ = {
+		65C4D0C32D6FBC3100EC88D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -491,7 +409,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -501,13 +419,12 @@
 			};
 			name = Release;
 		};
-		65BD0C452CFBBB38004031F5 /* Debug */ = {
+		65C4D0C52D6FBC3100EC88D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "The Offline Game/The Offline Game.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"The Offline Game/Preview Content\"";
@@ -515,14 +432,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The-Offline-Game-Info.plist";
-				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera so you can take a profile picture.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -530,20 +445,18 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "co.antigrav.The-Offline-Game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		65BD0C462CFBBB38004031F5 /* Release */ = {
+		65C4D0C62D6FBC3100EC88D5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "The Offline Game/The Offline Game.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"The Offline Game/Preview Content\"";
@@ -551,14 +464,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The-Offline-Game-Info.plist";
-				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera so you can take a profile picture.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -566,7 +477,63 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "co.antigrav.The-Offline-Game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		65C4D0DE2D6FBC6300EC88D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JGS842YL6F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OfflineWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OfflineWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.antigrav.The-Offline-Game.OfflineWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		65C4D0DF2D6FBC6300EC88D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JGS842YL6F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OfflineWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OfflineWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.antigrav.The-Offline-Game.OfflineWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -576,29 +543,29 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6510946B2D03954A00F0853C /* Build configuration list for PBXNativeTarget "OfflineWidgetExtension" */ = {
+		65C4D0B12D6FBC2E00EC88D5 /* Build configuration list for PBXProject "The Offline Game" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				651094682D03954A00F0853C /* Debug */,
-				651094692D03954A00F0853C /* Release */,
+				65C4D0C22D6FBC3100EC88D5 /* Debug */,
+				65C4D0C32D6FBC3100EC88D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65BD0C312CFBBB35004031F5 /* Build configuration list for PBXProject "The Offline Game" */ = {
+		65C4D0C42D6FBC3100EC88D5 /* Build configuration list for PBXNativeTarget "The Offline Game" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				65BD0C422CFBBB38004031F5 /* Debug */,
-				65BD0C432CFBBB38004031F5 /* Release */,
+				65C4D0C52D6FBC3100EC88D5 /* Debug */,
+				65C4D0C62D6FBC3100EC88D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65BD0C442CFBBB38004031F5 /* Build configuration list for PBXNativeTarget "The Offline Game" */ = {
+		65C4D0DD2D6FBC6300EC88D5 /* Build configuration list for PBXNativeTarget "OfflineWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				65BD0C452CFBBB38004031F5 /* Debug */,
-				65BD0C462CFBBB38004031F5 /* Release */,
+				65C4D0DE2D6FBC6300EC88D5 /* Debug */,
+				65C4D0DF2D6FBC6300EC88D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -606,23 +573,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		651BB9102D2C7199005BE4E9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.6.0;
-			};
-		};
-		65368A832D52364E00E2B43C /* XCRemoteSwiftPackageReference "ConnectivityKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AsyncSwiftKits/ConnectivityKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.0;
-			};
-		};
-		65AFF78C2D31AB0A00EE4508 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+		65C4D31A2D6FC06400EC88D5 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -630,43 +581,54 @@
 				minimumVersion = 4.5.1;
 			};
 		};
-		65C6234E2D56B16100C59856 /* XCRemoteSwiftPackageReference "wishkit-ios" */ = {
+		65C4D31D2D6FC06D00EC88D5 /* XCRemoteSwiftPackageReference "wishkit-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/wishkit/wishkit-ios.git";
+			repositoryURL = "https://github.com/wishkit/wishkit-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 4.7.0;
 			};
 		};
+		65C4D3202D6FC07800EC88D5 /* XCRemoteSwiftPackageReference "ConnectivityKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AsyncSwiftKits/ConnectivityKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+		65C4D3232D6FC0ED00EC88D5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		651BB9112D2C7199005BE4E9 /* FirebaseDatabase */ = {
+		65C4D31B2D6FC06400EC88D5 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 651BB9102D2C7199005BE4E9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
-		};
-		651BB9132D2C7268005BE4E9 /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 651BB9102D2C7199005BE4E9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
-		};
-		65368A842D52364E00E2B43C /* ConnectivityKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 65368A832D52364E00E2B43C /* XCRemoteSwiftPackageReference "ConnectivityKit" */;
-			productName = ConnectivityKit;
-		};
-		65AFF78D2D31AB0A00EE4508 /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 65AFF78C2D31AB0A00EE4508 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			package = 65C4D31A2D6FC06400EC88D5 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
-		65C6234F2D56B16100C59856 /* WishKit */ = {
+		65C4D31E2D6FC06D00EC88D5 /* WishKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 65C6234E2D56B16100C59856 /* XCRemoteSwiftPackageReference "wishkit-ios" */;
+			package = 65C4D31D2D6FC06D00EC88D5 /* XCRemoteSwiftPackageReference "wishkit-ios" */;
 			productName = WishKit;
+		};
+		65C4D3212D6FC07800EC88D5 /* ConnectivityKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65C4D3202D6FC07800EC88D5 /* XCRemoteSwiftPackageReference "ConnectivityKit" */;
+			productName = ConnectivityKit;
+		};
+		65C4D3242D6FC0ED00EC88D5 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65C4D3232D6FC0ED00EC88D5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = 65BD0C2E2CFBBB35004031F5 /* Project object */;
+	rootObject = 65C4D0AE2D6FBC2E00EC88D5 /* Project object */;
 }

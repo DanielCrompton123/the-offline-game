@@ -9,9 +9,6 @@ import WidgetKit
 import SwiftUI
 import ActivityKit
 
-
-
-
 struct OfflineWidget: Widget {
     let kind: String = "OfflineWidget"
     
@@ -38,7 +35,6 @@ struct OfflineWidget: Widget {
                 
                 DynamicIslandExpandedRegion(.trailing) {
                     Text("Don't use your phone when you are offline!")
-                    //                        .font(.system(size: 18))
                         .minimumScaleFactor(0.6)
                         .foregroundStyle(.smog)
                         .multilineTextAlignment(.trailing)
@@ -66,7 +62,6 @@ struct OfflineWidget: Widget {
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(.red.gradient)
-                
             } compactTrailing: {
                 if let date = context.state.endDate {
                     Text(date, style: .timer)
