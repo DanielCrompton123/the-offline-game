@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "Offline icon phone.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Offline icon phone@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Offline icon phone@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Phone icon - 80w.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {
