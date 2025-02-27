@@ -50,7 +50,7 @@ class GameKitViewModel: NSObject {
                     
                     // Now if the user doesn't have to do anything else check if there was an error
                     if let error {
-                        print("Error with GameKit: \(error.localizedDescription)")
+                        print("🎮 Error with GameKit: \(error.localizedDescription)")
                         self?.error = error.localizedDescription
                     }
                     

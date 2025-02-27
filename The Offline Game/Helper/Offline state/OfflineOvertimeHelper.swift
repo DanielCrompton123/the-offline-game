@@ -58,11 +58,6 @@ class OfflineOvertimeHelper {
         
         #warning("If the app is in the background BUT the phone is turned ON then don't start the activity automatically.")
         
-        guard !UIApplication.shared.isProtectedDataAvailable else {
-            print("Could not automatically start overtime as protected data is still available")
-            return
-        }
-        
         // Schedule a timer to time 10 seconds (and use a background task is the device is in the background)
         if UIApplication.shared.applicationState == .background {
             overtimeStartTimerBGTaskId = UIApplication.shared.beginBackgroundTask()
@@ -77,6 +72,14 @@ class OfflineOvertimeHelper {
             // If 10 seconds has passed and the user has not reset the offline state (by dismissing the congrats view) then do nothing.
             // Then we should start their overtime for them, ACCOUNTING THE 10 SECONDS waiting.
             
+            // However if they have the phone turned ON but they're not in this app, we shouldn't start automatically.
+            if UIApplication.shared.isProtectedDataAvailable &&
+            UIApplication.shared.applicationState == .background {
+                print("🔓 Could not automatically start overtime as phone is on and app is in background")
+                return
+            }
+            
+            // Start date == nil if offline state was reset
             if viewModel.state.startDate != nil {
                 self?.startOvertime(viewModel: viewModel, offset: -delay)
                 print("Begun overtime (10 secs ago)")

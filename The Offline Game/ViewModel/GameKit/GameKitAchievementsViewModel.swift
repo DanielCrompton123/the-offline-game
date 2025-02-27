@@ -23,13 +23,13 @@ class GameKitAchievementsViewModel {
         
         do {
             let achievements = try await GKAchievement.loadAchievements()
-            print("\((achievements).count) achievements loaded")
+            print("🎮 \((achievements).count) achievements loaded")
             
             await MainActor.run {
                 self.inProgressAchievements = achievements
             }
         } catch {
-            print("Error loading achievements:\n\(error)")
+            print("🎮 Error loading achievements:\n\(error)")
             self.error = error.localizedDescription
         }
         
@@ -57,12 +57,12 @@ class GameKitAchievementsViewModel {
         gkAchievement.percentComplete = progress
                 
         // Now report the change
-        print("Reporting \(gkAchievement.percentComplete)% for \(gkAchievement.identifier)")
+        print("🎮 Reporting \(gkAchievement.percentComplete)% for \(gkAchievement.identifier)")
         
         do {
             try await GKAchievement.report([gkAchievement])
         } catch {
-            print("Error reporting achievement: \(error)")
+            print("🎮 Error reporting achievement: \(error)")
             self.error = error.localizedDescription
         }
         
@@ -77,7 +77,7 @@ class GameKitAchievementsViewModel {
         do {
             try await GKAchievement.resetAchievements()
         } catch {
-            print("Reset achievements with error\n \(String(describing: error))")
+            print("🎮 Reset achievements with error\n\(String(describing: error))")
             self.error = error.localizedDescription
         }
         
