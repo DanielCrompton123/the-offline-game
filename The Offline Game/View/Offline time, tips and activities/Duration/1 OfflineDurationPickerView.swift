@@ -12,7 +12,7 @@ struct OfflineDurationPickerView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(OfflineViewModel.self) private var offlineViewModel
     @AppStorage(K.userDefaultsShouldShowActivitiesViewKey) private var shouldShowActivitiesView = true
-    @State private var tipsViewPresented = false
+//    @State private var tipsViewPresented = false
     @State private var activitiesViewPresented = false
     @State private var wifiAnimate = true
     @State private var keypadInputViewShows = false
@@ -67,9 +67,9 @@ struct OfflineDurationPickerView: View {
             .textCase(.uppercase)
             .font(.main30)
             .multilineTextAlignment(.center)
-            .navigationDestination(isPresented: $tipsViewPresented) {
-                TipView()
-            }
+//            .navigationDestination(isPresented: $tipsViewPresented) {
+//                TipView()
+//            }
             .navigationDestination(isPresented: $activitiesViewPresented) {
                 ActivitiesView()
             }
@@ -141,14 +141,14 @@ struct OfflineDurationPickerView: View {
     private func nextStage() {
 
         // If the wifi is turned on (use network monitor for this) then present the tips view sheet telling them to turn it off
-        if NetworkMonitor.shared.isConnected {
-            tipsViewPresented = true
-            
-            // tips view can navigate from there
-        }
+//        if NetworkMonitor.shared.isConnected {
+//            tipsViewPresented = true
+//            
+//            // tips view can navigate from there
+//        }
         
         // If we have wifi turned off BUT this is the first app usage, navigate to the activities view
-        else if shouldShowActivitiesView {
+        if shouldShowActivitiesView {
             activitiesViewPresented = true
         }
         
