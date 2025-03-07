@@ -75,6 +75,7 @@ struct OfflineDurationSelector: View {
                         .bold()
                         .frame(width: 30)
                         .foregroundStyle(.smog)
+                        .minimumScaleFactor(0.2)
                 }
                 
             }

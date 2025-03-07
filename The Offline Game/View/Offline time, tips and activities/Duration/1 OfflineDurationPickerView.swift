@@ -31,27 +31,9 @@ struct OfflineDurationPickerView: View {
                 Spacer()
                 
                 // HEADER
-                ZStack(alignment: .bottom) {
-                    Image(.wifiBrushstrokeSlash)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 150)
-                        .foregroundStyle(.smog)
-                        .opacity(0.25)
-                        .scaleEffect(1.75)
-                        .offset(x: wifiAnimate ? -15 : 15)
-                        .rotationEffect(
-                            .degrees(wifiAnimate ? -wifiLogoRotation : wifiLogoRotation),
-                            anchor: .bottom
-                        )
-                        .animation(.easeInOut(duration: 4.5).repeatForever(), value: wifiAnimate)
-                        .onAppear {
-                            wifiAnimate.toggle()
-                        }
-                    
-                    Text("How long do you want to go offline for?")
-                        .padding()
-                }
+                Text("How long do you want to go offline for?")
+                    .padding(.horizontal)
+                    .minimumScaleFactor(0.2)
                 
                 durationDisplay()
                 
@@ -75,7 +57,7 @@ struct OfflineDurationPickerView: View {
             }
             
             // TOOLBAR
-            // Display the "End date" picker button
+            // Display the "Edit duration" picker button
             .toolbar {
                 
                 ToolbarItem(placement: .principal) {
@@ -106,8 +88,8 @@ struct OfflineDurationPickerView: View {
         
         // This allows us to check if wifi is on or off
         // That is used to determine if we should present the tips view or not, since we don't need to tell them to turn off wifi if they did already.
-        .onAppear(perform: NetworkMonitor.shared.startListening)
-        .onDisappear(perform: NetworkMonitor.shared.stopListening)
+//        .onAppear(perform: NetworkMonitor.shared.startListening)
+//        .onDisappear(perform: NetworkMonitor.shared.stopListening)
     }
     
     
@@ -121,6 +103,9 @@ struct OfflineDurationPickerView: View {
                 .foregroundStyle(.accent)
                 .animation(.default, value: firstComponent.0) // FIX? YES // value is the number part
                 .contentTransition(.numericText()) // NOT WORKING (on its own)
+            
+                .offset(y: 30)
+                .frame(height: 240, alignment: .bottom)
             
             let commaSeperatedComponents = timeComponents[1...]
                 .map { "\($0.0) \($0.1)" }
