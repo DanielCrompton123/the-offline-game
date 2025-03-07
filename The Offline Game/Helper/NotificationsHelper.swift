@@ -15,13 +15,14 @@ struct NotificationsHelper {
     static func post(title: String,
                      message: String,
                      id: String = UUID().uuidString,
-                     trigger: UNNotificationTrigger?) {
+                     trigger: UNNotificationTrigger?,
+                     interruptionLevel: UNNotificationInterruptionLevel = .active) {
         Task {
             // Create notification
             let notification = UNMutableNotificationContent()
             notification.title = title
             notification.body = message
-            notification.interruptionLevel = .timeSensitive
+            notification.interruptionLevel = interruptionLevel
             
             // Create request
             let request = UNNotificationRequest(identifier: id, content: notification, trigger: trigger)

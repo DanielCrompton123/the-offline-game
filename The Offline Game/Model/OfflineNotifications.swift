@@ -15,6 +15,7 @@ struct OfflineNotification {
     private let message: String
     private let trigger: UNNotificationTrigger
     private let id: String
+    private var interruptionLevel = UNNotificationInterruptionLevel.active
     
     //MARK: - Default notifications
     
@@ -29,14 +30,16 @@ struct OfflineNotification {
         title: String(format: "Open the app in %.0f seconds...", K.offlineGracePeriod),
         message: "...to keep your offline time. We need to know you're not cheating and using other apps!",
         trigger: UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false),
-        id: K.gracePeriodStartedNotificationId
+        id: K.gracePeriodStartedNotificationId,
+        interruptionLevel: .critical
     )
     
     static let gracePeriodEndedNotSuccessfully = OfflineNotification(
         title: "You've been online for too long",
         message: "Your offline time just ended, try again later & commit!",
         trigger: UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false),
-        id: K.gracePeriodEndedNotSuccessfullyNotificationId
+        id: K.gracePeriodEndedNotSuccessfullyNotificationId,
+        interruptionLevel: .timeSensitive
     )
     
     static func offlineReminder(tomorrow: Date) -> Self {
@@ -59,7 +62,8 @@ struct OfflineNotification {
                 dateMatching: NotificationsHelper.dateComponents(from: endDate),
                 repeats: false
             ),
-            id: K.offlineDurationEndedNotificationId
+            id: K.offlineDurationEndedNotificationId,
+            interruptionLevel: .timeSensitive
         )
     }
     
@@ -70,7 +74,8 @@ struct OfflineNotification {
         NotificationsHelper.post(title: title,
                                  message: message,
                                  id: id,
-                                 trigger: trigger)
+                                 trigger: trigger,
+                                 interruptionLevel: interruptionLevel)
     }
     
     func revoke() {
