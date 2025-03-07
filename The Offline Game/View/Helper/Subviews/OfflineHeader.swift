@@ -29,7 +29,7 @@ struct OfflineHeader: View {
         }
         .textCase(.uppercase) // make sure any changes to text above ^ are still upper cased
 //        .fixedSize(horizontal: true, vertical: false) // don't truncate or wrap onto new line. Ignore parent container
-        .minimumScaleFactor(0.6) // allow header to scale down on smaller screens
+        .minimumScaleFactor(0.2) // allow header to scale down on smaller screens
         .lineLimit(1)
     }
 }

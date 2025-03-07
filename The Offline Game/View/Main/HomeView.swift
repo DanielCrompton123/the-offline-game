@@ -40,11 +40,11 @@ struct HomeView: View {
             
             VStack {
                 
-                Spacer()
+                Spacer(minLength: 0)
                 
                 OfflineHeader()
                 
-                Spacer()
+                Spacer(minLength: 0)
                 
                 Text("\(Text(String(offlineCountViewModel.count)).foregroundStyle(.ruby)) people are offline right now, competing to see who can avoid their phone the longest.\n\(Text("Up for the challenge?").foregroundStyle(colorScheme == .light ? .black : .white))")
                     .textCase(.uppercase)
@@ -54,21 +54,19 @@ struct HomeView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
                 
-                Spacer()
+                Spacer(minLength: 0)
                 
                 Button {
                      offlineViewModel.isPickingDuration = true
                 } label: {
-                    Label {
-                        Text("Go offline")
-                    } icon: {
-                        Image(.offlinePhone)
-                            .resizable()
-                            .scaledToFit()
-                    }
-                    
+                    Text("GO OFFLINE")
+                        .minimumScaleFactor(0.2)
+                        .font(.main30)
+                        .padding(8)
                 }
-                .buttonStyle(FilledRedButtonStyle())
+                .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
+                
+                Spacer(minLength: 0)
                 
             }
             
@@ -144,15 +142,9 @@ struct HomeView: View {
             // SETTINGS BUTTON
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
+                    Button("Settings", systemImage: "gear") {
                         settingsIsOpen = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "gear")
-                            Text("SETTINGS")
-                        }
                     }
-                    .font(.main14)
                     .tint(.smog)
                 }
             }
@@ -187,4 +179,5 @@ struct HomeView: View {
         .environment(PermissionsViewModel())
         .environment(LiveActivityViewModel())
         .environment(OfflineCountViewModel())
+        .environment(GameKitViewModel())
 }
