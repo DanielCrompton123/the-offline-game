@@ -38,7 +38,7 @@ struct OnboardingView: View {
                 
                 Spacer(minLength: 0)
                 
-                Button("Continue", systemImage: K.systemArrowIcon) {
+                Button("Continue") {
                     // Link to the User Account Age View
                     navigateToAccountCreationAgeView = true
                 }

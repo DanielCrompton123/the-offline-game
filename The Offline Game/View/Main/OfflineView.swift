@@ -43,12 +43,6 @@ struct OfflineView: View {
             
             VStack {
                 
-                Text("DO NOT DISTURB")
-                    .frame(maxWidth: 300) // forces text into 2 lines
-                    .multilineTextAlignment(.center)
-                    .font(.main54)
-                    .lineSpacing(-10)
-                
                 Spacer()
                 
                 // don't display the progress view if we're not in overtime
@@ -94,12 +88,12 @@ struct OfflineView: View {
                 }
                 .onDisappear(perform: activityViewModel.stopUpdatingActivityIcon)
                 
-                Button("GO ONLINE", systemImage: "iphone.and.arrow.left.and.arrow.right.inward") {
+                Button("I NEED A BREAK", systemImage: "iphone.and.arrow.left.and.arrow.right.inward") {
                     goOnlineConfirmationShows = true
                 }
                 .buttonStyle(FilledRedButtonStyle(horizontalContentMode: .fit))
                 
-                Button("SEE RULES", systemImage: "list.bullet.rectangle.fill") {
+                Button("HOW IT WORKS", systemImage: "info.triangle") {
                     rulesScreenShows = true
                 }
                 .tint(.white)

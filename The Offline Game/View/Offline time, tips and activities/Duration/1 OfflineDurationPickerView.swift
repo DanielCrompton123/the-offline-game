@@ -43,7 +43,7 @@ struct OfflineDurationPickerView: View {
                 
                 Spacer()
                 
-                Button("CONTINUE", systemImage: K.systemArrowIcon, action: nextStage)
+                Button("CONTINUE", action: nextStage)
                 .buttonStyle(FilledRedButtonStyle())
             }
             .textCase(.uppercase)

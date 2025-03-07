@@ -53,8 +53,6 @@ struct K {
     
     static let activityIcons = ["figure.walk", "figure.run.treadmill", "figure.american.football", "figure.archery", "figure.basketball", "figure.climbing", "figure.curling", "figure.dance", "figure.skiing.downhill", "figure.hiking", "figure.outdoor.cycle", "figure.pool.swim", "figure.ice.skating"]
             
-    static let systemArrowIcon = "chevron.forward.dotted.chevron.forward"
-
 
     //MARK: - APIs & keys
     
