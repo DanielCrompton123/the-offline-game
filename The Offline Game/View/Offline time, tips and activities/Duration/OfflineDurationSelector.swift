@@ -13,43 +13,35 @@ import SwiftUI
 struct OfflineDurationSelector: View {
     
     @Environment(OfflineViewModel.self) private var offlineViewModel
-    @State private var selectedRange: DurationRange?
     @State private var secs = 0.0
     
     var body: some View {
         
         @Bindable var offlineViewModel = offlineViewModel
                 
-        VStack {
-            
-            if let selectedRange {
-                // If we have selected a range then display the ruler for it.
-                
-                durationSlider(selectedRange: selectedRange)
-                    .transition(.blurReplace)
-                
-            } else {
-                // If we have not selected a range, then display the selector
-                DurationRangeSelector(range: $selectedRange)
-                    .transition(.blurReplace)
-                
-                    .padding(.horizontal)
-                    .padding(.horizontal)
+        durationSlider()
+            .onChange(of: secs) { oldValue, newValue in
+                offlineViewModel.state.durationSeconds = .seconds(secs)
             }
-            
-        }
-        .animation(.easeInOut, value: selectedRange)
-        .onChange(of: secs) { oldValue, newValue in
-            offlineViewModel.state.durationSeconds = .seconds(secs)
-        }
-        .onAppear {
-            // Make sure the offline view model slider value is synchronised to here
-            secs = offlineViewModel.state.durationSeconds.seconds
-        }
+            .onAppear {
+                // Make sure the offline view model slider value is synchronised to here
+                secs = offlineViewModel.state.durationSeconds.seconds
+            }
     }
     
     
-    @ViewBuilder private func durationSlider(selectedRange: DurationRange) -> some View {
+    @ViewBuilder private func durationSlider() -> some View {
+        
+        // Maximum = 12 hours
+        let maxSecs: Double = Measurement(value: 12, unit: UnitDuration.hours).converted(to: .seconds).value
+        // Minimum = 5 minutes
+        let minSecs: Double = 60 * 5
+        
+        // Step 10 minutes
+        let step: Double = 600
+        
+        // Spacing between markers = 30 pts
+        let spacing: CGFloat = 35
         
         VStack {
             
@@ -60,21 +52,12 @@ struct OfflineDurationSelector: View {
                 .rotationEffect(.degrees(90))
                 .frame(height: 40)
                 .foregroundStyle(.accent)
-                .frame(maxWidth: .infinity)
-                .overlay(alignment: .leading) {
-                    Button("Back", systemImage: "arrow.backward") {
-                        self.selectedRange = nil
-                    }
-                    .font(.main14)
-                    .padding(.leading)
-                    .tint(.smog)
-                }
-            
+
             HorizontalRulerSlider(
                 value: $secs,
-                range: selectedRange.rangeInSecs,
-                step: selectedRange.step,
-                spacing: selectedRange.spacing,
+                range: minSecs...maxSecs,
+                step: step,
+                spacing: spacing,
                 alignment: .top
             ) { value in
                 
@@ -88,7 +71,8 @@ struct OfflineDurationSelector: View {
                     
                     // For the value in the text for the marker, then display the formatted value
                     Text( Duration.seconds(value).offlineDisplayFormat(width: .abbreviated) )
-                        .font(.caption)
+                        .font(.caption.width(.condensed))
+                        .bold()
                         .frame(width: 30)
                         .foregroundStyle(.smog)
                 }
@@ -101,52 +85,6 @@ struct OfflineDurationSelector: View {
     
     
 }
-
-
-//MARK: - RANGE SELECTION
-// Allow the user to select a range (each range has a different step value).
-
-fileprivate struct DurationRangeSelector: View {
-    @Binding var range: DurationRange?
-    
-    var body: some View {
-        
-        VStack(spacing: 20) {
-            ForEach(DurationRange.allCases, id: \.self) { range in
-                rangeSelector(range)
-            }
-        }
-        .overlay(alignment: .leading) {
-            // Overlay the vertical line through the dots in the range buttons
-            Capsule()
-                .fill(.smog)
-                .frame(width: 4)
-                .offset(x: (25 / 2) - (4 / 2)) // offset half the width of the dots
-        }
-        
-    }
-    
-    
-    @ViewBuilder private func rangeSelector(_ range: DurationRange) -> some View {
-        
-        HStack(spacing: 16) {
-            Circle()
-                .fill(.smog)
-                .frame(width: 25, height: 25)
-
-            Text(range.formatted())
-                .font(.main20)
-                .foregroundStyle(.accent)
-            
-            Spacer()
-        }
-        .onTapGesture {
-            self.range = range
-        }
-        
-    }
-}
-
 
 #Preview {
     OfflineDurationPickerView()
