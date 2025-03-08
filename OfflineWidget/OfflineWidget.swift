@@ -22,56 +22,26 @@ struct OfflineWidget: Widget {
             
             DynamicIsland {
                 
-                // Expanded
-                DynamicIslandExpandedRegion(.leading) {
-                    Image(.offlineIcon)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100)
-                        .bold()
-                        .font(.largeTitle)
-                        .foregroundStyle(.smog)
-                }
+                ExtendedDynamicIsland(context: context).body()
                 
-                DynamicIslandExpandedRegion(.trailing) {
-                    Text("Don't use your phone when you are offline!")
-                        .minimumScaleFactor(0.6)
-                        .foregroundStyle(.smog)
-                        .multilineTextAlignment(.trailing)
-                }
-                
-                DynamicIslandExpandedRegion(.bottom) {
-                    Divider()
-                    
-                    Text("I'm offline!")
-                        .frame(maxWidth: .infinity)
-                        .font(.title)
-                        .bold()
-                        .foregroundStyle(.linearGradient(colors: [.accent, .ruby], startPoint: .top, endPoint: .bottom))
-                }
-                
-                DynamicIslandExpandedRegion(.center) {
-                    if let endDate = context.state.endDate {
-                        Text("\(Text(endDate, style: .timer).bold()) offline")
-                            .multilineTextAlignment(.center)
-                    }
-                    
-                }
             } compactLeading: {
-                Image(.offlinePhone)
-                    .resizable()
-                    .scaledToFit()
+                
+                Image(systemName: "iphone.gen3.slash")
+                    .bold()
                     .foregroundStyle(.red.gradient)
+                    .frame(width: 40)
+                
             } compactTrailing: {
+                
                 if let date = context.state.endDate {
                     Text(date, style: .timer)
-                        .multilineTextAlignment(.trailing)
+                        .multilineTextAlignment(.center)
+                        .frame(width: 40)
                 }
                 
             } minimal: {
-                Image(.offlinePhone)
-                    .resizable()
-                    .scaledToFit()
+                Image(systemName: "iphone.gen3.slash")
+                    .bold()
                     .foregroundStyle(.red.gradient)
             }
             
@@ -81,7 +51,7 @@ struct OfflineWidget: Widget {
 }
 
 
-#Preview("Dynamic island compact", as: .dynamicIsland(.compact), using: LiveActivityTimerAttributes.preview, widget: {
+#Preview("Compact", as: .dynamicIsland(.compact), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
     LiveActivityTimerAttributes.ContentState.preview
@@ -89,13 +59,13 @@ struct OfflineWidget: Widget {
 
 
 
-#Preview("Dynamic island minimal", as: .dynamicIsland(.minimal), using: LiveActivityTimerAttributes.preview, widget: {
+#Preview("Minimal", as: .dynamicIsland(.minimal), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
     LiveActivityTimerAttributes.ContentState.preview
 })
 
-#Preview("Dynamic island extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes.preview, widget: {
+#Preview("Extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
     LiveActivityTimerAttributes.ContentState.preview

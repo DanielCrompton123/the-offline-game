@@ -40,6 +40,7 @@ struct LockScreenLiveActivityView : View {
                 .scaledToFit()
                 .foregroundStyle(.white)
                 .bold()
+                .frame(maxHeight: 80)
             
             
             // RIGHT HAND CONTENT
@@ -70,6 +71,7 @@ struct LockScreenLiveActivityView : View {
                         EmptyView()
                     }
                     .tint(.white)
+                    .scaleEffect(y: 2.2)
                     
                 }
 
