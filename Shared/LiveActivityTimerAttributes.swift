@@ -25,10 +25,12 @@ struct LiveActivityTimerAttributes: ActivityAttributes {
             return startDate.addingTimeInterval(duration.seconds)
         }
         
-        // Other properties that can be accessed
-        var peopleOffline: Int
-        
-        static let preview = ContentState(duration: .seconds(60), startDate: Date(), peopleOffline: 590)
+        static let preview = ContentState(duration: .seconds(60), startDate: Date())
     }
+    
+    // Other properties that can be accessed
+    var peopleOffline: Int
+    
+    static let preview = LiveActivityTimerAttributes(peopleOffline: 183)
     
 }

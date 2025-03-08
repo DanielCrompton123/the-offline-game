@@ -30,13 +30,12 @@ class LiveActivityViewModel {
         }
         
         // Create attributes
-        let attributes = LiveActivityTimerAttributes()
+        let attributes = LiveActivityTimerAttributes(peopleOffline: offlineCountViewModel?.count ?? 0)
         
         // Create initial state
         let state = LiveActivityTimerAttributes.ContentState(
             duration: offlineViewModel.state.durationSeconds,
-            startDate: startDate,
-            peopleOffline: offlineCountViewModel?.count ?? 0
+            startDate: startDate
         )
         
         let content = ActivityContent(state: state, staleDate: nil)
@@ -62,8 +61,7 @@ class LiveActivityViewModel {
         // Dummy data
         let state = LiveActivityTimerAttributes.ContentState(
             duration: nil,
-            startDate: .now,
-            peopleOffline: 0
+            startDate: .now
         )
         
         // Request activity to end
@@ -83,8 +81,7 @@ class LiveActivityViewModel {
         
         let state = LiveActivityTimerAttributes.ContentState(
             duration: offlineViewModel.state.durationSeconds,
-            startDate: startDate,
-            peopleOffline: offlineCountViewModel?.count ?? 0
+            startDate: startDate
         )
 
         let content = ActivityContent(state: state, staleDate: nil)

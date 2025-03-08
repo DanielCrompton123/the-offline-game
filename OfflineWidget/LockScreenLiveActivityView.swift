@@ -16,68 +16,72 @@ struct LockScreenLiveActivityView : View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    .ruby,
-                    .accent
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+            LinearGradient(colors: [.ruby, .accent],
+                           startPoint: .top,
+                           endPoint: .bottom)
             .ignoresSafeArea()
             
-            HStack {
-                Image(.offlineIcon)
-                    .resizable()
-                    .scaledToFit()
-                    .padding()
-                
-                VStack {
-                    Group {
-                        Text("Don't use your phone!")
-                            .font(.title3)
-                            .bold()
-                        
-                        let timeElapsed = context.state.startDate.distance(to: Date())
-                        let offlineTimeElapsedString = Duration.seconds(timeElapsed).offlineDisplayFormat(width: .abbreviated)
-
-                        Text("You've been offline for \(offlineTimeElapsedString), keep going!")
-                            .bold()
-                        
-                        if let endDate = context.state.endDate {
-                            // USE PROGRESSVIEW(TIME INTERVAL) INIT TO automatically update!!!
-                            ProgressView(timerInterval: context.state.startDate...endDate) {
-                                Label {
-                                    Text("Offline...")
-                                } icon: {
-                                    Image(.offlinePhone)
-                                        .resizable()
-                                        .scaledToFit()
-                                }
-
-                            }
-                            .tint(.white)
-                        }
-                        
-                        Spacer(minLength: 0)
-                        
-                        Text("\(context.state.peopleOffline) others are offline right now!")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .lineSpacing(-1.5)
-                .foregroundStyle(.white)
-            }
-            .padding(.horizontal)
+            content()
+                .padding(.horizontal, 24)
+                .padding(.vertical, 16)
             
         }
         .activityBackgroundTint(.accent)
     }
+    
+    
+    @ViewBuilder private func content() -> some View {
+        
+        HStack(spacing: 24) {
+            
+            // IMAGE
+            Image(systemName: "iphone.gen3.slash")
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(.white)
+                .bold()
+            
+            
+            // RIGHT HAND CONTENT
+            VStack(alignment: .trailing, spacing: 16) {
+                
+                // ENCOURAGEMENT + TIME REMAINING
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("YOU'RE DOING GREAT!")
+                        .font(.main14)
+                        .foregroundStyle(.smog.mix(with: .white, by: 0.5))
+                    
+                    if let endDate = context.state.endDate {
+                        Text("\(Text(endDate, style: .timer)) \(Date().distance(to: endDate) > 0 ? Text("left") : Text("OVERTIME"))!")
+                            .multilineTextAlignment(.trailing)
+                            .font(.display40)
+                        
+                    }
+                    
+                }
+                
+                // PROGRESS BAR
+                if let endDate = context.state.endDate {
+                    // USE PROGRESSVIEW(TIME INTERVAL) INIT TO automatically update!!!
+                    
+                    ProgressView(timerInterval: context.state.startDate...endDate) {
+                        EmptyView()
+                    } currentValueLabel: {
+                        EmptyView()
+                    }
+                    .tint(.white)
+                    
+                }
+
+            }
+        }
+        .foregroundStyle(.white)
+    }
+    
+
 }
 
-#Preview("Dynamic island extended", as: .content, using: LiveActivityTimerAttributes(), widget: {
+#Preview("Dynamic island extended", as: .content, using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
     LiveActivityTimerAttributes.ContentState.preview

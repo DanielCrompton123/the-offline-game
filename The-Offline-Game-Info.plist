@@ -11,5 +11,12 @@
 		<string>Maquire.ttf</string>
 		<string>RobotoCondensed-Bold.ttf</string>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>Offline icon</string>
+		<key>UILaunchScreen</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

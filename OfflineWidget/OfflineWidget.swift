@@ -81,7 +81,7 @@ struct OfflineWidget: Widget {
 }
 
 
-#Preview("Dynamic island compact", as: .dynamicIsland(.compact), using: LiveActivityTimerAttributes(), widget: {
+#Preview("Dynamic island compact", as: .dynamicIsland(.compact), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
     LiveActivityTimerAttributes.ContentState.preview
@@ -89,13 +89,13 @@ struct OfflineWidget: Widget {
 
 
 
-#Preview("Dynamic island minimal", as: .dynamicIsland(.minimal), using: LiveActivityTimerAttributes(), widget: {
+#Preview("Dynamic island minimal", as: .dynamicIsland(.minimal), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
     LiveActivityTimerAttributes.ContentState.preview
 })
 
-#Preview("Dynamic island extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes(), widget: {
+#Preview("Dynamic island extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
     LiveActivityTimerAttributes.ContentState.preview
