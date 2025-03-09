@@ -17,20 +17,46 @@ struct LiveActivityTimerAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable {
         // If they were a lets the widget cannot be updated
         
-        var duration: Duration?
-        var startDate: Date
-        
-        var endDate: Date? {
-            guard let duration else { return nil }
-            return startDate.addingTimeInterval(duration.seconds)
+        enum OfflineTime: Codable, Hashable {
+            case normal(duration: Duration?, startDate: Date)
+            case overtime(startDate: Date)
+            
+            var endDate: Date? {
+                if case let .normal(duration, startDate) = self,
+                   let duration {
+                    return startDate.addingTimeInterval(duration.seconds)
+                } else {
+                    return nil
+                }
+            }
         }
         
-        static let preview = ContentState(duration: .seconds(60), startDate: Date())
+        var offlineTime: OfflineTime
+        
+        var isOvertime: Bool {
+            switch offlineTime {
+            case .overtime: true
+            case .normal: false
+            }
+        }
+        
     }
     
-    // Other properties that can be accessed
-    var peopleOffline: Int
     
-    static let preview = LiveActivityTimerAttributes(peopleOffline: 183)
+    // WARNING: Will NOT work without at least 1 property here
+    let peopleOffline: Int
     
+}
+
+
+
+//MARK: - Previews
+
+extension LiveActivityTimerAttributes {
+    static let preview = LiveActivityTimerAttributes(peopleOffline: 10)
+}
+
+extension LiveActivityTimerAttributes.ContentState {
+    static let previewNormal = Self(offlineTime: .normal(duration: .seconds(30), startDate: Date()))
+    static let previewOvertime = Self(offlineTime: .overtime(startDate: Date()))
 }

@@ -33,10 +33,15 @@ struct OfflineWidget: Widget {
                 
             } compactTrailing: {
                 
-                if let date = context.state.endDate {
+                if let date = context.state.offlineTime.endDate {
                     Text(date, style: .timer)
                         .multilineTextAlignment(.center)
                         .frame(width: 40)
+                } else if case let .overtime(startDate) = context.state.offlineTime {
+                    Text(startDate, style: .timer)
+                        .multilineTextAlignment(.center)
+                        .frame(width: 40)
+                        .foregroundStyle(.green.gradient)
                 }
                 
             } minimal: {
@@ -54,7 +59,7 @@ struct OfflineWidget: Widget {
 #Preview("Compact", as: .dynamicIsland(.compact), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
-    LiveActivityTimerAttributes.ContentState.preview
+    LiveActivityTimerAttributes.ContentState.previewNormal
 })
 
 
@@ -62,11 +67,37 @@ struct OfflineWidget: Widget {
 #Preview("Minimal", as: .dynamicIsland(.minimal), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
-    LiveActivityTimerAttributes.ContentState.preview
+    LiveActivityTimerAttributes.ContentState.previewNormal
 })
 
 #Preview("Extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
-    LiveActivityTimerAttributes.ContentState.preview
+    LiveActivityTimerAttributes.ContentState.previewNormal
+})
+
+
+
+
+
+
+
+#Preview("OVT Compact", as: .dynamicIsland(.compact), using: LiveActivityTimerAttributes.preview, widget: {
+    OfflineWidget()
+}, contentStates: {
+    LiveActivityTimerAttributes.ContentState.previewOvertime
+})
+
+
+
+#Preview("OVT Minimal", as: .dynamicIsland(.minimal), using: LiveActivityTimerAttributes.preview, widget: {
+    OfflineWidget()
+}, contentStates: {
+    LiveActivityTimerAttributes.ContentState.previewOvertime
+})
+
+#Preview("OVT Extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes.preview, widget: {
+    OfflineWidget()
+}, contentStates: {
+    LiveActivityTimerAttributes.ContentState.previewOvertime
 })

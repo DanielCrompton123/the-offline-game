@@ -18,12 +18,16 @@ struct ExtendedDynamicIsland {
     @DynamicIslandExpandedContentBuilder
     func body() -> DynamicIslandExpandedContent<some View> {
         
+        //MARK: - Center
         DynamicIslandExpandedRegion(.center) {
             
-            if let endDate = context.state.endDate {
+            // PROGRESS BAR (if we are counting down to offline end)
+            if case let .normal(_, startDate) = context.state.offlineTime,
+               let endDate = context.state.offlineTime.endDate {
+                
                 // USE PROGRESSVIEW(TIME INTERVAL) INIT TO automatically update!!!
                 
-                ProgressView(timerInterval: context.state.startDate...endDate) {
+                ProgressView(timerInterval: startDate...endDate) {
                     EmptyView()
                 } currentValueLabel: {
                     EmptyView()
@@ -31,24 +35,31 @@ struct ExtendedDynamicIsland {
                 .tint(.accent)
                 .scaleEffect(y: 2.2)
                 
-            } else {
-                Text(context.state.startDate, style: .relative)
             }
-            
         }
         
-        
-        
+        //MARK: - Bottom
         DynamicIslandExpandedRegion(.bottom) {
             
             HStack(spacing: 0) {
                 
-                if let endDate = context.state.endDate {
-                    Text("\(Text(endDate, style: .timer).foregroundStyle(.accent)) \(Date().distance(to: endDate) > 0 ? Text("left") : Text("OVERTIME"))!")
+                // COUNTDOWN TIMER (or count-up for overtime)
+                if let endDate = context.state.offlineTime.endDate {
+                    Text("\(Text(endDate, style: .timer).foregroundStyle(.accent)) left!")
                         .multilineTextAlignment(.leading)
-                        .font(.custom("Maquire", size: 60))
+                        .font(.custom("Maquire",size: 60))
                         .frame(maxHeight: .infinity)
                         .padding()
+                }
+                else if case let .overtime(startDate) = context.state.offlineTime {
+                    
+                    Text("\(Text(startDate, style: .timer).foregroundStyle(.green.gradient)) OVERTIME!")
+                        .multilineTextAlignment(.leading)
+                        .font(.custom("Maquire", size: 60))
+                        .minimumScaleFactor(0.2)
+                        .frame(maxHeight: .infinity)
+                        .padding()
+                    
                 }
                 
                 Spacer(minLength: 0)
@@ -58,7 +69,7 @@ struct ExtendedDynamicIsland {
                     .scaledToFit()
                     .padding(8)
                     .bold()
-                    .foregroundStyle(.white)
+                    .foregroundStyle(context.state.isOvertime ? AnyShapeStyle(.green.gradient) : AnyShapeStyle(.white))
                 
             }
             
@@ -68,10 +79,15 @@ struct ExtendedDynamicIsland {
 }
 
 
-
-
 #Preview("Dynamic island extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
-    LiveActivityTimerAttributes.ContentState.preview
+    LiveActivityTimerAttributes.ContentState.previewNormal
+})
+
+
+#Preview("OVT Dynamic island extended", as: .dynamicIsland(.expanded), using: LiveActivityTimerAttributes.preview, widget: {
+    OfflineWidget()
+}, contentStates: {
+    LiveActivityTimerAttributes.ContentState.previewOvertime
 })

@@ -24,19 +24,14 @@ class LiveActivityViewModel {
             return
         }
         
-        guard let startDate = offlineViewModel.state.startDate else {
-            print("starting live activity... offline start date is nil")
-            return
-        }
-        
         // Create attributes
-        let attributes = LiveActivityTimerAttributes(peopleOffline: offlineCountViewModel?.count ?? 0)
+        let attributes = LiveActivityTimerAttributes(peopleOffline: offlineCountViewModel?.count ?? Int.random(in: 10...50))
         
         // Create initial state
-        let state = LiveActivityTimerAttributes.ContentState(
-            duration: offlineViewModel.state.durationSeconds,
-            startDate: startDate
-        )
+        guard let state = getState() else {
+            print("📣 Could not create activity state: no start date or overtime start date")
+            return
+        }
         
         let content = ActivityContent(state: state, staleDate: nil)
         
@@ -50,7 +45,7 @@ class LiveActivityViewModel {
             
             print("📣 Requested activity \(activity!.id)")
         } catch {
-            print("Error requesting live activity: \(error)")
+            print("📣 Error requesting live activity: \(error)")
         }
     }
     
@@ -60,8 +55,10 @@ class LiveActivityViewModel {
         // Update activity state
         // Dummy data
         let state = LiveActivityTimerAttributes.ContentState(
-            duration: nil,
-            startDate: .now
+            offlineTime: .normal(
+                duration: .seconds(0),
+                startDate: Date()
+            )
         )
         
         // Request activity to end
@@ -79,16 +76,41 @@ class LiveActivityViewModel {
     func updateActivity() {
         guard let offlineViewModel, let startDate = offlineViewModel.state.startDate else { return }
         
-        let state = LiveActivityTimerAttributes.ContentState(
-            duration: offlineViewModel.state.durationSeconds,
-            startDate: startDate
-        )
+        guard let state = getState() else {
+            print("📣 Could not update activity with new activity state: no start date or overtime start date")
+            return
+        }
 
         let content = ActivityContent(state: state, staleDate: nil)
         
         Task {
             await activity?.update(content)
         }
+    }
+    
+    
+    private func getState() -> LiveActivityTimerAttributes.ContentState? {
+        guard let offlineViewModel else { return nil }
+        
+        if offlineViewModel.state.isInOvertime,
+           let overtimeStartDate = offlineViewModel.state.overtimeStartDate {
+            
+            return LiveActivityTimerAttributes.ContentState(
+                offlineTime: .overtime(startDate: overtimeStartDate)
+            )
+            
+        } else if let startDate = offlineViewModel.state.startDate {
+            
+            return LiveActivityTimerAttributes.ContentState(
+                offlineTime: .normal(
+                    duration: offlineViewModel.state.durationSeconds,
+                    startDate: startDate
+                )
+            )
+        } else {
+            return nil
+        }
+        
     }
     
 }

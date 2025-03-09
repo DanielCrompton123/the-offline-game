@@ -52,20 +52,31 @@ struct LockScreenLiveActivityView : View {
                         .font(.main14)
                         .foregroundStyle(.smog.mix(with: .white, by: 0.5))
                     
-                    if let endDate = context.state.endDate {
-                        Text("\(Text(endDate, style: .timer)) \(Date().distance(to: endDate) > 0 ? Text("left") : Text("OVERTIME"))!")
+                    // COUNTDOWN TIMER (or count-up for overtime)
+                    if let endDate = context.state.offlineTime.endDate {
+                        Text("\(Text(endDate, style: .timer)) left!")
                             .multilineTextAlignment(.trailing)
                             .font(.display40)
                         
                     }
                     
+                    else if case let .overtime(startDate) = context.state.offlineTime {
+                        
+                        Text("\(Text(startDate, style: .timer)) OVERTIME!")
+                            .multilineTextAlignment(.trailing)
+                            .font(.display40)
+                        
+                        
+                    }
+                    
                 }
                 
-                // PROGRESS BAR
-                if let endDate = context.state.endDate {
+                // PROGRESS BAR if we are counting down tp an end date
+                if case let .overtime(startDate) = context.state.offlineTime,
+                   let endDate = context.state.offlineTime.endDate {
                     // USE PROGRESSVIEW(TIME INTERVAL) INIT TO automatically update!!!
                     
-                    ProgressView(timerInterval: context.state.startDate...endDate) {
+                    ProgressView(timerInterval: startDate...endDate) {
                         EmptyView()
                     } currentValueLabel: {
                         EmptyView()
@@ -86,5 +97,5 @@ struct LockScreenLiveActivityView : View {
 #Preview("Dynamic island extended", as: .content, using: LiveActivityTimerAttributes.preview, widget: {
     OfflineWidget()
 }, contentStates: {
-    LiveActivityTimerAttributes.ContentState.preview
+    LiveActivityTimerAttributes.ContentState.previewNormal
 })
