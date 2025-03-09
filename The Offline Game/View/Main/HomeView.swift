@@ -18,7 +18,7 @@ struct HomeView: View {
     @AppStorage("numOffPds") private var numOffPds: Int = 0
     
     @Environment(OfflineViewModel.self) private var offlineViewModel
-    @Environment(PermissionsViewModel.self) private var permissionsViewModel
+    @Environment(NotificationPermissionsViewModel.self) private var permissionsViewModel
     @Environment(LiveActivityViewModel.self) private var liveActivityViewModel
     @Environment(OfflineCountViewModel.self) private var offlineCountViewModel
     @Environment(GameKitViewModel.self) private var gameKitViewModel
@@ -176,7 +176,7 @@ struct HomeView: View {
 #Preview {
     HomeView()
         .environment(OfflineViewModel())
-        .environment(PermissionsViewModel())
+        .environment(NotificationPermissionsViewModel())
         .environment(LiveActivityViewModel())
         .environment(OfflineCountViewModel())
         .environment(GameKitViewModel())

@@ -10,7 +10,7 @@ import SwiftUI
 
 
 @Observable
-class PermissionsViewModel {
+class NotificationPermissionsViewModel {
         
     let notificationCenter = UNUserNotificationCenter.current()
     

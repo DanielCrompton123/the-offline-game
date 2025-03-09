@@ -34,7 +34,7 @@ fileprivate struct ENTRY: View {
     @AppStorage(K.userDefaultsShouldShowOnboardingKey) var shouldShowOnboarding = true
     
     @State private var offlineViewModel = OfflineViewModel()
-    @State private var permissionsViewModel = PermissionsViewModel()
+    @State private var permissionsViewModel = NotificationPermissionsViewModel()
     @State private var liveActivityViewModel = LiveActivityViewModel()
     @State private var activityViewModel = ActivityViewModel()
     @State private var offlineCountViewModel = OfflineCountViewModel()

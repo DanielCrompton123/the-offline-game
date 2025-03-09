@@ -10,7 +10,7 @@ import UserNotifications
 
 
 struct NotificationPermissionView: View {
-    @Environment(PermissionsViewModel.self) private var permissionsViewModel
+    @Environment(NotificationPermissionsViewModel.self) private var permissionsViewModel
     @AppStorage(K.userDefaultsShouldShowOnboardingKey) private var shouldShowOnboarding = false
     @Environment(\.colorScheme) private var colorScheme
     
@@ -133,5 +133,5 @@ struct NotificationPermissionView: View {
 
 #Preview {
     NotificationPermissionView()
-        .environment(PermissionsViewModel())
+        .environment(NotificationPermissionsViewModel())
 }
