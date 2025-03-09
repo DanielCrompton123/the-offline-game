@@ -30,7 +30,7 @@ class OfflineViewModel {
     var liveActivityViewModel: LiveActivityViewModel?
     var offlineCountViewModel: OfflineCountViewModel?
     var gameKitViewModel: GameKitViewModel?
-    
+    var appBlockerViewModel: AppBlockerViewModel?
     
     
     
@@ -59,6 +59,12 @@ class OfflineViewModel {
             endDate: state.endDate!, // unwrapped- just set startDate and endDate depends on it
             formattedDuration: formattedDuration
         ).post()
+        
+        // NOW BLOCK APPS if we are in a hard commit session
+        if state.isHardCommit {
+            print("🔑 Blocking apps")
+            appBlockerViewModel?.setAppsStatus(blocked: true)
+        }
     }
     
     
@@ -174,6 +180,10 @@ class OfflineViewModel {
         userDidFail = !successfully
         // ^^^ DO this AFTER setting isOffline (either to false, or in endOvertime) to avoid "only presenting a single sheet is supported" error.
         // Make sure it's dismissed before presenting these sheets
+        
+        // Now we should make sure apps are UNBLOCKED
+        print("🔑 Unblocking apps")
+        appBlockerViewModel?.setAppsStatus(blocked: false)
 
     }
     

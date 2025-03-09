@@ -50,6 +50,9 @@ struct OfflineState {
 //        set { state = newValue ? .overtime : .none }
     }
     
+    // Wether we are in a hard commit session (other apps are blocked)
+    var isHardCommit = false
+    
     
     //MARK: - Dates & durations
     

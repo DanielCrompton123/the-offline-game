@@ -116,6 +116,7 @@ fileprivate struct ENTRY: View {
         offlineViewModel.liveActivityViewModel = liveActivityViewModel
         
         offlineViewModel.offlineCountViewModel = offlineCountViewModel
+        offlineViewModel.appBlockerViewModel = appBlockerViewModel
         
         // App delegate
         appDelegate.offlineViewModel = offlineViewModel

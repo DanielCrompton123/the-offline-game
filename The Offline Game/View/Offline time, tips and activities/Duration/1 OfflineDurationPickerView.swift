@@ -43,8 +43,16 @@ struct OfflineDurationPickerView: View {
                 
                 Spacer()
                 
-                Button("CONTINUE", action: nextStage)
+                Button("CONTINUE") {
+                    nextStage(hardCommit: false)
+                }
                 .buttonStyle(FilledRedButtonStyle())
+                
+                Button("CONTINUE (HARD COMMIT)") {
+                    nextStage(hardCommit: true)
+                }
+                .buttonStyle(FilledRedButtonStyle())
+                .tint(.ruby)
             }
             .textCase(.uppercase)
             .font(.main30)
@@ -123,7 +131,7 @@ struct OfflineDurationPickerView: View {
     }
     
     
-    private func nextStage() {
+    private func nextStage(hardCommit: Bool) {
 
         // If the wifi is turned on (use network monitor for this) then present the tips view sheet telling them to turn it off
 //        if NetworkMonitor.shared.isConnected {
@@ -131,6 +139,9 @@ struct OfflineDurationPickerView: View {
 //            
 //            // tips view can navigate from there
 //        }
+        
+        // firstly set wether we wanted to harde commit or not
+        offlineViewModel.state.isHardCommit = hardCommit
         
         // If we have wifi turned off BUT this is the first app usage, navigate to the activities view
         if shouldShowActivitiesView {

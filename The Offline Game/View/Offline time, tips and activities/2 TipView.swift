@@ -4,7 +4,7 @@
 //
 //  Created by Daniel Crompton on 12/2/24.
 //
-
+/*
 import SwiftUI
 
 
@@ -60,10 +60,15 @@ struct TipView: View {
             ActivitiesView()
                 .safeAreaInset(edge: .bottom) {
                     ZStack(alignment: .top) {
-                        Button("Go offline", action: offlineViewModel.goOffline)
-                            .buttonStyle(FilledRedButtonStyle())
-                            .padding()
-                            .background(.bar)
+                        
+                        VStack {
+                            Button("Go offline") {
+                                offlineViewModel.goOffline()
+                            }
+                        }
+                        .buttonStyle(FilledRedButtonStyle())
+                        .padding()
+                        .background(.bar)
                         
                         Divider()
                     }
@@ -99,7 +104,7 @@ struct TipView: View {
         
         // If we don't need to see activities, just go offline
         else {
-            offlineViewModel.goOffline()
+            offlineViewModel.goOffline(hardCommit: false)
         }
     }
 
@@ -111,3 +116,4 @@ struct TipView: View {
             .environment(OfflineViewModel())
     }
 }
+*/
