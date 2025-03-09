@@ -48,34 +48,37 @@ struct LockScreenLiveActivityView : View {
                 
                 // ENCOURAGEMENT + TIME REMAINING
                 VStack(alignment: .trailing, spacing: 2) {
+                    
                     Text("YOU'RE DOING GREAT!")
                         .font(.main14)
                         .foregroundStyle(.smog.mix(with: .white, by: 0.5))
                     
-                    // COUNTDOWN TIMER (or count-up for overtime)
-                    if let endDate = context.state.offlineTime.endDate {
-                        Text("\(Text(endDate, style: .timer)) left!")
+                    switch context.state.offlineTime {
+                        
+                        // COUNTDOWN TIMER
+                    case .normal:
+                        
+                        Text("\(Text(context.state.offlineTime.endDate!, style: .timer)) left!")
                             .multilineTextAlignment(.trailing)
                             .font(.display40)
                         
-                    }
-                    
-                    else if case let .overtime(startDate) = context.state.offlineTime {
+                        
+                        // COUNT-UP FOR OVERTIME
+                    case let .overtime(startDate):
                         
                         Text("\(Text(startDate, style: .timer)) OVERTIME!")
                             .multilineTextAlignment(.trailing)
                             .font(.display40)
                         
-                        
                     }
                     
                 }
                 
-                // PROGRESS BAR if we are counting down tp an end date
-                if case let .overtime(startDate) = context.state.offlineTime,
+                // PROGRESS BAR if we are counting down to an end date
+                if case let .normal(_, startDate) = context.state.offlineTime,
                    let endDate = context.state.offlineTime.endDate {
-                    // USE PROGRESSVIEW(TIME INTERVAL) INIT TO automatically update!!!
                     
+                    // USE PROGRESSVIEW(TIME INTERVAL) INIT TO automatically update!!!
                     ProgressView(timerInterval: startDate...endDate) {
                         EmptyView()
                     } currentValueLabel: {

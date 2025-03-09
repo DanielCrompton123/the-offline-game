@@ -12,6 +12,8 @@ import ActivityKit
 struct OfflineWidget: Widget {
     let kind: String = "OfflineWidget"
     
+    @State private var ovtStart = Date()
+    
     var body: some WidgetConfiguration {
         
         ActivityConfiguration(for: LiveActivityTimerAttributes.self) { context in
@@ -28,20 +30,32 @@ struct OfflineWidget: Widget {
                 
                 Image(systemName: "iphone.gen3.slash")
                     .bold()
-                    .foregroundStyle(.red.gradient)
+                    .foregroundStyle(
+                        (context.state.isOvertime ? Color.green : Color.red)
+                            .gradient
+                    )
                     .frame(width: 40)
                 
             } compactTrailing: {
                 
-                if let date = context.state.offlineTime.endDate {
-                    Text(date, style: .timer)
+                switch context.state.offlineTime {
+                    // COUNT-DOWN TIMER
+                case .normal:
+                        
+                    Text(context.state.offlineTime.endDate!, style: .timer)
                         .multilineTextAlignment(.center)
                         .frame(width: 40)
-                } else if case let .overtime(startDate) = context.state.offlineTime {
+                    // WARNING: CANNOT ADD COLOR.GRADIENT TO THE TIMER TEXT for some reason
+                    // It will not count up or down
+
+                    // COUNT-UP TIMER (FOR OVERTIME)
+                case let .overtime(startDate):
                     Text(startDate, style: .timer)
                         .multilineTextAlignment(.center)
                         .frame(width: 40)
-                        .foregroundStyle(.green.gradient)
+                    
+                    // WARNING: CANNOT ADD COLOR.GRADIENT TO THE TIMER TEXT for some reason
+                    // It will not count up or down
                 }
                 
             } minimal: {

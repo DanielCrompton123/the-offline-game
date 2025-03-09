@@ -53,12 +53,14 @@ struct ExtendedDynamicIsland {
                 }
                 else if case let .overtime(startDate) = context.state.offlineTime {
                     
-                    Text("\(Text(startDate, style: .timer).foregroundStyle(.green.gradient)) OVERTIME!")
+                    Text("\(Text(startDate, style: .timer).foregroundStyle(.green)) OVERTIME!")
                         .multilineTextAlignment(.leading)
                         .font(.custom("Maquire", size: 60))
                         .minimumScaleFactor(0.2)
                         .frame(maxHeight: .infinity)
                         .padding()
+                    
+                    // WARNING: CANNOT ADD .GREEN.GRADIENT -- THE GRADIENT BREAKS THINGS
                     
                 }
                 
