@@ -11,10 +11,8 @@ import UserNotifications
 
 struct NotificationPermissionView: View {
     @Environment(NotificationPermissionsViewModel.self) private var permissionsViewModel
-    @AppStorage(K.userDefaultsShouldShowOnboardingKey) private var shouldShowOnboarding = false
+    @State private var showsAppBlockerPermission = false
     @Environment(\.colorScheme) private var colorScheme
-    
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
 
@@ -50,7 +48,7 @@ struct NotificationPermissionView: View {
                 }
                 
                 else {
-                    ProgressView("Loading focus status")
+                    ProgressView("Loading notification status")
                 }
         }
         
@@ -61,6 +59,9 @@ struct NotificationPermissionView: View {
         .font(.main20)
         .multilineTextAlignment(.center)
         .textCase(.uppercase)
+        .navigationDestination(isPresented: $showsAppBlockerPermission) {
+            FamilyControlsPermissionView()
+        }
     }
     
     
@@ -102,7 +103,7 @@ struct NotificationPermissionView: View {
         else if status == .denied {
             Button("CONTINUE WITHOUT",
                    systemImage: "exclamationmark.shield.fill",
-                   action: endOnboarding)
+                   action: nextStage)
             .buttonStyle(RedButtonStyle())
             
             Button("OPEN IN SETTINGS",
@@ -113,21 +114,16 @@ struct NotificationPermissionView: View {
         
         // NOTIFICATIONS DENIED: TELL THEM TO OPEN SETTINGS OR CONTINUE WITHOUT
         else if status == .authorized {
-            Button("CLOSE", systemImage: "face.smiling.inverse", action: endOnboarding)
+            Button("CLOSE", systemImage: "face.smiling.inverse", action: nextStage)
                 .buttonStyle(FilledRedButtonStyle())
                 .tint(.green)
         }
     }
 
 
-    private func endOnboarding() {
-        shouldShowOnboarding = false
-        
-        // If the user turns off notifications when the app is closed, it opens by presenting the notification permission view as a warning.
-        // Therefore in this case it is not in a navigation stack during onboarding, so this will not dismiss it.
-        
-        // Ensure it can still be dismissed
-        dismiss()
+    private func nextStage() {
+        // Move to the next permissions view
+        showsAppBlockerPermission = true
     }
 }
 

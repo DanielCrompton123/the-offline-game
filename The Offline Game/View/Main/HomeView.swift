@@ -19,12 +19,16 @@ struct HomeView: View {
     
     @Environment(OfflineViewModel.self) private var offlineViewModel
     @Environment(NotificationPermissionsViewModel.self) private var permissionsViewModel
+    @Environment(AppBlockerViewModel.self) private var appBlockerViewModel
     @Environment(LiveActivityViewModel.self) private var liveActivityViewModel
     @Environment(OfflineCountViewModel.self) private var offlineCountViewModel
     @Environment(GameKitViewModel.self) private var gameKitViewModel
 
     // If the user has disabled notifications in settings behind our backs (while the app was closed), check if they are now denied and warn them if so.
     @State private var shouldShowNotificationWarning = false
+    
+    // Also one for the app blocker permissions warning
+    @State private var shouldShowAppBlockerWarning = false
     
     // Show or hide settings view
     @State private var settingsIsOpen = false
@@ -116,6 +120,15 @@ struct HomeView: View {
                     .onAppear(perform: gameKitViewModel.hideAccessPoint)
             }
             
+            // APP BLOCKER PERMISSION WARNING
+            .fullScreenCover(
+                isPresented: $shouldShowAppBlockerWarning,
+                onDismiss: gameKitViewModel.openAccessPoint
+            ) {
+                FamilyControlsPermissionView()
+                    .onAppear(perform: gameKitViewModel.hideAccessPoint)
+            }
+            
             // OFFLINE
             .fullScreenCover(
                 isPresented: $offlineViewModel.state.isOffline,
@@ -137,6 +150,13 @@ struct HomeView: View {
                 await MainActor.run {
                     shouldShowNotificationWarning = permissionsViewModel.notificationStatus == .denied
                 }
+            }
+            
+            // LOAD FAMILY CONTROLS STATUS
+            .onChange(of: appBlockerViewModel.status) { old, new in
+                // IF the user tuned off family controls for the app then tell them to turn it on again
+                
+                shouldShowAppBlockerWarning = new != .approved
             }
             
             // SETTINGS BUTTON

@@ -14,6 +14,7 @@ struct SettingsView: View {
     @State private var clearAchievementsConfirmation = false
 
     @Environment(GameKitViewModel.self) private var gameKitViewModel
+    @Environment(AppBlockerViewModel.self) private var appBlockerViewModel
     
     @AppStorage(K.userDefaultsUserAgeRawValueKey) private var userAgeRawValue: Int?
     
@@ -54,7 +55,19 @@ struct SettingsView: View {
                         NavigationLink {
                             OfflineRules()
                         } label: {
-                            Label("See rules", systemImage: "list.bullet.rectangle")
+                            Label("How this works", systemImage: "list.bullet.rectangle")
+                        }
+                        
+                        Button("Revoke app blocking permissions", systemImage: "app.dashed") {
+                            
+                            Task {
+                                do {
+                                    try await appBlockerViewModel.revokePermission()
+                                } catch {
+                                    print("🧑‍🧑‍🧒‍🧒 Failed to revoke permission for FamilyControls: \(error)")
+                                }
+                            }
+                            
                         }
                     }
                     .frame(height: 50)

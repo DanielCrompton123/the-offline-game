@@ -35,6 +35,7 @@ fileprivate struct ENTRY: View {
     
     @State private var offlineViewModel = OfflineViewModel()
     @State private var permissionsViewModel = NotificationPermissionsViewModel()
+    @State private var appBlockerViewModel = AppBlockerViewModel()
     @State private var liveActivityViewModel = LiveActivityViewModel()
     @State private var activityViewModel = ActivityViewModel()
     @State private var offlineCountViewModel = OfflineCountViewModel()
@@ -103,6 +104,7 @@ fileprivate struct ENTRY: View {
             .environment(activityViewModel)
             .environment(offlineCountViewModel)
             .environment(gameKitViewModel)
+            .environment(appBlockerViewModel)
         
     }
     
