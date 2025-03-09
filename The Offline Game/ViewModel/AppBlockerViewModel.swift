@@ -28,6 +28,9 @@ class AppBlockerViewModel {
     var status: AuthorizationStatus?
     var cancellables: Set<AnyCancellable> = []
     
+    // A data store that applies settings to the current user or device.
+    var settingsStore = ManagedSettingsStore()
+    
     
     init() {
         // When the status changes update the status
@@ -70,7 +73,20 @@ class AppBlockerViewModel {
     
     
     func setAppsStatus(blocked: Bool) {
+        // BLOCK APPS hides their app icon and stops them opening.
+        // NOT WORKING IN SIMULATOR
         
+//        settingsStore.application.blockedApplications = blocked ? [.init(bundleIdentifier: "com.google.ios.youtube"), .init(bundleIdentifier: "com.apple.calculator"), .init(bundleIdentifier: "com.apple.Health"), .init(bundleIdentifier: "com.apple.MobileAddressBook")] : []
+//        
+//        print("🔑 Blocked apps: \(settingsStore.application.blockedApplications)")
+        
+        
+        // SHIELDING APPS opens a sheet over the app instead of the app, and does not let the app open.
+        
+        settingsStore.shield.applicationCategories = blocked ? .all(except: []) : nil
+        settingsStore.shield.webDomainCategories = blocked ? .all(except: []) : nil
+        
+        print("🔑 Shielded apps: \(String(describing: settingsStore.shield.applicationCategories))")
     }
     
 }

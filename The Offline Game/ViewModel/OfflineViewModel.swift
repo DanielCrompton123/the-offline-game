@@ -62,8 +62,12 @@ class OfflineViewModel {
         
         // NOW BLOCK APPS if we are in a hard commit session
         if state.isHardCommit {
-            print("🔑 Blocking apps")
-            appBlockerViewModel?.setAppsStatus(blocked: true)
+            if let appBlockerViewModel {
+                print("🔑 Blocking apps")
+                appBlockerViewModel.setAppsStatus(blocked: true)
+            } else {
+                print("🔑 Could not lock apps as appBlockerViewModel in offlineViewModel is nil")
+            }
         }
     }
     
