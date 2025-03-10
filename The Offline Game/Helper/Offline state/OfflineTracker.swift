@@ -62,8 +62,14 @@ class OfflineTracker {
             return
         }
         
-        // Only do this if we are offline
+        // Only do this if we are offline AND NOT HARD COMMIT
+        // In hard commit apps are blocked, so we don't need to use the grace period stuff
         guard offlineViewModel.state.isOffline else { return }
+        
+        guard !offlineViewModel.state.isHardCommit else {
+            print("Hard commit, so no grace period needed")
+            return
+        }
         
         
         if newValue == .background {
@@ -114,8 +120,9 @@ class OfflineTracker {
     
     
     func appTerminated() {
-        // Only do this if we are offline
-        guard offlineViewModel?.state.isOffline == true else { return }
+        // Only do this if we are offline AND NOT HARD COMMITTING
+        guard offlineViewModel?.state.isOffline == true &&
+        offlineViewModel?.state.isHardCommit == false else { return }
         
         // When the app terminates, tell the user that their offline time has ended
         offlineViewModel?.endOfflineTime(successfully: false)
@@ -126,8 +133,9 @@ class OfflineTracker {
     
     
     func protectedDataDidBecomeAvailable() {
-        // Only do this if we are offline
-        guard offlineViewModel?.state.isOffline == true else { return }
+        // Only do this if we are offline AND SOFT COMMITTING
+        guard offlineViewModel?.state.isOffline == true &&
+        offlineViewModel?.state.isHardCommit == false else { return }
         
         // When the phone turns on, we need to ensure our app is in the foreground, but give the user 5 seconds to open the app before starting their grace period
         // Do we need to convert it to Timer? NO because we check this state is correct with if statement
