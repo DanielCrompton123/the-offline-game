@@ -19,6 +19,20 @@ class OfflineViewModel {
     var error: String?
     
     
+    // In the initializer make sure that the offline start date & duration are recovered IF THE UDSER IS HARD COMMITTING..
+    // In a hard commit they can close the app (terminate) without ending offline time.
+    // When the app opens again, their offline state should be remembered
+    
+    init() {
+        do {
+            if let state = try OfflineStatePersistance.restore() {
+                self.state = state
+            }
+        } catch {
+            print("💽 Failed to restore persisted offline state")
+        }
+    }
+    
     
     //MARK: - Other
     

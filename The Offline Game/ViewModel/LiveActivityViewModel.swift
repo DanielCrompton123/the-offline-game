@@ -19,13 +19,8 @@ class LiveActivityViewModel {
 
     func startActivity() {
         
-        guard let offlineViewModel else {
-            print("LiveActivityViewModel.offlineViewModel is nil")
-            return
-        }
-        
         // Create attributes
-        let attributes = LiveActivityTimerAttributes(peopleOffline: offlineCountViewModel?.count ?? Int.random(in: 10...50))
+        let attributes = LiveActivityTimerAttributes(peopleOffline: offlineCountViewModel?.count ?? Int.random(in: 50...100))
         
         // Create initial state
         guard let state = getState() else {

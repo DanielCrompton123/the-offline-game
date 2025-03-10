@@ -120,15 +120,29 @@ class OfflineTracker {
     
     
     func appTerminated() {
-        // Only do this if we are offline AND NOT HARD COMMITTING
-        guard offlineViewModel?.state.isOffline == true &&
-        offlineViewModel?.state.isHardCommit == false else { return }
         
-        // When the app terminates, tell the user that their offline time has ended
-        offlineViewModel?.endOfflineTime(successfully: false)
+        guard let offlineViewModel, offlineViewModel.state.isOffline else {
+            print("OfflineTracker offlineViewModel is nil OR not offline so app termination not handled")
+            return
+        }
         
-        #warning("`OfflineNotification.appTerminated.post()` -- notification never posted")
-        OfflineNotification.appTerminated.post()
+        // When it terminates, PERSIST THE CURRENT OFFLINE STATE BUT only if we are hard committing (where it should be recovered).
+        // This is allowed because while the app is terminated other apps are still blocked.
+        if offlineViewModel.state.isHardCommit {
+            do {
+                try OfflineStatePersistance.persist(offlineViewModel.state)
+            } catch {
+                print("Could not persist offline state to disk: \(error)")
+            }
+        }
+        
+        // When the app terminates (NOT HARD COMMITTING), tell the user that their offline time has ended
+        else {
+            offlineViewModel.endOfflineTime(successfully: false)
+            
+            #warning("`OfflineNotification.appTerminated.post()` -- notification never posted")
+            OfflineNotification.appTerminated.post()
+        }
     }
     
     

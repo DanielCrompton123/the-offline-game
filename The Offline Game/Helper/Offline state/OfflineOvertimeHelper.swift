@@ -21,8 +21,12 @@ class OfflineOvertimeHelper {
     func startOvertime(viewModel: OfflineViewModel, offset: TimeInterval = 0.0) {
         // Called by the automatic timer, or the "go overtime" button in congrats view
         
-        print("Beginning overtime")
+        print("⏰ Beginning overtime")
         
+        // Make sure apps are still disabled if we are in OVERTIME HARD COMMIT
+        if viewModel.state.isHardCommit {
+            viewModel.appBlockerViewModel?.setAppsStatus(blocked: true)
+        }
         
         viewModel.count(increasing: true)
         
@@ -42,6 +46,11 @@ class OfflineOvertimeHelper {
 
     func endOvertime(viewModel: OfflineViewModel) {
         viewModel.state.isOffline = false
+        
+        // Also re-enable apps
+        if viewModel.state.isHardCommit {
+            viewModel.appBlockerViewModel?.setAppsStatus(blocked: false)
+        }
     }
     
     
@@ -63,7 +72,7 @@ class OfflineOvertimeHelper {
             overtimeStartTimerBGTaskId = UIApplication.shared.beginBackgroundTask()
 
             // Ended BG task when app goes into foreground
-            print("Begun background task \(overtimeStartTimerBGTaskId!.rawValue) to allow overtimeStartTimer to run")
+            print("⏰ Begun background task \(overtimeStartTimerBGTaskId!.rawValue) to allow overtimeStartTimer to run")
         }
         
         // Now schedule a task for 10 seconds
@@ -82,13 +91,13 @@ class OfflineOvertimeHelper {
             // Start date == nil if offline state was reset
             if viewModel.state.startDate != nil {
                 self?.startOvertime(viewModel: viewModel, offset: -delay)
-                print("Begun overtime (10 secs ago)")
+                print("⏰ Begun overtime (10 secs ago)")
             }
             
             // Also END BG task (even if the offline time was cancelled)
             if let overtimeStartTimerBGTaskId = self?.overtimeStartTimerBGTaskId {
                 UIApplication.shared.endBackgroundTask(overtimeStartTimerBGTaskId)
-                print("Ended overtimeStartTimerBGTask")
+                print("⏰ Ended overtimeStartTimerBGTask")
             }
 
         }

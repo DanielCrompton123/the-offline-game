@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OfflineState {
+struct OfflineState: Codable {
     
     //MARK: - Offline duration
     
@@ -26,7 +26,7 @@ struct OfflineState {
     
     //MARK: - Offline state
     
-    enum State: Int {
+    enum State: Int, Codable {
         case none, offline, paused
     }
     
