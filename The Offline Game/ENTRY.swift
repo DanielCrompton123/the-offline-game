@@ -112,7 +112,6 @@ fileprivate struct ENTRY: View {
     private func makeConnections() {
         // Live activity VM
         liveActivityViewModel.offlineViewModel = offlineViewModel
-//        liveActivityViewModel.offlineCountViewModel = offlineCountViewModel
         offlineViewModel.liveActivityViewModel = liveActivityViewModel
         
         offlineViewModel.offlineCountViewModel = offlineCountViewModel
