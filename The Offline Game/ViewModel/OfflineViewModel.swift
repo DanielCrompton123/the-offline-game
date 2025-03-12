@@ -49,7 +49,7 @@ class OfflineViewModel {
     
     
     func goOffline() {
-        print("Going offline")
+        print("📵 Going offline")
         isPickingDuration = false
         state.isOffline = true
         state.startDate = Date()
@@ -75,10 +75,18 @@ class OfflineViewModel {
         ).post()
         
         // NOW BLOCK APPS if we are in a hard commit session
+        // ALSO make sure the offline state is PERSISTED ad it cannot work reliablty in the appWillTerminate
         if state.isHardCommit {
             if let appBlockerViewModel {
                 print("🔑 Blocking apps")
                 appBlockerViewModel.setAppsStatus(blocked: true)
+                
+                    do {
+                        try OfflineStatePersistance.persist(state)
+                    } catch {
+                        print("💽 Could not persist offline state to disk: \(error)")
+                    }
+
             } else {
                 print("🔑 Could not lock apps as appBlockerViewModel in offlineViewModel is nil")
             }
@@ -105,7 +113,7 @@ class OfflineViewModel {
         
     private func scheduleOfflineTimer() {
         guard let endDate = state.endDate else {
-            print("Don't call scheduleOfflineTimer is endDate is nil")
+            print("📵 Don't call scheduleOfflineTimer is endDate is nil")
             return
         }
         
@@ -116,19 +124,17 @@ class OfflineViewModel {
         ) { [weak self] _ in
             // may execute on a background thread
             DispatchQueue.main.async {
-                print("Offline end timer triggered!")
+                print("📵 Offline end timer triggered!")
                 self?.endOfflineTime(successfully: true)
             }
         }
-        
-        print("Scheduled offline end timer")
     }
     
     
     // Ends the NORMAL AND OVERTIME offline periods
     func endOfflineTime(successfully: Bool) {
     
-        print("Ending normal offline time, successfully=\(successfully)")
+        print("📲 Ending normal offline time, successfully=\(successfully)")
         
         // Cancel the offline end timer
         endOfflineTimer?.invalidate()
@@ -225,7 +231,7 @@ class OfflineViewModel {
     
 
     func pauseOfflineTime() {
-        print("Pausing offline time")
+        print("⏸️ Pausing offline time")
         
         // - Cancel notifications and timers
         endOfflineTimer?.invalidate()

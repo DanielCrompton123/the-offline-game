@@ -126,18 +126,8 @@ class OfflineTracker {
             return
         }
         
-        // When it terminates, PERSIST THE CURRENT OFFLINE STATE BUT only if we are hard committing (where it should be recovered).
-        // This is allowed because while the app is terminated other apps are still blocked.
-        if offlineViewModel.state.isHardCommit {
-            do {
-                try OfflineStatePersistance.persist(offlineViewModel.state)
-            } catch {
-                print("Could not persist offline state to disk: \(error)")
-            }
-        }
-        
         // When the app terminates (NOT HARD COMMITTING), tell the user that their offline time has ended
-        else {
+        if !offlineViewModel.state.isHardCommit {
             offlineViewModel.endOfflineTime(successfully: false)
             
             #warning("`OfflineNotification.appTerminated.post()` -- notification never posted")
